@@ -1,15 +1,14 @@
+# import seaborn as sns
+import os
+
 import matplotlib.pyplot as plt
 import pandas as pd
-
+import statsmodels.api as sm
+from statsmodels.tsa.seasonal import STL
+from matplotlib import pyplot as plt
 from pandas import read_csv
 
 # from pandas import datetime
-
-from matplotlib import pyplot as plt
-
-# from influxdb import InfluxDBClient
-# import seaborn as sns
-import os
 
 
 # def parser(x):
@@ -67,3 +66,11 @@ print(series_sun.head())
 sun_head = series_sun.head()
 with open(os.path.join(tbl_dir, "sun_head.tex"), "w") as tf:
     tf.write(sun_head.to_latex(index=True))
+
+print(series_temp.shape)
+series_temp = series_temp.resample("Y").mean().ffill()
+print(series_sun.head(15))
+
+res = STL(series_sun).fit()
+res.plot()
+plt.show()
