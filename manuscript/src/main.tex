@@ -1,28 +1,655 @@
-%! Author = sbbfti
-%! Date = 10/06/2020
+\documentclass[12pt]{article}
+\usepackage{url}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{{images/}}
+\usepackage{parskip}
+\usepackage{fancyhdr}
+\usepackage{vmargin}
+\usepackage{booktabs}
+\usepackage{subcaption}
+\usepackage{listings}
+\usepackage[framed,numbered,autolinebreaks,useliterate]{mcode}
+\usepackage[section]{placeins}
+\usepackage{float}
+\setmarginsrb{3 cm}{2.5 cm}{3 cm}{2.5 cm}{1 cm}{1.5 cm}{1 cm}{1.5 cm}
 
-%\documentclass[review]{elsarticle}
-%\documentclass[final]{elsarticle}
-\documentclass[final,5p,times,twocolumn]{elsarticle}
+\title{Assignment \#1}								% Title
+\author{Saeed Kazemi}								% Author
+\date{\today}											% Date
 
-\usepackage{mypreamble}
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
 
-\input{myacronyms.tex}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\theauthor}
+\lhead{\thetitle}
+\cfoot{\thepage}
 
 \begin{document}
 
-    \input{sections/titleAbstract}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    \linenumbers
+\begin{titlepage}
+	\centering
+    \vspace*{0.4 cm}
+    \includegraphics[scale = 0.5]{figures/unb.jpg}\\[1.0 cm]	% University Logo
+    \textsc{\LARGE \newline\newline University of New Brunswick}\\[1.8 cm]	% University Name
+	\textsc{\Large Time Series Analysis\\(EE 6563)}\\[0.5 cm]				% Course Code
+	\rule{\linewidth}{0.2 mm} \\[0.4 cm]
+	{ \huge \bfseries \thetitle}\\
+	\rule{\linewidth}{0.2 mm} \\[1.5 cm]
+	
+	\begin{minipage}{0.5\textwidth}
+		\begin{flushleft} \large
+			\emph{Professor:}\\
+			Erik Scheme\\
+            Electrical and Computer Engineering\\
+			\end{flushleft}
+			\end{minipage}~
+			\begin{minipage}{0.5\textwidth}
+            
+			\begin{flushright} \large
+			\emph{Author:} \\
+			Saeed Kazemi\\ (3713280)\\
 
-    \input{sections/introduction}
+		\end{flushright}
+        
+	\end{minipage}\\[1 cm]
+	
+	
+    \thedate
+    
+    
+    
+	
+\end{titlepage}
 
-    \input{sections/methodology}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-    \input{sections/results}
+%\tableofcontents
+\pagebreak
 
-    \input{sections/elsevierGuide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%==========================================================
+\begin{enumerate}
 
-\bibliography{mybibfile}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% Question 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\item For each dataset, visualize the raw signals, identify any trends, seasonality, and/or other components, and try to remove them. Remember that you are not limited to the tools shown in the tutorial and should explore the various concepts discussed in class. You do not need to explain the theory behind the approaches, but you should provide justification for their use, and discussion of their results.
+\item For each dataset, examine the stationarity of the residuals using the ACF and PACF functions, Lag Plots, and/or other approaches. Show your results and provide commentary about your observations.
+\item Try modeling the residuals as an AR process. Use the tools at your disposal to decide on an appropriate order and analyse the results. What is the impact of selecting different orders on the remaining residuals?
+\item Summarize your findings and observations briefly in a final discussion. Submit both the developed code and your document to the Assignment 1 folder on D2L.
+
+
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{0.8\textwidth}
+        \includegraphics[width=\textwidth]{figures/1.jpg}
+    \end{minipage}
+    \caption{The plot of $x_a(t)$ and x[n] with $f_s = 200$ samples per second.}
+    \label{fig:1}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%% 1C %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item Repeat part (a) for $f_s = 40$ samples per second.
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{0.9\textwidth}
+        \includegraphics[width=\textwidth]{figures/3.jpg}
+    \end{minipage}
+    \caption{The plot of $x_a(t)$ and x[n] with $f_s = 40$ samples per second.}
+    \label{fig:3}
+\end{figure}
+
+\begin{enumerate}
+\item \textbf{Five quarters of $x_a(t)$ lies between two samples ($\frac{5}{4}$) or in other words 25 ms of continuous signal.}
+
+\item \textbf{Based on the figure \ref{fig:1}, the period of x[n] is 4 samples.}
+
+\item \textbf{I think we need to see at least 5 cycles to observe the repeated pattern of x[n].}
+
+\item \textbf{It is $\frac{5}{4}$ cycle/sample. The denominator of the discrete-time frequency shows the period of signal, and the nominator indicates the number of cycles for one period. Also the discrete-time frequency of x[n] is equal to fraction of $x_a(t)$ that are located between consecutive sampling.}
+\end{enumerate}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% 1D %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item Of the $f_s$ values considered above, which two resulted in the same \{x[n]\}? Explain.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% Question 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item Define the functions $x_a(t)$ and $y_a(t)$ as follows:\\
+$$x_a(t) = 6 cos(2\pi50t - \pi/3)$$ and $$y_a(t) = 3 cos(2\pi50t)$$\\
+The Nyquist rate for both these signals is $f_N = 100\ (samples/sec)$. The Sampling Theorem states that a signal must be sampled at a rate greater than the Nyquist rate in order that the signal can be uniquely recovered from its samples.
+
+
+\begin{enumerate}
+%%%%%%%%%%%%%%%%%%%%%%%% 2A %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item What will be the discrete-time frequency of the discrete-time signal obtained by sampling either of these signals at a rate of $f_s = f_N = 100$ samples/sec.
+
+$$y_a(t) = 3 cos(2\pi50t)$$
+$$y[n] = y_a(n/f_s)$$
+$$y_a(n/f_s) = 3 cos(2\pi50n/100)$$
+
+$$y[n] = 3 cos(2\pi\frac{1}{2}n)$$
+ and similarly
+$$x[n] = 6 cos(2\pi\frac{1}{2}n - \pi/3)$$
+\textbf{
+$$\boxed{F = \frac{1}{2}}$$
+}
+\textbf{Also the discrete-time frequency can be calculated based on the figure \ref{fig:21} and figure \ref{fig:22}.}
+
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{0.7\textwidth}
+        \includegraphics[width=\textwidth]{images/21.jpg}
+    \end{minipage}
+    \caption{The plot of $x_a(t)$ and x[n] with $f_s = 100$ samples per second.}
+    \label{fig:21}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{0.7\textwidth}
+        \includegraphics[width=\textwidth]{images/22.jpg}
+    \end{minipage}
+    \caption{The plot of $y_a(t)$ and y[n] with $f_s = 100$ samples per second.}
+    \label{fig:22}
+\end{figure}
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% 2B %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item Use the function ct\_dt to generate and plot two cycles of $x_a(t)$ along with its samples when using a sampling rate of $f_N\ samples/sec$. Superimpose on your figure, a plot of $y_a(t)$. Assuming you assigned the time vector returned by ct\_dt to the variable t, you can superimpose a plot of $y_a(t)$ by typing the following two lines after executing the function ct\_dt:
+$$
+y = 3*cos(2*pi*50*t);
+$$
+$$
+plot(t,y,’:’)
+$$
+Print a copy of your plot. On your hard copy, add labels to clearly identify the wave forms: $x_a(t)$ and $y_a(t)$. Add a scale for n along the horizontal axis. Write out expressions for
+$x_a(t)$, $y_a(t)$, $x[n] = x_a(n/f_N)$, and $y[n] = y_a(n/f_N)$. Using complete sentences, answer the following question on the printed copy of your plot. Will you be able to uniquely recover $x_a(t)$ from its samples when using a sampling rate equal to the Nyquist rate of 100 samples/sec.? Explain. Your explanation should make reference to your plot.
+
+
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{0.7\textwidth}
+        \includegraphics[width=\textwidth]{images/23.jpg}
+    \end{minipage}
+    \caption{The plot of $x_a(t)$, $y_a(t)$, and x[n].}
+    \label{fig:23}
+\end{figure}
+
+\end{enumerate}
+
+\textbf{Based on the figure \ref{fig:23}, We can only recover the $y_a(t)$ not $x_a(t)$. I think the reason of this phenomenal returns to the phase of $x_a(t)$. It seems if we want to use a sampling rate as much as the Nyquist rate, we need to take sample at the max and min value of signal, or use a rate greater than the Nyquist rate. Although the recovered signal has last the information of the phase and the peak value, both signals, the recovered and the original, have the same frequency.}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% Question 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item Define the functions $x_a(t)$ and $y_a(t)$ as follows:
+$$
+x_a(t) = cos(2\pi50t - \pi/2) 
+$$
+and 
+$$
+y_a(t) = cos(2\pi(- 30)t - \pi/2) = cos(2\pi30t + \pi/2)
+$$
+
+Use the function ct\_dt to plot 5 cycles of $x_a(t)$ and its samples, x[n], when sampled at a rate of 80 samples per second. Be sure to assign the time vector returned by ct\_dt to the variable t. Then execute the following Matlab commands so as to superimpose a plot of $y_a(t)$.
+$$
+     y = cos(2*pi*30*t + pi/2);
+     $$
+     $$
+     plot(t,y,’:’)
+     $$
+Print the resulting plot. On your printed copy, add a scale for n along the horizontal axis and clearly label the signals $x_a(t)$ and $y_a(t)$. Write expressions for $x_a(t)$ and $y_a(t)$ on the printed copy of the plot and use complete sentences to answer the following questions.
+
+\begin{enumerate}
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{0.7\textwidth}
+        \includegraphics[width=\textwidth]{images/31.jpg}
+    \end{minipage}
+    \caption{The plot of $x_a(t)$, $y_a(t)$, x[n], and y[n].}
+    \label{fig:31}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%% 3A %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item Note that $x[n] = x_a(\frac{n}{80}) = cos(2\pi F_x n-\pi/2)$ where $F_x = \frac{5}{8}$
+\begin{enumerate}
+
+
+
+\item What fraction of a cycle of $x_a(t)$ lies between consecutive samples?
+
+\textbf{Based on the figure \ref{fig:31}, five eighth of $x_a(t)$ lies between two samples ($\frac{5}{8}$).}
+
+
+
+\item What is the period of x[n]?
+
+\textbf{Based on the figure \ref{fig:31}, the fundamental period of x[n] is 8, and every 8 samples the pattern were repeated.}
+
+
+
+
+\item How many cycles of $x_a(t)$ must you sample to observe one period of x[n]?
+
+
+\textbf{About five cycles of $x_a(t)$ must observe for one period of x[n].}
+
+\end{enumerate}
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% 3B %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item Note that $y[n] = y_a(\frac{n}{80}) = cos(2\pi F_y n-\pi/2)$ where $F_y = \frac{-3}{8}$
+\begin{enumerate}
+
+\item Observe from your plot how the values of $y_a(t)$ compare to those of $x_a(t)$ at the sampling instances: $t = n/80, n = 0, \pm 1, \pm 2, \hdots$
+\item What fraction of a cycle of $y_a(t)$ lies between consecutive samples?
+
+\textbf{Based on the figure \ref{fig:31}, three eighth of $y_a(t)$ lies between two samples ($\frac{3}{8}$).}
+
+\item What is the period of y[n]?
+
+\textbf{Based on the figure \ref{fig:31}, the fundamental period of y[n] is 8, and every 8 samples the pattern were repeated.}
+
+\item How many cycles of $y_a(t)$ must you sample to observe one period of y[n]?
+
+\textbf{About three cycles of $y_a(t)$ must observe for one period of y[n].}
+
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% 3C %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item If we use an ideal reconstruction filter (based on $f_s=80$ samples per second) to reconstruct a continuous-time signal from the samples x[n] of $x_a(t)$, what signal will be produced? \\
+Hint: According to the sampling theorem, there will be at most one c.t. signal which is both band limited to some frequency strictly less than 40 Hz. and has the values
+x[n] at t = n/80. This is the signal that will be reconstructed.
+
+\textbf{If we use a low pass filter, the output signal will look like the $y_a(t)$ instead of $x_a(t)$. That would be because the our sampling rate is 80 and it is less than the Nyquist rate of $x_a(t)$. Whereas 80 is more than the Nyquist rate of $y_a(t)$.}
+
+\end{enumerate}
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% Question 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item Define the functions $x_a(t)$ and $y_a(t)$ as follows:
+$$x_a(t) = cos(2\pi 60 t)$$ 
+and 
+$$y_a(t) =  cos(2\pi f_y t)$$
+\begin{enumerate}
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% 4A %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item Given that $f_s = 50$ samples/second, find a value for $f_y$ such that $|fy|< fs/2$ and such that when $x_a(t)$ and $y_a(t)$ are sampled at a rate of $f_s$ samples/second, the samples of $x_a(t)$ will be identical to those of $y_a(t)$.
+
+
+
+$$\boxed{f_y = 10}$$
+
+
+
+
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% 4B %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\item Verify your response to part (a) as follows:
+\begin{enumerate}
+
+\item Use ct\_dt to generate a plot of $x_a(t)$ and its samples when $f_s = 50\ samples/second$
+\item Use appropriate matlab commands to superimpose a plot of $y_a(t)$ on the plot obtained in part i. Label your plot and explain how you determined the value for
+$f_y$.
+\end{enumerate}
+$$x_a(t) = cos(2\pi60t)$$
+$$x[n] = x_a(n/f_s)$$
+$$x[n] = x_a(n/50) = cos(2\pi60n/50)$$
+$$F_x = \frac{60}{50} = \frac{6}{5}$$
+$$N_x = N_y = 5$$
+
+$$F_y = \frac{1}{5} = \frac{f_y}{50}$$
+
+$$f_y = \frac{50}{5} = 10$$
+
+
+$$\boxed{f_y = 10}$$
+
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{0.7\textwidth}
+        \includegraphics[width=\textwidth]{images/41.jpg}
+    \end{minipage}
+    \caption{The plot of $x_a(t)$, $y_a(t)$, x[n], and y[n].}
+    \label{fig:41}
+\end{figure}
+
+\end{enumerate}
+\end{enumerate}
+
+
+
+
+
+
+\newpage
+\section{Appendix (codes)}
+\subsection{The script of Lab-1}
+
+\begin{lstlisting}
+%% Lab 1: Discrete-Time Frequency
+% 
+% Author: Maryhelen Stevenson
+%
+%% Explanation of the function ct_dt(.)
+%
+% The file ct_dt.m was supplied for use in this lab; a listing of the file
+% is included in Appendix 1. The file defines a matlab function
+% ct_dt(A,f0,PHI,fs,nc,ifig) which can be used to plot nc cycles
+% of a continuous-time cosine with amplitude A, frequency f0, and phase
+% PHI.  It also superimposes the values of the discrete-time sinusoid that
+% would result from sampling the continuous-time sinusoid at a rate of fs
+% samples per second.  The function returns a vector of time
+% instances at which the values of the continuous-time sinusoid were
+% evaluated to generate the continuous-time plot.
+% 
+% 
+% An example to illustrate the usage of ct_dt(.) follows: 
+%
+close all
+A = 2; % amplitude of continuous-time cosine
+f0 = 0.5; % frequency (in units of Hz.) of continuous-time cosine
+PHI = -pi/4; % phase (in units of radians) of continuous-time cosine
+fs = 10; % sampling rate to be used (units of samples/second)
+nc = 5; % number of cycles of continuous-time cosine to be plotted
+ifig = 1; % optional figure number to use in the title of the figure
+% the function returns the time vector used to plot the c.t. signal
+t = ct_dt(A,f0,PHI,fs,nc,ifig); 
+
+%%
+% _Discussion of Figure 1_
+% In accordance with the usage of ct_dt, we note that Figure 1,
+% contains 5 cycles of the continuous-time cosine, $$x_a(t)$,
+% where $$x_a(t)=2\cos(2\pi(0.5)t - \pi/4)$.  It also superimposes the 
+% discrete-time sinusoid x[n] = xa(n/10).  The values of n are not shown
+% but could be added in by hand.  Note that t=0 corresponds to n=0; whereas
+% t=1 corresponds to n=10.
+% etc.
+% 
+%% Exercise 1
+%  
+% Let x_a(t) = 3 sin(2 pi 50 t) = 3 cos (2 pi 50 t - pi/2)
+% 
+% Define x[n] = x_a(n/fs)
+%
+% a) Figure 2 shows a plot of xa(t) and x[n] for the case when fs=200
+% samples/second.  It was produced using the code below.
+% 
+%  include the necessary code
+close all
+A = 3; 
+f0 = 50; 
+PHI = -pi/2; 
+fs = 200; 
+nc = 6;
+ifig = 2; 
+
+
+t = ct_dt(A,f0,PHI,fs,nc,ifig); 
+
+
+%%
+% _Discussion of Figure 2_
+%
+% include discussion here.  Your discussion should include answers to all
+% questions posed in the lab manual.  Please use complete sentences.  Keep
+% in mind that a reader should not have to have a copy of the lab manual to
+% make sense of your discussion.
+%%
+% b) Figure 3 shows a plot of xa(t) and x[n] for the case when fs=120
+% samples/second. It was produced using the code below.
+% 
+%  include the necessary code
+fs = 120; 
+ifig = 3; 
+
+
+t = ct_dt(A,f0,PHI,fs,nc,ifig); 
+%%
+% _Discussion of Figure 3_
+%
+% include discussion here
+%%
+% c) Figure 4 shows a plot of xa(t) and x[n] for the case when fs=40
+% samples/second. It was produced using the code below.
+% 
+%  include the necessary code 
+fs = 40; 
+ifig = 4; 
+
+
+t = ct_dt(A,f0,PHI,fs,nc,ifig);
+%%
+% _Discussion of Figure 4_
+%
+% include discussion here.  
+%
+%%
+% d) ...
+%
+%% Exercise 2
+%
+% 
+
+close all
+A = 6; 
+f0 = 50; 
+PHI = -pi/3; 
+fs = 100; 
+nc = 2;
+ifig = 21; 
+
+
+t = ct_dt(A,f0,PHI,fs,nc,ifig); 
+
+
+A = 3; 
+f0 = 50; 
+PHI = 0; 
+fs = 100; 
+nc = 2;
+ifig = 22; 
+
+
+t = ct_dt(A,f0,PHI,fs,nc,ifig);
+
+
+A = 6; 
+f0 = 50; 
+PHI = -pi/3; 
+fs = 100; 
+nc = 2;
+ifig = 23; 
+
+
+t = ct_dt(A,f0,PHI,fs,nc,ifig); 
+y = 3*cos(2*pi*50*t);
+plot(t,y,'*')
+legend('x(t)','x[n]','y(t)')
+%% Exercise 3
+%
+% 
+
+
+
+close all
+A = 1; 
+f0 = 50; 
+PHI = -pi/2; 
+fs = 80; 
+nc = 5;
+ifig = 31; 
+
+
+t = ct_dt(A,f0,PHI,fs,nc,ifig); 
+
+
+y = cos(2*pi*30*t + pi/2);
+
+plot(t,y,'*')
+legend('x(t)','x[n]','y(t)')
+
+
+%% Exercise 4
+%
+%
+close all
+A = 1; 
+f0 = 60; 
+PHI = 0; 
+fs = 50; 
+nc = 12;
+ifig = 41; 
+
+
+t = ct_dt(A,f0,PHI,fs,nc,ifig); 
+
+y = cos(2*pi*10*t);
+
+plot(t,y,'*')
+legend('x(t)','x[n]','y(t)')
+
+%% Appendix 1: Listing of the file ct_dt.m
+%
+%     Please include a listing of the function here, complete with any 
+%     modifications that you may have made.
+%
+%     function t = ct_dt(A,f0,PHI,fs,nc, ifig)
+%     %A 	    amplitude of cosine;
+%     %f0 	CT frequency of cosine (cycles/sec);
+%     %PHI 	phase of cosine (radians);
+%     %fs	    sampling frequency (samples/sec.)
+%     %nc 	number of CT cycles to be displayed
+%     %ifig   optional Figure number to use in the title of the plot
+%
+%     ...
+
+\end{lstlisting}
+\subsection{The function of ct\_dt}
+\begin{lstlisting}
+function t = ct_dt(A,f0,PHI,fs,nc, ifig)
+%A 	    amplitude of cosine;
+%f0 	CT frequency of cosine (cycles/sec);
+%PHI 	phase of cosine (radians);
+%fs	    sampling frequency (samples/sec.)
+%nc 	number of CT cycles to be displayed
+%ifig   option Figure number to use in the title of the plot
+%t      time vector used to plot CT cosine
+if (nargin < 5 | nargin > 6)
+    error('in call to ct_dt: there should be 5 arguments')
+end
+if (A < 0 )
+    error(['in call to ct_dt: Amplitude of cosine, A,' ...
+        'should not be negative'])
+end
+if (fs<0)
+    error(['in call to ct_dt: the sampling frequency,'...
+           ' fs,should be positive'])
+end
+if (nc<0)
+    error('in call to ct_dt: nc should be positive')
+end
+if (exist('ifig'))
+    pFig = ['Fig. ', num2str(ifig),':  '];
+else
+    pFig = [''];
+end
+    
+
+figure, clf      
+Ts=1/fs; %time between samples
+Tp=1/abs(f0);  %period of CT cosine (sec/cycle)
+F0 = f0/fs; %DT frequency (cycles/sample)
+%DT plot will display samples n=0 to n=nmax
+nmax = nc/abs(F0); 
+%CT plot will display t=0 to t=tmax
+tmax = nmax * Ts; 
+% define t vector for CT plots to:
+%  have a length greater than or equal to 200
+%  with every kth element corresponding to a sampling instant
+k = ceil(200/nmax);
+t=0:Ts/k:tmax; 
+xa = A*cos(2*pi*f0*t + PHI);
+plot(t,xa);
+hold on
+n=0:nmax;
+nTs = n*Ts;
+xn = A*cos(2*pi*F0*n + PHI);
+stem(nTs,xn);
+
+p0=['x_a(t)=A cos(2\pi f_0 t), '];
+p1=[' A='];
+p2=[', f0='];
+p3=[', PHI='];
+p4=[', fs='];
+p5=[', nc='];
+p6=[', User='];
+name=getenv('USER'); % gets the users login id
+title( [pFig p0 p1 num2str(A) p2 num2str(f0) p3 num2str(PHI) ...
+         p4 num2str(fs) p5 num2str(nc) p6 name ] )
+xlabel('t (seconds), n')
+
+\end{lstlisting}
 
 \end{document}
