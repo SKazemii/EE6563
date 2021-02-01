@@ -98,6 +98,13 @@ plt.savefig(os.path.join(fig_dir, a + "seasonal_decompose.png"))
 ############################################################################
 #########          Seasonal Modeling (fiting polynomial)          ##########
 ############################################################################
+
+resample = series.resample("M").mean()
+plt.figure()
+plt.plot(resample)
+plt.savefig(os.path.join(fig_dir, a + "resample.png"))
+
+
 print("[INFO] Plot the decomposition by fiting polynomial method...")
 X = [i % 365 for i in range(0, len(series))]
 y = series.values

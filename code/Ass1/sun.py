@@ -45,14 +45,13 @@ plt.figure(0)
 fig = series.plot()
 plt.savefig(os.path.join(fig_dir, a + "raw_signal.png"))
 
-# plt.figure()
-# plt.plot(series["1990":"1991"])
-# plt.savefig(os.path.join(fig_dir, a + "raw_signal_1990.png"))
 
-# plt.figure()
-# plt.plot(series.loc["1986"])
-# plt.savefig(os.path.join(fig_dir, a + "raw_signal_1986.png"))
-
+print(series.to_period().head())
+print(series["1749"])
+plt.figure()
+plt.plot(series["1749":"1800"])
+plt.savefig(os.path.join(fig_dir, a + "raw_signal_1990.png"))
+plt.show()
 
 print("[INFO] Saving and printing the head of the first dataset")
 with open(os.path.join(tbl_dir, a + "raw_signal.tex"), "w") as tf:
@@ -96,20 +95,26 @@ plt.savefig(os.path.join(fig_dir, a + "seasonal_decompose.png"))
 
 
 ############################################################################
-#########          Seasonal Modeling (fiting polynomial)          ##########
+#########          Seasonal Modeling (fitting polynomial)         ##########
 ############################################################################
-print("[INFO] Plot the decomposition by fiting polynomial method...")
-X = [i % 365 for i in range(0, len(series))]
+resample = series.resample("AS").mean()
+plt.figure()
+plt.plot(resample)
+plt.savefig(os.path.join(fig_dir, a + "resample.png"))
+
+
+print("[INFO] Plot the decomposition by fitting polynomial method...")
+X = [i % 120 for i in range(0, len(series))]
 y = series.values
 
-degree = 5
+degree = 2
 coef = np.polyfit(X, y, degree)
 print("[INFO] polynomial Coefficients are :\n%s\n" % coef)
 
 
 curve = list()
 for i in range(len(X)):
-    value = 13
+    value = 88
     for d in range(degree):
         value += X[i] ** (degree - d) * coef[d]
     curve.append(value)
