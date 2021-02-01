@@ -15,15 +15,15 @@ from statsmodels.tsa import seasonal, stattools
 from statsmodels.tsa.ar_model import AutoReg
 
 plt.rcParams["figure.figsize"] = (14, 7)
-a = "Ass1_D1_"
+a = "Ass1_D2_"
 
 print("[INFO] Setting directories")
 project_dir = os.getcwd()
 fig_dir = os.path.join(project_dir, "manuscript", "src", "figures", "Ass1")
 tbl_dir = os.path.join(project_dir, "manuscript", "src", "tables", "Ass1")
 data_dir = os.path.join(project_dir, "Dataset", "Ass1")
-# dataset_file = os.path.join(data_dir, "monthly-sunspots.csv")
-dataset_file = os.path.join(data_dir, "temperatures.csv")
+dataset_file = os.path.join(data_dir, "monthly-sunspots.csv")
+# dataset_file = os.path.join(data_dir, "temperatures.csv")
 
 
 print("[INFO] Reading the first dataset")
@@ -45,13 +45,13 @@ plt.figure(0)
 fig = series.plot()
 plt.savefig(os.path.join(fig_dir, a + "raw_signal.png"))
 
-plt.figure()
-plt.plot(series["1990":"1991"])
-plt.savefig(os.path.join(fig_dir, a + "raw_signal_1990.png"))
+# plt.figure()
+# plt.plot(series["1990":"1991"])
+# plt.savefig(os.path.join(fig_dir, a + "raw_signal_1990.png"))
 
-plt.figure()
-plt.plot(series.loc["1986"])
-plt.savefig(os.path.join(fig_dir, a + "raw_signal_1986.png"))
+# plt.figure()
+# plt.plot(series.loc["1986"])
+# plt.savefig(os.path.join(fig_dir, a + "raw_signal_1986.png"))
 
 
 print("[INFO] Saving and printing the head of the first dataset")
