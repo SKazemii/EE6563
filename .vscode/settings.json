@@ -34,4 +34,5 @@
     "workbench.settings.editor": "json",
     "workbench.statusBar.feedback.visible": false,
     "workbench.startupEditor": "newUntitledFile",
+    "jupyter.jupyterServerType": "local",
 }

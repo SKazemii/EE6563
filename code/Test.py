@@ -1,4 +1,3 @@
-"""https://www.machinelearningplus.com/time-series/time-series-analysis-python/"""
 import math
 import os
 
@@ -6,7 +5,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
-import pywt
 
 from pandas.plotting import lag_plot
 from sklearn.linear_model import LinearRegression
@@ -35,23 +33,28 @@ series = pd.read_csv(
 ).dropna()
 
 series.index = pd.to_datetime(series.index)
+# split dataset
+X = series.values
+train, test = X[1 : len(X) - 7], X[len(X) - 7 :]
+# train autoregression
+model = AutoReg(train, lags=29)
+model_fit = model.fit()
+print("Coefficients: %s" % model_fit.params)
+# make predictions
+predictions = model_fit.predict(
+    start=len(train), end=len(train) + len(test) - 1, dynamic=False
+)
+for i in range(len(predictions)):
+    print("predicted=%f, expected=%f" % (predictions[i], test[i]))
+rmse = np.sqrt(mean_squared_error(test, predictions))
+print("Test RMSE: %.3f" % rmse)
 
-coeffs = pywt.wavedec(series["1989"], "sym2", mode="periodic", level=3)
-# Load image
+plt.figure()
+plt.plot(test)
+plt.plot(predictions, color="blue")
 
-print(len(coeffs))
-# print(np.array(coeffs).shape())
-# Wavelet transform of image, and plot approximation and details
-titles = ["Approximation", " Horizontal detail", "Vertical detail", "Diagonal detail"]
-
-A, B, C, D = coeffs
-fig = plt.figure(figsize=(18, 9))
-for i, a in enumerate([A, B, C, D]):
-    ax = fig.add_subplot(4, 1, i + 1)
-    ax.plot(a)
-    ax.set_title(titles[i], fontsize=10)
-    ax.set_xticks([])
-    ax.set_yticks([])
-
-fig.tight_layout()
+plt.figure()
+xpos = np.arange(len(X))
+plt.plot(X, "r--", linewidth=0.2)
+plt.plot(xpos[len(X) - 7 : len(X)], predictions[:], color="blue")
 plt.show()
