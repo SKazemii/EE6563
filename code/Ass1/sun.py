@@ -46,12 +46,9 @@ fig = series.plot()
 plt.savefig(os.path.join(fig_dir, a + "raw_signal.png"))
 
 
-print(series.to_period().head())
-print(series["1749"])
 plt.figure()
 plt.plot(series["1749":"1800"])
 plt.savefig(os.path.join(fig_dir, a + "raw_signal_1990.png"))
-plt.show()
 
 print("[INFO] Saving and printing the head of the first dataset")
 with open(os.path.join(tbl_dir, a + "raw_signal.tex"), "w") as tf:
@@ -63,16 +60,18 @@ with open(os.path.join(tbl_dir, a + "raw_signal_summary_statistics.tex"), "w") a
     tf.write(series.describe().to_latex())
 
 ############################################################################
-#########         Decompositions: Moving Avrage function          ##########
+#########         Decompositions: Moving Avarage function          ##########
 ############################################################################
-print("[INFO] Saving and showing the plot of Moving Avrage function")
+print("[INFO] Saving and showing the plot of Moving Avarage function")
 
 # r.agg, r.apply, r.count, r.exclusions, r.max, r.median, r.name, r.quantile, r.kurt, r.cov, r.corr, r.aggregate, r.std, r.skew, r.sum, r.var
-r = series.rolling(window=100)
+r = series.rolling(window=12)
 
+axes = plt.axes()
+series.plot(color="red", ax=axes)
+r.mean().plot(style="b", linewidth=3, ax=axes)
 
-r.mean().plot(style="b", linewidth=3)
-plt.plot(series, "r--")
+# plt.plot(series, "r")
 plt.legend(["input data", "Seasonal component"])
 plt.savefig(os.path.join(fig_dir, a + "Moving_Avrage.png"))
 
@@ -187,7 +186,7 @@ plt.ylabel("seasonal")
 print("[INFO] Plot the seasonal signal by Differencing method...")
 
 diff = list()
-period = 365
+period = 120
 for i in range(period, len(X)):
     value = detrended[i] - detrended[i - period]
     diff.append(value)

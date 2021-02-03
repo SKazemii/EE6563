@@ -71,9 +71,10 @@ print("[INFO] Saving and showing the plot of Moving Avrage function")
 # r.agg, r.apply, r.count, r.exclusions, r.max, r.median, r.name, r.quantile, r.kurt, r.cov, r.corr, r.aggregate, r.std, r.skew, r.sum, r.var
 r = series.rolling(window=100)
 
+axes = plt.axes()
+series.plot(color="red", ax=axes)
+r.mean().plot(style="b", linewidth=3, ax=axes)
 
-r.mean().plot(style="b", linewidth=3)
-plt.plot(series, "r--")
 plt.legend(["input data", "Seasonal component"])
 plt.savefig(os.path.join(fig_dir, a + "Moving_Avrage.png"))
 
