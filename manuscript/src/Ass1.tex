@@ -88,12 +88,12 @@
 %%%%%%%%%%%%%%%%%%%%%%%% Question 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\item For each dataset, visualize the raw signals, identify any trends, seasonality, and/or other components, and try to remove them. Remember that you are not limited to the tools shown in the tutorial and should explore the various concepts discussed in class. You do not need to explain the theory behind the approaches, but you should provide justification for their use, and discussion of their results.
+\item \textbf{For each dataset, visualize the raw signals, identify any trends, seasonality, and/or other components, and try to remove them. Remember that you are not limited to the tools shown in the tutorial and should explore the various concepts discussed in class. You do not need to explain the theory behind the approaches, but you should provide justification for their use, and discussion of their results.}
 
 
-Figure \ref{fig:Ass1_D1_raw_signal} to figure \ref{fig:Ass1_D2_raw_signal} indicate the raw signal of both data sets. Furthermore, figure \ref{fig:Ass1_D1_raw_signal_1986} to figure \ref{fig:Ass1_D2_raw_signal_1990} illustrate a period of two datasets. Table \ref{tab:Ass1_D1_raw_signal}
+Figure \ref{fig:Ass1_D1_raw_signal} to figure \ref{fig:Ass1_D2_raw_signal} indicate the raw signal of both data sets. Furthermore, figure \ref{fig:Ass1_D1_raw_signal_1986} to figure \ref{fig:Ass1_D2_raw_signal_1990} illustrate a period of two datasets. 
 
-\begin{figure}[]
+\begin{figure}[H]
     \centering
     \begin{minipage}[b]{1\textwidth}
         \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_raw_signal.png}
@@ -102,7 +102,7 @@ Figure \ref{fig:Ass1_D1_raw_signal} to figure \ref{fig:Ass1_D2_raw_signal} indic
     \label{fig:Ass1_D1_raw_signal}
 \end{figure}
 
-\begin{figure}[]
+\begin{figure}[H]
     \centering
     \begin{minipage}[b]{1\textwidth}
         \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_raw_signal.png}
@@ -111,7 +111,7 @@ Figure \ref{fig:Ass1_D1_raw_signal} to figure \ref{fig:Ass1_D2_raw_signal} indic
     \label{fig:Ass1_D2_raw_signal}
 \end{figure}
 
-\begin{figure}[]
+\begin{figure}[H]
     \centering
     \begin{minipage}[b]{1\textwidth}
         \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_raw_signal_1986.png}
@@ -120,7 +120,7 @@ Figure \ref{fig:Ass1_D1_raw_signal} to figure \ref{fig:Ass1_D2_raw_signal} indic
     \label{fig:Ass1_D1_raw_signal_1986}
 \end{figure}
 
-\begin{figure}[]
+\begin{figure}[H]
     \centering
     \begin{minipage}[b]{1\textwidth}
         \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_raw_signal_1990.png}
@@ -129,7 +129,7 @@ Figure \ref{fig:Ass1_D1_raw_signal} to figure \ref{fig:Ass1_D2_raw_signal} indic
     \label{fig:Ass1_D1_raw_signal_1990}
 \end{figure}
 
-\begin{figure}[]
+\begin{figure}[H]
     \centering
     \begin{minipage}[b]{1\textwidth}
         \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_raw_signal_1990.png}
@@ -141,28 +141,28 @@ Figure \ref{fig:Ass1_D1_raw_signal} to figure \ref{fig:Ass1_D2_raw_signal} indic
 For intuition, Table \ref{tab:Ass1_D1_raw_signal} to table \ref{tab:Ass1_D2_raw_signal_summary_statistics} show the top raw of two datasets along with their summary of description.
 
 
-\begin{table}[]
+\begin{table}[H]
  \centering
 \caption{The top row of the raw signal of the first dataset (daily temp).
 {\label{tab:Ass1_D1_raw_signal}}}
 \input{tables/Ass1/Ass1_D1_raw_signal.tex}
 \end{table}
 
-\begin{table}[]
+\begin{table}[H]
  \centering
 \caption{The description of the first dataset.
 {\label{tab:Ass1_D1_raw_signal_summary_statistics}}}
 \input{tables/Ass1/Ass1_D1_raw_signal_summary_statistics.tex}
 \end{table}
 
-\begin{table}[]
+\begin{table}[H]
  \centering
 \caption{The top row of the raw signal of the second dataset.
 {\label{tab:Ass1_D2_raw_signal}}}
 \input{tables/Ass1/Ass1_D2_raw_signal.tex}
 \end{table}
 
-\begin{table}[]
+\begin{table}[H]
  \centering
 \caption{The description of the second dataset.
 {\label{tab:Ass1_D2_raw_signal_summary_statistics}}}
@@ -171,41 +171,128 @@ For intuition, Table \ref{tab:Ass1_D1_raw_signal} to table \ref{tab:Ass1_D2_raw_
 
 For decomposing the data the below methods were used:
     \begin{enumerate}
-    \item Seasonal\_decompose
-    \item STL
-    \item Linear Regression method
-    \item Difference method
-    \item Moving average
+    \item Seasonal\_decompose (Figure
+        \ref{fig:Ass1_D1_seasonal_decompose} and \ref{fig:Ass1_D2_seasonal_decompose})
+        
+    \item STL (Figure
+        \ref{fig:Ass1_D1_STL} and \ref{fig:Ass1_D2_STL})
+        
+    \item Linear Regression method (Figure
+        \ref{fig:Ass1_D1_LinearRegression_diff} and \ref{fig:Ass1_D2_LinearRegression_diff})
+        
+    \item Difference method (Figure
+        \ref{fig:Ass1_D1_one_diff} and \ref{fig:Ass1_D2_one_diff})
+        
+    \item fitting a polynomial (Figure
+        \ref{fig:Ass1_D1_fiting_polynomial} and \ref{fig:Ass1_D2_fiting_polynomial})
+
     \end{enumerate}
 Some of these methods extracted only one component while others like STL and Seasonal\_decompose provided all three components. Table \ref{tab:Ass1_comparing_methods} compares these methods together.
 
 \begin{table}[H]
 \centering
 \caption{Comparing the implemented methods.
-{\label{tab:Ass1_comparing_methods}}}
+\label{tab:Ass1_comparing_methods}}
 \input{tables/Ass1/Ass1_comparing_methods.tex}
 \end{table}
 
 
-\begin{figure}[]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_raw_signal.png}
-    \end{minipage}
-    \caption{Visualizing the raw signals of the first dataset.}
-    \label{fig:Ass1_D1_raw_signal}
-\end{figure}
 
-\begin{figure}[]
+
+\begin{figure}[H]
     \centering
     \begin{minipage}[b]{1\textwidth}
         \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_seasonal_decompose.png}
     \end{minipage}
-    \caption{De.}
+    \caption{Decomposition of the first dataset by seasonal\_decompose method}
     \label{fig:Ass1_D1_seasonal_decompose}
 \end{figure}
 
-\item For each dataset, examine the stationarity of the residuals using the ACF and PACF functions, Lag Plots, and/or other approaches. Show your results and provide commentary about your observations.
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_seasonal_decompose.png}
+    \end{minipage}
+    \caption{Decomposition of the second dataset by seasonal\_decompose method}
+    \label{fig:Ass1_D2_seasonal_decompose}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_STL.png}
+    \end{minipage}
+    \caption{Decomposition of the first dataset by STL method}
+    \label{fig:Ass1_D1_STL}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_STL.png}
+    \end{minipage}
+    \caption{Decomposition of the second dataset by STL method}
+    \label{fig:Ass1_D2_STL}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_LinearRegression_diff.png}
+    \end{minipage}
+    \caption{Decomposition of the first dataset by LinearRegression and difference method.}
+    \label{fig:Ass1_D1_LinearRegression_diff}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_LinearRegression_diff.png}
+    \end{minipage}
+    \caption{Decomposition of the second dataset by LinearRegression and difference method.}
+    \label{fig:Ass1_D2_LinearRegression_diff}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_one_diff.png}
+    \end{minipage}
+    \caption{Detrending of the first dataset by difference method.}
+    \label{fig:Ass1_D1_one_diff}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_one_diff.png}
+    \end{minipage}
+    \caption{Detrending of the second dataset by difference method.}
+    \label{fig:Ass1_D2_one_diff}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_fiting_polynomial.png}
+    \end{minipage}
+    \caption{Seasonal component of the first dataset by fitting a polynomial.}
+    \label{fig:Ass1_D1_fiting_polynomial}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_fiting_polynomial.png}
+    \end{minipage}
+    \caption{Seasonal component of the second dataset by fitting a polynomial.}
+    \label{fig:Ass1_D2_fiting_polynomial}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% Question 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\item \textbf{For each dataset, examine the stationarity of the residuals using the ACF and PACF functions, Lag Plots, and/or other approaches. Show your results and provide commentary about your observations.}
 
 You see how ACF is declining in amplitude exponentially, while PACF cuts off after lag 1. This may suggest that you're dealing with AR(1) process. How do I know this? If you derive the ACF and PACF assuming that your process is AR(1), which includes constant variance of errors, then you'd come up with a similar shaped curves. Hence, if your underlying series are not stationary, you're breaking the assumptions that are base for the heuristics that I mentioned about ACF/PACF. It's pointless to apply these on non-stationary series, since you can't make any conclusions about the lag structure anymore.
 
@@ -220,305 +307,29 @@ Case 4: KPSS indicates non-stationarity and ADF indicates stationarity - The ser
 
 
 
-\item Try modeling the residuals as an AR process. Use the tools at your disposal to decide on an appropriate order and analyse the results. What is the impact of selecting different orders on the remaining residuals?
-\item Summarize your findings and observations briefly in a final discussion. Submit both the developed code and your document to the Assignment 1 folder on D2L.
-
-%	\vspace{-1em}
-	\begin{table}[]
-	 \centering
-	\caption{Statistical summary for numerical variables.
-	{\label{tab:stats_num_data}}}
-%	\vspace{-0.5em}
-%	\setlength\extrarowheight{-2pt}
-	\input{tables/Ass1/Ass1_D1_raw_signal.tex}
-	\end{table}
-%\vspace{-2em}
-
-
-
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{0.8\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/temp.png}
-    \end{minipage}
-    \caption{The plot of $x_a(t)$ and x[n] with $f_s = 200$ samples per second.}
-    \label{fig:2}
-\end{figure}
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%% 1C %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-
-\begin{enumerate}
-\item \textbf{Five quarters of $x_a(t)$ lies between two samples ($\frac{5}{4}$) or in other words 25 ms of continuous signal.}
-
-\item \textbf{Based on the figure \ref{fig:1}, the period of x[n] is 4 samples.}
-
-\item \textbf{I think we need to see at least 5 cycles to observe the repeated pattern of x[n].}
-
-\item \textbf{It is $\frac{5}{4}$ cycle/sample. The denominator of the discrete-time frequency shows the period of signal, and the nominator indicates the number of cycles for one period. Also the discrete-time frequency of x[n] is equal to fraction of $x_a(t)$ that are located between consecutive sampling.}
-\end{enumerate}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%% 1D %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\item Of the $f_s$ values considered above, which two resulted in the same \{x[n]\}? Explain.
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%% Question 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\item Define the functions $x_a(t)$ and $y_a(t)$ as follows:\\
-$$x_a(t) = 6 cos(2\pi50t - \pi/3)$$ and $$y_a(t) = 3 cos(2\pi50t)$$\\
-The Nyquist rate for both these signals is $f_N = 100\ (samples/sec)$. The Sampling Theorem states that a signal must be sampled at a rate greater than the Nyquist rate in order that the signal can be uniquely recovered from its samples.
-
-
-\begin{enumerate}
-%%%%%%%%%%%%%%%%%%%%%%%% 2A %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\item What will be the discrete-time frequency of the discrete-time signal obtained by sampling either of these signals at a rate of $f_s = f_N = 100$ samples/sec.
-
-$$y_a(t) = 3 cos(2\pi50t)$$
-$$y[n] = y_a(n/f_s)$$
-$$y_a(n/f_s) = 3 cos(2\pi50n/100)$$
-
-$$y[n] = 3 cos(2\pi\frac{1}{2}n)$$
- and similarly
-$$x[n] = 6 cos(2\pi\frac{1}{2}n - \pi/3)$$
-\textbf{
-$$\boxed{F = \frac{1}{2}}$$
-}
-\textbf{Also the discrete-time frequency can be calculated based on the figure \ref{fig:21} and figure \ref{fig:22}.}
-
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{0.7\textwidth}
-        \includegraphics[width=\textwidth]{images/21.jpg}
-    \end{minipage}
-    \caption{The plot of $x_a(t)$ and x[n] with $f_s = 100$ samples per second.}
-    \label{fig:21}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{0.7\textwidth}
-        \includegraphics[width=\textwidth]{images/22.jpg}
-    \end{minipage}
-    \caption{The plot of $y_a(t)$ and y[n] with $f_s = 100$ samples per second.}
-    \label{fig:22}
-\end{figure}
-
-
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%% 2B %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\item Use the function ct\_dt to generate and plot two cycles of $x_a(t)$ along with its samples when using a sampling rate of $f_N\ samples/sec$. Superimpose on your figure, a plot of $y_a(t)$. Assuming you assigned the time vector returned by ct\_dt to the variable t, you can superimpose a plot of $y_a(t)$ by typing the following two lines after executing the function ct\_dt:
-$$
-y = 3*cos(2*pi*50*t);
-$$
-$$
-plot(t,y,’:’)
-$$
-Print a copy of your plot. On your hard copy, add labels to clearly identify the wave forms: $x_a(t)$ and $y_a(t)$. Add a scale for n along the horizontal axis. Write out expressions for
-$x_a(t)$, $y_a(t)$, $x[n] = x_a(n/f_N)$, and $y[n] = y_a(n/f_N)$. Using complete sentences, answer the following question on the printed copy of your plot. Will you be able to uniquely recover $x_a(t)$ from its samples when using a sampling rate equal to the Nyquist rate of 100 samples/sec.? Explain. Your explanation should make reference to your plot.
-
-
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{0.7\textwidth}
-        \includegraphics[width=\textwidth]{images/23.jpg}
-    \end{minipage}
-    \caption{The plot of $x_a(t)$, $y_a(t)$, and x[n].}
-    \label{fig:23}
-\end{figure}
-
-\end{enumerate}
-
-\textbf{Based on the figure \ref{fig:23}, We can only recover the $y_a(t)$ not $x_a(t)$. I think the reason of this phenomenal returns to the phase of $x_a(t)$. It seems if we want to use a sampling rate as much as the Nyquist rate, we need to take sample at the max and min value of signal, or use a rate greater than the Nyquist rate. Although the recovered signal has last the information of the phase and the peak value, both signals, the recovered and the original, have the same frequency.}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%% Question 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\item Define the functions $x_a(t)$ and $y_a(t)$ as follows:
-$$
-x_a(t) = cos(2\pi50t - \pi/2) 
-$$
-and 
-$$
-y_a(t) = cos(2\pi(- 30)t - \pi/2) = cos(2\pi30t + \pi/2)
-$$
 
-Use the function ct\_dt to plot 5 cycles of $x_a(t)$ and its samples, x[n], when sampled at a rate of 80 samples per second. Be sure to assign the time vector returned by ct\_dt to the variable t. Then execute the following Matlab commands so as to superimpose a plot of $y_a(t)$.
-$$
-     y = cos(2*pi*30*t + pi/2);
-     $$
-     $$
-     plot(t,y,’:’)
-     $$
-Print the resulting plot. On your printed copy, add a scale for n along the horizontal axis and clearly label the signals $x_a(t)$ and $y_a(t)$. Write expressions for $x_a(t)$ and $y_a(t)$ on the printed copy of the plot and use complete sentences to answer the following questions.
-
-\begin{enumerate}
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{0.7\textwidth}
-        \includegraphics[width=\textwidth]{images/31.jpg}
-    \end{minipage}
-    \caption{The plot of $x_a(t)$, $y_a(t)$, x[n], and y[n].}
-    \label{fig:31}
-\end{figure}
-%%%%%%%%%%%%%%%%%%%%%%%% 3A %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\item Note that $x[n] = x_a(\frac{n}{80}) = cos(2\pi F_x n-\pi/2)$ where $F_x = \frac{5}{8}$
-\begin{enumerate}
-
-
-
-\item What fraction of a cycle of $x_a(t)$ lies between consecutive samples?
-
-\textbf{Based on the figure \ref{fig:31}, five eighth of $x_a(t)$ lies between two samples ($\frac{5}{8}$).}
-
-
-
-\item What is the period of x[n]?
-
-\textbf{Based on the figure \ref{fig:31}, the fundamental period of x[n] is 8, and every 8 samples the pattern were repeated.}
-
-
-
-
-\item How many cycles of $x_a(t)$ must you sample to observe one period of x[n]?
-
-
-\textbf{About five cycles of $x_a(t)$ must observe for one period of x[n].}
-
-\end{enumerate}
-
-
-
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%% 3B %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\item Note that $y[n] = y_a(\frac{n}{80}) = cos(2\pi F_y n-\pi/2)$ where $F_y = \frac{-3}{8}$
-\begin{enumerate}
-
-\item Observe from your plot how the values of $y_a(t)$ compare to those of $x_a(t)$ at the sampling instances: $t = n/80, n = 0, \pm 1, \pm 2, \hdots$
-\item What fraction of a cycle of $y_a(t)$ lies between consecutive samples?
-
-\textbf{Based on the figure \ref{fig:31}, three eighth of $y_a(t)$ lies between two samples ($\frac{3}{8}$).}
-
-\item What is the period of y[n]?
-
-\textbf{Based on the figure \ref{fig:31}, the fundamental period of y[n] is 8, and every 8 samples the pattern were repeated.}
-
-\item How many cycles of $y_a(t)$ must you sample to observe one period of y[n]?
-
-\textbf{About three cycles of $y_a(t)$ must observe for one period of y[n].}
-
-\end{enumerate}
-
-
-
-
-
-
-
-
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%% 3C %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\item If we use an ideal reconstruction filter (based on $f_s=80$ samples per second) to reconstruct a continuous-time signal from the samples x[n] of $x_a(t)$, what signal will be produced? \\
-Hint: According to the sampling theorem, there will be at most one c.t. signal which is both band limited to some frequency strictly less than 40 Hz. and has the values
-x[n] at t = n/80. This is the signal that will be reconstructed.
-
-\textbf{If we use a low pass filter, the output signal will look like the $y_a(t)$ instead of $x_a(t)$. That would be because the our sampling rate is 80 and it is less than the Nyquist rate of $x_a(t)$. Whereas 80 is more than the Nyquist rate of $y_a(t)$.}
-
-\end{enumerate}
-
-
-
+\item \textbf{Try modeling the residuals as an AR process. Use the tools at your disposal to decide on an appropriate order and analyse the results. What is the impact of selecting different orders on the remaining residuals?}
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%% Question 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\item Define the functions $x_a(t)$ and $y_a(t)$ as follows:
-$$x_a(t) = cos(2\pi 60 t)$$ 
-and 
-$$y_a(t) =  cos(2\pi f_y t)$$
-\begin{enumerate}
+
+\item \textbf{Summarize your findings and observations briefly in a final discussion. Submit both the developed code and your document to the Assignment 1 folder on D2L.}
 
 
 
 
 
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%% 4A %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\item Given that $f_s = 50$ samples/second, find a value for $f_y$ such that $|fy|< fs/2$ and such that when $x_a(t)$ and $y_a(t)$ are sampled at a rate of $f_s$ samples/second, the samples of $x_a(t)$ will be identical to those of $y_a(t)$.
-
-
-
-$$\boxed{f_y = 10}$$
-
-
-
-
-
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%% 4B %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\item Verify your response to part (a) as follows:
-\begin{enumerate}
-
-\item Use ct\_dt to generate a plot of $x_a(t)$ and its samples when $f_s = 50\ samples/second$
-\item Use appropriate matlab commands to superimpose a plot of $y_a(t)$ on the plot obtained in part i. Label your plot and explain how you determined the value for
-$f_y$.
-\end{enumerate}
-$$x_a(t) = cos(2\pi60t)$$
-$$x[n] = x_a(n/f_s)$$
-$$x[n] = x_a(n/50) = cos(2\pi60n/50)$$
-$$F_x = \frac{60}{50} = \frac{6}{5}$$
-$$N_x = N_y = 5$$
-
-$$F_y = \frac{1}{5} = \frac{f_y}{50}$$
-
-$$f_y = \frac{50}{5} = 10$$
-
-
-$$\boxed{f_y = 10}$$
-
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{0.7\textwidth}
-        \includegraphics[width=\textwidth]{images/41.jpg}
-    \end{minipage}
-    \caption{The plot of $x_a(t)$, $y_a(t)$, x[n], and y[n].}
-    \label{fig:41}
-\end{figure}
 
 \end{enumerate}
-\end{enumerate}
+
 
 
 
