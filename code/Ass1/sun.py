@@ -51,16 +51,20 @@ plt.plot(series["1749":"1800"])
 plt.savefig(os.path.join(fig_dir, a + "raw_signal_1990.png"))
 
 
-series_log = series.copy(deep=True)
-series_log["Sunspots"] = series["Sunspots"] - series["Sunspots"].shift(1)
+series_diff = series.copy(deep=True)
+series_diff["Sunspots"] = series.diff().dropna()
+series_diff.dropna(inplace=True)
 plt.figure()
-fig = series_log.plot()
-plt.savefig(os.path.join(fig_dir, a + "transformed_raw_signal.png"))
+fig = plt.plot(series_diff)
+plt.savefig(os.path.join(fig_dir, a + "1_diff_raw_signal.png"))
 
-resample_log = series_log.resample("AS").mean()
-plt.figure()
-plt.plot(resample_log)
-plt.savefig(os.path.join(fig_dir, a + "resample_log.png"))
+
+series_2diff = series.copy(deep=True)
+series_2diff["Sunspots"] = series.diff().diff().dropna()
+series_2diff.dropna(inplace=True)
+fig = plt.plot(series_2diff)
+plt.savefig(os.path.join(fig_dir, a + "2_diff_raw_signal.png"))
+
 
 print("[INFO] Saving and printing the head of the first dataset")
 with open(os.path.join(tbl_dir, a + "raw_signal.tex"), "w") as tf:
@@ -83,7 +87,6 @@ axes = plt.axes()
 series.plot(color="red", ax=axes)
 r.mean().plot(style="b", linewidth=3, ax=axes)
 
-# plt.plot(series, "r")
 plt.legend(["input data", "Seasonal component"])
 plt.savefig(os.path.join(fig_dir, a + "Moving_Avrage.png"))
 
@@ -98,11 +101,12 @@ plt.savefig(os.path.join(fig_dir, a + "Moving_Avrage.png"))
 """
 print("[INFO] Plot the decomposition by seasonal_decompose method...")
 decomposition_sd = seasonal.seasonal_decompose(
-    series, model="additive", extrapolate_trend="freq", period=120
+    series, model="additive", extrapolate_trend="freq"  # , period=120
 )
 
 fig = decomposition_sd.plot()
 plt.savefig(os.path.join(fig_dir, a + "seasonal_decompose.png"))
+
 
 ############################################################################
 #########          Seasonal Modeling (fitting polynomial)         ##########
@@ -157,13 +161,11 @@ plt.savefig(os.path.join(fig_dir, a + "one_diff.png"))
 ############################################################################
 
 print("[INFO] Plot the decomposition by STL method...")
-decomposition_STL = seasonal.STL(series).fit()
+decomposition_STL = seasonal.STL(series, period=130).fit()
 fig = decomposition_STL.plot()
 plt.savefig(os.path.join(fig_dir, a + "STL.png"))
 
-decomposition_STL_log = seasonal.STL(series_log).fit()
-fig = decomposition_STL_log.plot()
-plt.savefig(os.path.join(fig_dir, a + "STL_log.png"))
+
 ############################################################################
 #########         Decompositions: LinearRegression method         ##########
 ############################################################################
@@ -221,7 +223,7 @@ residual = decomposition_STL.resid
 print("[INFO] ACF plot for residual component...")
 plt.figure()
 plot_acf(residual, lags=100)
-plt.savefig(os.path.join(fig_dir, a + "ADF.png"))
+plt.savefig(os.path.join(fig_dir, a + "ACF.png"))
 
 print("[INFO] Results of Dickey-Fuller Test:")
 result = stattools.adfuller(residual, autolag="AIC")
@@ -236,6 +238,47 @@ print(dfoutput)
 print("[INFO] saving Results of Dickey-Fuller Test on file...")
 with open(os.path.join(tbl_dir, a + "ADF.tex"), "w") as tf:
     tf.write(dfoutput.to_latex(index=True))
+
+
+print("[INFO] ACF plot for the first order diff...")
+plt.figure()
+plot_acf(series_diff, lags=100)
+plt.savefig(os.path.join(fig_dir, a + "ACF_1_diff.png"))
+
+print("[INFO] Results of Dickey-Fuller Test:")
+result = stattools.adfuller(series_diff, autolag="AIC")
+dfoutput = pd.Series(
+    result[0:4],
+    index=["ADF Statistic", "p-value", "#Lags Used", "Number of Observations Used"],
+)
+for key, value in result[4].items():
+    dfoutput["Critical Value (%s)" % key] = value
+print(dfoutput)
+
+print("[INFO] saving Results of Dickey-Fuller Test on file...")
+with open(os.path.join(tbl_dir, a + "ADF_1_diff.tex"), "w") as tf:
+    tf.write(dfoutput.to_latex(index=True))
+
+
+print("[INFO] ACF plot for the second order diff...")
+plt.figure()
+plot_acf(series_2diff, lags=100)
+plt.savefig(os.path.join(fig_dir, a + "ACF_2_diff.png"))
+
+print("[INFO] Results of Dickey-Fuller Test:")
+result = stattools.adfuller(series_2diff, autolag="AIC")
+dfoutput = pd.Series(
+    result[0:4],
+    index=["ADF Statistic", "p-value", "#Lags Used", "Number of Observations Used"],
+)
+for key, value in result[4].items():
+    dfoutput["Critical Value (%s)" % key] = value
+print(dfoutput)
+
+print("[INFO] saving Results of Dickey-Fuller Test on file...")
+with open(os.path.join(tbl_dir, a + "ADF_2_diff.tex"), "w") as tf:
+    tf.write(dfoutput.to_latex(index=True))
+
 
 ############################################################################
 #########              stationary test: KPSS method               ##########
@@ -255,6 +298,28 @@ with open(os.path.join(tbl_dir, a + "KPSS.tex"), "w") as tf:
     tf.write(kpss_output.to_latex(index=True))
 
 
+print("[INFO] Results of KPSS Test:")
+Results = stattools.kpss(series_diff, regression="c", nlags="auto")
+kpss_output = pd.Series(Results[0:3], index=["KPSS Statistic", "p-value", "Lags Used"])
+for key, value in Results[3].items():
+    kpss_output["Critical Value (%s)" % key] = value
+print(kpss_output)
+
+print("[INFO] saving Results of KPSS Test on file...")
+with open(os.path.join(tbl_dir, a + "KPSS_1_diff.tex"), "w") as tf:
+    tf.write(kpss_output.to_latex(index=True))
+
+print("[INFO] Results of KPSS Test:")
+Results = stattools.kpss(series_2diff, regression="c", nlags="auto")
+kpss_output = pd.Series(Results[0:3], index=["KPSS Statistic", "p-value", "Lags Used"])
+for key, value in Results[3].items():
+    kpss_output["Critical Value (%s)" % key] = value
+print(kpss_output)
+
+print("[INFO] saving Results of KPSS Test on file...")
+with open(os.path.join(tbl_dir, a + "KPSS_2_diff.tex"), "w") as tf:
+    tf.write(kpss_output.to_latex(index=True))
+
 ############################################################################
 #########               stationary test: PACF method              ##########
 ############################################################################
@@ -272,6 +337,17 @@ plot_acf(residual, lags=50, ax=axes[0])
 plot_pacf(residual, lags=50, ax=axes[1])
 plt.savefig(os.path.join(fig_dir, a + "PACF_ACF.png"))
 
+plt.figure()
+fig, axes = plt.subplots(2, 1)
+plot_acf(series_diff, lags=50, ax=axes[0])
+plot_pacf(series_diff, lags=50, ax=axes[1])
+plt.savefig(os.path.join(fig_dir, a + "PACF_ACF_1_diff.png"))
+
+plt.figure()
+fig, axes = plt.subplots(2, 1)
+plot_acf(series_2diff, lags=50, ax=axes[0])
+plot_pacf(series_2diff, lags=50, ax=axes[1])
+plt.savefig(os.path.join(fig_dir, a + "PACF_ACF_2_diff.png"))
 ############################################################################
 #########               stationary test: Lag Plots                ##########
 ############################################################################
@@ -296,6 +372,21 @@ for i, ax in enumerate(axes.flatten()[:4]):
 fig.suptitle("Lag Plots of the residual component")
 plt.savefig(os.path.join(fig_dir, a + "Lag_Plots_residual.png"))
 
+fig, axes = plt.subplots(2, 2, sharex=True, sharey=True, dpi=100)
+for i, ax in enumerate(axes.flatten()[:4]):
+    lag_plot(series_diff, lag=i + 1, ax=ax, c="firebrick")
+    ax.set_title("Lag " + str(i + 1))
+
+fig.suptitle("Lag Plots of the first order diff")
+plt.savefig(os.path.join(fig_dir, a + "Lag_Plots_1_diff.png"))
+
+fig, axes = plt.subplots(2, 2, sharex=True, sharey=True, dpi=100)
+for i, ax in enumerate(axes.flatten()[:4]):
+    lag_plot(series_2diff, lag=i + 1, ax=ax, c="firebrick")
+    ax.set_title("Lag " + str(i + 1))
+
+fig.suptitle("Lag Plots of the second order diff")
+plt.savefig(os.path.join(fig_dir, a + "Lag_Plots_2_diff.png"))
 ############################################################################
 #########           Predict Approach of Auto Regression           ##########
 ############################################################################
@@ -305,12 +396,12 @@ https://towardsdatascience.com/trend-seasonality-moving-average-auto-regressive-
 X = decomposition_STL.resid.values
 
 print("[INFO] spliting dataset to train and test set...")
-n_predict = 14
+n_predict = 30
 train, test = X[1 : len(X) - n_predict], X[len(X) - n_predict :]
 
 
 print("[INFO] train autoregression...")
-model = AutoReg(train, lags=2)
+model = AutoReg(train, lags=6)
 model_fit = model.fit()
 
 
@@ -319,6 +410,7 @@ print("[INFO] Coefficients:\n%s\n" % (model_fit.params))
 predictions = model_fit.predict(
     start=len(train), end=len(train) + len(test) - 1, dynamic=False
 )
+# predictions = model_fit.forecast(n_predict, dynamic=False)
 
 print("[INFO] AutoReg Model Results (summary): ")
 print(model_fit.summary())
@@ -345,7 +437,7 @@ plt.savefig(os.path.join(fig_dir, a + "AR1.png"))
 
 plt.figure()
 xpos = np.arange(len(X))
-plt.plot(X[3500:], "r", linewidth=0.5)
-plt.plot(xpos[len(X) - n_predict - 3500 : len(X) - 3500], predictions[:], color="blue")
+plt.plot(X[2700:], "r", linewidth=0.5)
+plt.plot(xpos[len(X) - n_predict - 2700 : len(X) - 2700], predictions[:], color="blue")
 plt.legend(["train+Test", "Predictions"])
 plt.savefig(os.path.join(fig_dir, a + "AR2.png"))
