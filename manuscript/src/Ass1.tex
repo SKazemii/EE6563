@@ -1,44 +1,10 @@
 \documentclass[12pt]{article}
-\usepackage{url}
-\usepackage[utf8x]{inputenc}
-\usepackage{amsmath}
-\usepackage{graphicx}
-\graphicspath{{images/}}
-\usepackage{parskip}
-\usepackage{fancyhdr}
-\usepackage{vmargin}
-\usepackage{booktabs}
-\usepackage{subcaption}
-\usepackage{listings}
-\usepackage[framed,numbered,autolinebreaks,useliterate]{mcode}
-\usepackage[section]{placeins}
-\usepackage{float}
-\setmarginsrb{3 cm}{2.5 cm}{3 cm}{2.5 cm}{1 cm}{1.5 cm}{1 cm}{1.5 cm}
 
-\title{Assignment \#1}				% Title
-\author{Saeed Kazemi}				% Author
-\date{\today}						% Date
+\usepackage{preamble}
 
-\makeatletter
-\let\thetitle\@title
-\let\theauthor\@author
-\let\thedate\@date
-\makeatother
+\input{acronyms.tex}
 
-\pagestyle{fancy}
-\fancyhf{}
-\rhead{\theauthor}
-\lhead{\thetitle}
-\cfoot{\thepage}
 
-\usepackage{tikz}
-\def\Tik{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;} 
-
-\usepackage[nonumberlist,nogroupskip]{glossaries}
-\input{Ass1_acronyms.tex}
-
-\usepackage[table,xcdraw]{xcolor}
-\documentclass[xcolor=table]{beamer}
 \begin{document}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -94,356 +60,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%% Question 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{Questions/Ass1-Q1}
 
-\item \textbf{For each dataset, visualize the raw signals, identify any trends, seasonality, and/or other components, and try to remove them. Remember that you are not limited to the tools shown in the tutorial and should explore the various concepts discussed in class. You do not need to explain the theory behind the approaches, but you should provide justification for their use, and discussion of their results.}
-
-
-Figure \ref{fig:Ass1_D1_raw_signal} to figure \ref{fig:Ass1_D2_raw_signal} indicate the raw signal of both data sets. Furthermore, figure \ref{fig:Ass1_D1_raw_signal_1986} to figure \ref{fig:Ass1_D2_raw_signal_1990} illustrate a period of two datasets. 
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_raw_signal.png}
-    \end{minipage}
-    \caption{Visualizing the raw signals of the first dataset.}
-    \label{fig:Ass1_D1_raw_signal}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_raw_signal.png}
-    \end{minipage}
-    \caption{Visualizing the raw signals of the second dataset.}
-    \label{fig:Ass1_D2_raw_signal}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_raw_signal_1986.png}
-    \end{minipage}
-    \caption{Visualizing the raw signals of the first dataset in 1986.}
-    \label{fig:Ass1_D1_raw_signal_1986}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_raw_signal_1990.png}
-    \end{minipage}
-    \caption{Visualizing the raw signals of the first dataset in 1990.}
-    \label{fig:Ass1_D1_raw_signal_1990}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_raw_signal_1990.png}
-    \end{minipage}
-    \caption{Visualizing the raw signals of the second dataset in 1990.}
-    \label{fig:Ass1_D2_raw_signal_1990}
-\end{figure}
-
-For intuition, Table \ref{tab:Ass1_D1_raw_signal} to table \ref{tab:Ass1_D2_raw_signal_summary_statistics} show the top raw of two datasets along with their summary of description.
-
-
-\begin{table}[H]
- \centering
-\caption{The top row of the raw signal of the first dataset (daily temp).
-{\label{tab:Ass1_D1_raw_signal}}}
-\input{tables/Ass1/Ass1_D1_raw_signal.tex}
-\end{table}
-
-\begin{table}[H]
- \centering
-\caption{The description of the first dataset.
-{\label{tab:Ass1_D1_raw_signal_summary_statistics}}}
-\input{tables/Ass1/Ass1_D1_raw_signal_summary_statistics.tex}
-\end{table}
-
-\begin{table}[H]
- \centering
-\caption{The top row of the raw signal of the second dataset.
-{\label{tab:Ass1_D2_raw_signal}}}
-\input{tables/Ass1/Ass1_D2_raw_signal.tex}
-\end{table}
-
-\begin{table}[H]
- \centering
-\caption{The description of the second dataset.
-{\label{tab:Ass1_D2_raw_signal_summary_statistics}}}
-\input{tables/Ass1/Ass1_D2_raw_signal_summary_statistics.tex}
-\end{table}
-
-For decomposing the data the below methods were used:
-    \begin{enumerate}
-    \item Seasonal\_decompose (Figure
-        \ref{fig:Ass1_D1_seasonal_decompose} and \ref{fig:Ass1_D2_seasonal_decompose})
-        
-    \item STL (Figure
-        \ref{fig:Ass1_D1_STL} and \ref{fig:Ass1_D2_STL})
-        
-    \item Linear Regression method (Figure
-        \ref{fig:Ass1_D1_LinearRegression_diff} and \ref{fig:Ass1_D2_LinearRegression_diff})
-        
-    \item Difference method (Figure
-        \ref{fig:Ass1_D1_one_diff} and \ref{fig:Ass1_D2_one_diff})
-        
-    \item Fitting a polynomial (Figure
-        \ref{fig:Ass1_D1_fiting_polynomial} and \ref{fig:Ass1_D2_fiting_polynomial})
-        
-    \item Moving Avarge window (Figure
-        \ref{fig:Ass1_D1_Moving_Avrage} and \ref{fig:Ass1_D2_Moving_Avrage})
-
-    \end{enumerate}
-Some of these methods extracted only one component while others like STL and Seasonal\_decompose provided all three components. Table \ref{tab:Ass1_comparing_methods} compares these methods together.
-
-Additive Model
-Multiplicative Model
-
-\begin{table}[H]
-\centering
-\caption{Comparing the implemented methods.
-\label{tab:Ass1_comparing_methods}}
-\input{tables/Ass1/Ass1_comparing_methods.tex}
-\end{table}
-
-
-
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_seasonal_decompose.png}
-    \end{minipage}
-    \caption{Decomposition of the first dataset by seasonal\_decompose method}
-    \label{fig:Ass1_D1_seasonal_decompose}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_seasonal_decompose.png}
-    \end{minipage}
-    \caption{Decomposition of the second dataset by seasonal\_decompose method}
-    \label{fig:Ass1_D2_seasonal_decompose}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_STL.png}
-    \end{minipage}
-    \caption{Decomposition of the first dataset by STL method}
-    \label{fig:Ass1_D1_STL}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_STL.png}
-    \end{minipage}
-    \caption{Decomposition of the second dataset by STL method}
-    \label{fig:Ass1_D2_STL}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_LinearRegression_diff.png}
-    \end{minipage}
-    \caption{Decomposition of the first dataset by LinearRegression and difference method.}
-    \label{fig:Ass1_D1_LinearRegression_diff}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_LinearRegression_diff.png}
-    \end{minipage}
-    \caption{Decomposition of the second dataset by LinearRegression and difference method.}
-    \label{fig:Ass1_D2_LinearRegression_diff}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_one_diff.png}
-    \end{minipage}
-    \caption{Detrending of the first dataset by difference method.}
-    \label{fig:Ass1_D1_one_diff}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_one_diff.png}
-    \end{minipage}
-    \caption{Detrending of the second dataset by difference method.}
-    \label{fig:Ass1_D2_one_diff}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_fiting_polynomial.png}
-    \end{minipage}
-    \caption{Seasonal component of the first dataset by fitting a polynomial.}
-    \label{fig:Ass1_D1_fiting_polynomial}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_fiting_polynomial.png}
-    \end{minipage}
-    \caption{Seasonal component of the second dataset by fitting a polynomial.}
-    \label{fig:Ass1_D2_fiting_polynomial}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_Moving_Avrage.png}
-    \end{minipage}
-    \caption{Seasonal component of the first dataset by Moving Average.}
-    \label{fig:Ass1_D1_Moving_Avrage}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_Moving_Avrage.png}
-    \end{minipage}
-    \caption{Seasonal component of the second dataset by Moving Average.}
-    \label{fig:Ass1_D2_Moving_Avrage}
-\end{figure}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%% Question 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\item \textbf{For each dataset, examine the stationarity of the residuals using the ACF and PACF functions, Lag Plots, and/or other approaches. Show your results and provide commentary about your observations.}
-
-\textit{\gls{ADF} shows that the time series is a non-stationary or stationary. If the p-value is very less than significance level of 0.05 and the \gls{ADF} statistic is lower than one of the critical values, then the time series is a stationary. For example, table \ref{tab:Ass1_D1_ADF} shows a stationary time series.}
-
-\begin{table}[H]
-\centering
-\caption{The result of the \gls{ADF} on the first dataset.}
-\label{tab:Ass1_D1_ADF}
-\input{tables/Ass1/Ass1_D1_ADF.tex}
-\end{table}
-
-\begin{table}[H]
-\centering
-\caption{The result of the \gls{ADF} on the second dataset.}
-\label{tab:Ass1_D2_ADF}
-\input{tables/Ass1/Ass1_D2_ADF.tex}
-\end{table}
-
-
-\textit{ \gls{KPSS} is another test for checking the stationarity of a time series. If the p-value is very less than significance level of 0.05, then the time series is not a stationary. Table \ref{tab:Ass1_D1_KPSS} and \ref{tab:Ass1_D2_KPSS} show the result of  this test.}
-
-\begin{table}[H]
-\centering
-\caption{The result of the \gls{KPSS} on the first dataset.}
-\label{tab:Ass1_D1_KPSS}
-\input{tables/Ass1/Ass1_D1_KPSS.tex}
-\end{table}
-
-\begin{table}[H]
-\centering
-\caption{The result of the \gls{KPSS} on the second dataset.}
-\label{tab:Ass1_D2_KPSS}
-\input{tables/Ass1/Ass1_D2_KPSS.tex}
-\end{table}
-
-\textit{We can conclude that the series is stationary or not based on the both result of \gls{KPSS} and \gls{ADF} \cite{StationarityStatsmodels}. Table \ref{tab:1} shows possible outcomes of applying these two tests.}
-
-\begin{table}[H]
-\centering
-\caption{The combination of the result of the \gls{KPSS} and \gls{ADF}.}
-\label{tab:1}
-\input{tables/Ass1/1.tex}
-\end{table}
-
-
-
-\textit{\gls{ACF}  and \gls{PACF} plots allow you to determine the time series at zero hoe much correlation has with other lags. this correlation shows with a bar. Figure \ref{fig:Ass1_D1_PACF_ACF} and \ref{fig:Ass1_D2_PACF_ACF} indicate these two plot for our datasets.}
-
-
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_PACF_ACF.png}
-    \end{minipage}
-    \caption{A plot of the \gls{ACF} and \gls{PACF} of the first dataset.}
-    \label{fig:Ass1_D1_PACF_ACF}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_PACF_ACF.png}
-    \end{minipage}
-    \caption{A plot of the \gls{ACF} and \gls{PACF} of the second dataset.}
-    \label{fig:Ass1_D2_PACF_ACF}
-\end{figure}
-
-
-\textit{These two plots are used to find the q and p for the ARIMA model. For example, if \gls{ACF} decays towards zero, and \gls{PACF} have only q significant value then our time series is a AR(q) process.}
-
-\begin{table}[H]
-\centering
-\caption{The combination of the result of the \gls{KPSS} and \gls{ADF}.}
-\label{tab:1}
-\input{tables/Ass1/1.tex}
-\end{table}
-
-\textit{The below figures (figure \ref{fig:Ass1_D1_Lag_Plots} and \ref{fig:Ass1_D2_Lag_Plots} ) show the lag plot of the two datasets. In each figure, there are four lag plots. As these plots illustrate, both datasets are linear, therefore our time series are a AR process.  }
-
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_Lag_Plots.png}
-    \end{minipage}
-    \caption{A different lag plot of the first dataset.}
-    \label{fig:Ass1_D1_Lag_Plots}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_Lag_Plots.png}
-    \end{minipage}
-    \caption{A different lag plot of the second dataset.}
-    \label{fig:Ass1_D2_Lag_Plots}
-\end{figure}
-
-
-
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_Lag_Plots_residual.png}
-    \end{minipage}
-    \caption{A different lag plot of residual component of the first dataset.}
-    \label{fig:Ass1_D1_Lag_Plots_residual}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_Lag_Plots_residual.png}
-    \end{minipage}
-    \caption{A different lag plot of residual component of the second dataset.}
-    \label{fig:Ass1_D2_Lag_Plots_residual}
-\end{figure}
+\input{Questions/Ass1-Q2}
 
 
 
@@ -455,16 +79,17 @@ Multiplicative Model
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%% Question 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{Questions/Ass1-Q3}
 
-\item \textbf{Try modeling the residuals as an AR process. Use the tools at your disposal to decide on an appropriate order and analyse the results. What is the impact of selecting different orders on the remaining residuals?}
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%% Question 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{Questions/Ass1-Q4}
 
-\item \textbf{Summarize your findings and observations briefly in a final discussion. Submit both the developed code and your document to the Assignment 1 folder on D2L.}
+
 
 
 
@@ -476,7 +101,6 @@ Multiplicative Model
 
 
 \newpage
-\bibliographystyle{ieeetr}
 \bibliography{references}
 
 

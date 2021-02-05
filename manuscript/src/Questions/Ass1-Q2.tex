@@ -1,0 +1,120 @@
+\item \textbf{For each dataset, examine the stationarity of the residuals using the ACF and PACF functions, Lag Plots, and/or other approaches. Show your results and provide commentary about your observations.}
+
+\textit{\gls{ADF} shows that the time series is a non-stationary or stationary. If the p-value is very less than significance level of 0.05 and the \gls{ADF} statistic is lower than one of the critical values, then the time series is a stationary. For example, table \ref{tab:Ass1_D1_ADF} shows a stationary time series.}
+
+\begin{table}[H]
+\centering
+\caption{The result of the \gls{ADF} on the first dataset.}
+\label{tab:Ass1_D1_ADF}
+\input{tables/Ass1/Ass1_D1_ADF.tex}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{The result of the \gls{ADF} on the second dataset.}
+\label{tab:Ass1_D2_ADF}
+\input{tables/Ass1/Ass1_D2_ADF.tex}
+\end{table}
+
+
+\textit{ \gls{KPSS} is another test for checking the stationarity of a time series. If the p-value is very less than significance level of 0.05, then the time series is not a stationary. Table \ref{tab:Ass1_D1_KPSS} and \ref{tab:Ass1_D2_KPSS} show the result of  this test.}
+
+\begin{table}[H]
+\centering
+\caption{The result of the \gls{KPSS} on the first dataset.}
+\label{tab:Ass1_D1_KPSS}
+\input{tables/Ass1/Ass1_D1_KPSS.tex}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{The result of the \gls{KPSS} on the second dataset.}
+\label{tab:Ass1_D2_KPSS}
+\input{tables/Ass1/Ass1_D2_KPSS.tex}
+\end{table}
+
+\textit{We can conclude that the series is stationary or not based on the both result of \gls{KPSS} and \gls{ADF} \cite{StationarityStatsmodels}. Table \ref{tab:1} shows possible outcomes of applying these two tests.}
+
+\begin{table}[H]
+\centering
+\caption{The combination of the result of the \gls{KPSS} and \gls{ADF}.}
+\label{tab:1}
+\input{tables/Ass1/1.tex}
+\end{table}
+
+
+
+\textit{\gls{ACF}  and \gls{PACF} plots allow you to determine the time series at zero hoe much correlation has with other lags. Figure \ref{fig:Ass1_D1_PACF_ACF} and \ref{fig:Ass1_D2_PACF_ACF} indicate these two plot for our datasets.}
+
+
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_PACF_ACF.png}
+    \end{minipage}
+    \caption{A plot of the \gls{ACF} and \gls{PACF} of the first dataset.}
+    \label{fig:Ass1_D1_PACF_ACF}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_PACF_ACF.png}
+    \end{minipage}
+    \caption{A plot of the \gls{ACF} and \gls{PACF} of the second dataset.}
+    \label{fig:Ass1_D2_PACF_ACF}
+\end{figure}
+
+
+\textit{These two plots are used to find the q and p for the ARIMA model. For example, if \gls{ACF} decays towards zero, and \gls{PACF} have only q significant value then our time series is a AR(q) process.}
+
+\begin{table}[H]
+\centering
+\caption{The combination of the result of the \gls{KPSS} and \gls{ADF}.}
+\label{tab:1}
+\input{tables/Ass1/1.tex}
+\end{table}
+
+\textit{The below figures (figure \ref{fig:Ass1_D1_Lag_Plots} and \ref{fig:Ass1_D2_Lag_Plots} ) show the lag plot of the two datasets. In each figure, there are four lag plots. As these plots illustrate, both datasets are linear, therefore our time series are a AR process.  }
+
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_Lag_Plots.png}
+    \end{minipage}
+    \caption{A different lag plot of the first dataset.}
+    \label{fig:Ass1_D1_Lag_Plots}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_Lag_Plots.png}
+    \end{minipage}
+    \caption{A different lag plot of the second dataset.}
+    \label{fig:Ass1_D2_Lag_Plots}
+\end{figure}
+
+
+
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_Lag_Plots_residual.png}
+    \end{minipage}
+    \caption{A different lag plot of residual component of the first dataset.}
+    \label{fig:Ass1_D1_Lag_Plots_residual}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_Lag_Plots_residual.png}
+    \end{minipage}
+    \caption{A different lag plot of residual component of the second dataset.}
+    \label{fig:Ass1_D2_Lag_Plots_residual}
+\end{figure}
+
