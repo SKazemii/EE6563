@@ -35,7 +35,7 @@ series = pd.read_csv(
 
 series.index = pd.to_datetime(series.index)
 
-
+plt.close("all")
 ############################################################################
 #########      Saving and showing the plot of the raw signal      ##########
 ############################################################################
@@ -50,6 +50,18 @@ plt.figure()
 plt.plot(series["1749":"1800"])
 plt.savefig(os.path.join(fig_dir, a + "raw_signal_1990.png"))
 
+
+series_log = series.copy(deep=True)
+series_log["Sunspots"] = series["Sunspots"] - series["Sunspots"].shift(1)
+plt.figure()
+fig = series_log.plot()
+plt.savefig(os.path.join(fig_dir, a + "transformed_raw_signal.png"))
+
+resample_log = series_log.resample("AS").mean()
+plt.figure()
+plt.plot(resample_log)
+plt.savefig(os.path.join(fig_dir, a + "resample_log.png"))
+
 print("[INFO] Saving and printing the head of the first dataset")
 with open(os.path.join(tbl_dir, a + "raw_signal.tex"), "w") as tf:
     tf.write(series.head(5).to_latex())
@@ -60,7 +72,7 @@ with open(os.path.join(tbl_dir, a + "raw_signal_summary_statistics.tex"), "w") a
     tf.write(series.describe().to_latex())
 
 ############################################################################
-#########         Decompositions: Moving Avarage function          ##########
+#########        Decompositions: Moving Avarage function          ##########
 ############################################################################
 print("[INFO] Saving and showing the plot of Moving Avarage function")
 
@@ -86,12 +98,11 @@ plt.savefig(os.path.join(fig_dir, a + "Moving_Avrage.png"))
 """
 print("[INFO] Plot the decomposition by seasonal_decompose method...")
 decomposition_sd = seasonal.seasonal_decompose(
-    series, model="additive", extrapolate_trend="freq", period=365
+    series, model="additive", extrapolate_trend="freq", period=120
 )
 
 fig = decomposition_sd.plot()
 plt.savefig(os.path.join(fig_dir, a + "seasonal_decompose.png"))
-
 
 ############################################################################
 #########          Seasonal Modeling (fitting polynomial)         ##########
@@ -146,11 +157,13 @@ plt.savefig(os.path.join(fig_dir, a + "one_diff.png"))
 ############################################################################
 
 print("[INFO] Plot the decomposition by STL method...")
-decomposition_STL = seasonal.STL(series, period=365).fit()
+decomposition_STL = seasonal.STL(series).fit()
 fig = decomposition_STL.plot()
 plt.savefig(os.path.join(fig_dir, a + "STL.png"))
 
-
+decomposition_STL_log = seasonal.STL(series_log).fit()
+fig = decomposition_STL_log.plot()
+plt.savefig(os.path.join(fig_dir, a + "STL_log.png"))
 ############################################################################
 #########         Decompositions: LinearRegression method         ##########
 ############################################################################
@@ -203,7 +216,7 @@ plt.savefig(os.path.join(fig_dir, a + "LinearRegression_diff.png"))
 ############################################################################
 
 """residual = {decomposition_sd.resid, decomposition_STL.resid, diff}"""
-residual = decomposition_sd.resid
+residual = decomposition_STL.resid
 
 print("[INFO] ACF plot for residual component...")
 plt.figure()
@@ -229,19 +242,6 @@ with open(os.path.join(tbl_dir, a + "ADF.tex"), "w") as tf:
 ############################################################################
 """
 ## https://www.statsmodels.org/stable/examples/notebooks/generated/stationarity_detrending_adf_kpss.html
-
-The p-value is obtained is greater than significance level of 0.05 and
-the ADF statistic is higher than any of the critical values.
-Clearly, there is no reason to reject the null hypothesis. So,
-the time series is in fact non-stationary.
-
-The p-value is very less than the significance level of 0.05 and
-hence we can reject the null hypothesis and take that the series is stationary.
-
-Case 1: Both tests conclude that the series is not stationary - The series is not stationary
-Case 2: Both tests conclude that the series is stationary - The series is stationary
-Case 3: KPSS indicates stationarity and ADF indicates non-stationarity - The series is trend stationary. Trend needs to be removed to make series strict stationary. The detrended series is checked for stationarity.
-Case 4: KPSS indicates non-stationarity and ADF indicates stationarity - The series is difference stationary. Differencing is to be used to make series stationary. The differenced series is checked for stationarity.
 """
 print("[INFO] Results of KPSS Test:")
 Results = stattools.kpss(residual, regression="c", nlags="auto")
@@ -258,14 +258,7 @@ with open(os.path.join(tbl_dir, a + "KPSS.tex"), "w") as tf:
 ############################################################################
 #########               stationary test: PACF method              ##########
 ############################################################################
-### https://towardsdatascience.com/detecting-stationarity-in-time-series-data-d29e0a21e638
-"""You see how ACF is declining in amplitude exponentially, while PACF cuts off after lag 1.
-This may suggest that you're dealing with AR(1) process.
-How do I know this? If you derive the ACF and PACF assuming that your process is AR(1),
-which includes constant variance of errors, then you'd come up with a similar shaped curves.
-Hence, if your underlying series are not stationary, you're breaking the assumptions that 
-are base for the heuristics that I mentioned about ACF/PACF. It's pointless to apply these on 
-non-stationary series, since you can't make any conclusions about the lag structure anymore.
+""" https://towardsdatascience.com/detecting-stationarity-in-time-series-data-d29e0a21e638
 """
 print("[INFO] PACF plot for residual component...")
 PACF_output = stattools.pacf(residual)
@@ -279,7 +272,6 @@ plot_acf(residual, lags=50, ax=axes[0])
 plot_pacf(residual, lags=50, ax=axes[1])
 plt.savefig(os.path.join(fig_dir, a + "PACF_ACF.png"))
 
-
 ############################################################################
 #########               stationary test: Lag Plots                ##########
 ############################################################################
@@ -287,7 +279,7 @@ plt.savefig(os.path.join(fig_dir, a + "PACF_ACF.png"))
 '''(Points get wide and scattered with increasing lag -> lesser correlation)\n"'''
 print("[INFO] Lag plot for residual component...")
 
-fig, axes = plt.subplots(1, 4, sharex=True, sharey=True, dpi=100)
+fig, axes = plt.subplots(2, 2, sharex=True, sharey=True, dpi=100)
 for i, ax in enumerate(axes.flatten()[:4]):
     lag_plot(series, lag=i + 1, ax=ax, c="firebrick")
     ax.set_title("Lag " + str(i + 1))
@@ -296,7 +288,7 @@ fig.suptitle("Lag Plots of the Dataset")
 plt.savefig(os.path.join(fig_dir, a + "Lag_Plots.png"))
 
 
-fig, axes = plt.subplots(1, 4, sharex=True, sharey=True, dpi=100)
+fig, axes = plt.subplots(2, 2, sharex=True, sharey=True, dpi=100)
 for i, ax in enumerate(axes.flatten()[:4]):
     lag_plot(residual, lag=i + 1, ax=ax, c="firebrick")
     ax.set_title("Lag " + str(i + 1))

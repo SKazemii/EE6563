@@ -291,7 +291,7 @@ plt.savefig(os.path.join(fig_dir, a + "PACF_ACF.png"))
 '''(Points get wide and scattered with increasing lag -> lesser correlation)\n"'''
 print("[INFO] Lag plot for residual component...")
 
-fig, axes = plt.subplots(1, 4, sharex=True, sharey=True, dpi=100)
+fig, axes = plt.subplots(2, 2, sharex=True, sharey=True, dpi=100)
 for i, ax in enumerate(axes.flatten()[:4]):
     lag_plot(series, lag=i + 1, ax=ax, c="firebrick")
     ax.set_title("Lag " + str(i + 1))
@@ -300,7 +300,7 @@ fig.suptitle("Lag Plots of the Dataset")
 plt.savefig(os.path.join(fig_dir, a + "Lag_Plots.png"))
 
 
-fig, axes = plt.subplots(1, 4, sharex=True, sharey=True, dpi=100)
+fig, axes = plt.subplots(2, 2, sharex=True, sharey=True, dpi=100)
 for i, ax in enumerate(axes.flatten()[:4]):
     lag_plot(residual, lag=i + 1, ax=ax, c="firebrick")
     ax.set_title("Lag " + str(i + 1))
