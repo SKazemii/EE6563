@@ -1,6 +1,6 @@
 \item \textbf{For each dataset, examine the stationarity of the residuals using the ACF and PACF functions, Lag Plots, and/or other approaches. Show your results and provide commentary about your observations.}
 
-\textit{\gls{ADF} shows that the time series is a non-stationary or stationary. If the p-value is very less than significance level of 0.05 and the \gls{ADF} statistic is lower than one of the critical values, then the time series is a stationary. For example, table \ref{tab:Ass1_D1_ADF} shows a stationary time series.}
+\textit{\gls{ADF} shows that the time series is non-stationary or stationary. If the p-value is less than the significance level of 0.05 and the \gls{ADF} statistic is lower than one of the critical values, then the time series is stationary. For example, tables \ref{tab:Ass1_D1_ADF} and \ref{tab:Ass1_D2_ADF} shows the result of \gls{ADF} on a residual component of STL method in the two datasets.}
 
 \begin{table}[H]
 \centering
@@ -17,7 +17,8 @@
 \end{table}
 
 
-\textit{ \gls{KPSS} is another test for checking the stationarity of a time series. If the p-value is very less than significance level of 0.05, then the time series is not a stationary. Table \ref{tab:Ass1_D1_KPSS} and \ref{tab:Ass1_D2_KPSS} show the result of  this test.}
+
+\textit{\gls{KPSS} is another test for checking the stationarity of a time series. If the p-value is less than the significance level of 0.05, then the time series is not stationary. Table \ref{tab:Ass1_D1_KPSS} and \ref{tab:Ass1_D2_KPSS} show the result of this test on STL residual.}
 
 \begin{table}[H]
 \centering
@@ -33,7 +34,7 @@
 \input{tables/Ass1/Ass1_D2_KPSS.tex}
 \end{table}
 
-\textit{We can conclude that the series is stationary or not based on the both result of \gls{KPSS} and \gls{ADF} \cite{StationarityStatsmodels}. Table \ref{tab:1} shows possible outcomes of applying these two tests.}
+\textit{We can conclude that the series is stationary or not based on both \gls{KPSS} and \gls{ADF} \cite{StationarityStatsmodels}. Table \ref{tab:1} shows the possible outcomes of applying these two tests.}
 
 \begin{table}[H]
 \centering

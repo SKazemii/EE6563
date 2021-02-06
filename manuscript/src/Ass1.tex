@@ -61,33 +61,21 @@
 %%%%%%%%%%%%%%%%%%%%%%%% Question 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \input{Questions/Ass1-Q1}
-
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%% Question 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
 \input{Questions/Ass1-Q2}
-
-
-
-
-
-
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%% Question 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
 \input{Questions/Ass1-Q3}
-
-
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%% Question 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \input{Questions/Ass1-Q4}
+
 
 
 
@@ -109,267 +97,11 @@
 \subsection{The script of Lab-1}
 
 \begin{lstlisting}
-%% Lab 1: Discrete-Time Frequency
-% 
-% Author: Maryhelen Stevenson
-%
-%% Explanation of the function ct_dt(.)
-%
-% The file ct_dt.m was supplied for use in this lab; a listing of the file
-% is included in Appendix 1. The file defines a matlab function
-% ct_dt(A,f0,PHI,fs,nc,ifig) which can be used to plot nc cycles
-% of a continuous-time cosine with amplitude A, frequency f0, and phase
-% PHI.  It also superimposes the values of the discrete-time sinusoid that
-% would result from sampling the continuous-time sinusoid at a rate of fs
-% samples per second.  The function returns a vector of time
-% instances at which the values of the continuous-time sinusoid were
-% evaluated to generate the continuous-time plot.
-% 
-% 
-% An example to illustrate the usage of ct_dt(.) follows: 
-%
-close all
-A = 2; % amplitude of continuous-time cosine
-f0 = 0.5; % frequency (in units of Hz.) of continuous-time cosine
-PHI = -pi/4; % phase (in units of radians) of continuous-time cosine
-fs = 10; % sampling rate to be used (units of samples/second)
-nc = 5; % number of cycles of continuous-time cosine to be plotted
-ifig = 1; % optional figure number to use in the title of the figure
-% the function returns the time vector used to plot the c.t. signal
-t = ct_dt(A,f0,PHI,fs,nc,ifig); 
-
-%%
-% _Discussion of Figure 1_
-% In accordance with the usage of ct_dt, we note that Figure 1,
-% contains 5 cycles of the continuous-time cosine, $$x_a(t)$,
-% where $$x_a(t)=2\cos(2\pi(0.5)t - \pi/4)$.  It also superimposes the 
-% discrete-time sinusoid x[n] = xa(n/10).  The values of n are not shown
-% but could be added in by hand.  Note that t=0 corresponds to n=0; whereas
-% t=1 corresponds to n=10.
-% etc.
-% 
-%% Exercise 1
-%  
-% Let x_a(t) = 3 sin(2 pi 50 t) = 3 cos (2 pi 50 t - pi/2)
-% 
-% Define x[n] = x_a(n/fs)
-%
-% a) Figure 2 shows a plot of xa(t) and x[n] for the case when fs=200
-% samples/second.  It was produced using the code below.
-% 
-%  include the necessary code
-close all
-A = 3; 
-f0 = 50; 
-PHI = -pi/2; 
-fs = 200; 
-nc = 6;
-ifig = 2; 
-
-
-t = ct_dt(A,f0,PHI,fs,nc,ifig); 
-
-
-%%
-% _Discussion of Figure 2_
-%
-% include discussion here.  Your discussion should include answers to all
-% questions posed in the lab manual.  Please use complete sentences.  Keep
-% in mind that a reader should not have to have a copy of the lab manual to
-% make sense of your discussion.
-%%
-% b) Figure 3 shows a plot of xa(t) and x[n] for the case when fs=120
-% samples/second. It was produced using the code below.
-% 
-%  include the necessary code
-fs = 120; 
-ifig = 3; 
-
-
-t = ct_dt(A,f0,PHI,fs,nc,ifig); 
-%%
-% _Discussion of Figure 3_
-%
-% include discussion here
-%%
-% c) Figure 4 shows a plot of xa(t) and x[n] for the case when fs=40
-% samples/second. It was produced using the code below.
-% 
-%  include the necessary code 
-fs = 40; 
-ifig = 4; 
-
-
-t = ct_dt(A,f0,PHI,fs,nc,ifig);
-%%
-% _Discussion of Figure 4_
-%
-% include discussion here.  
-%
-%%
-% d) ...
-%
-%% Exercise 2
-%
-% 
-
-close all
-A = 6; 
-f0 = 50; 
-PHI = -pi/3; 
-fs = 100; 
-nc = 2;
-ifig = 21; 
-
-
-t = ct_dt(A,f0,PHI,fs,nc,ifig); 
-
-
-A = 3; 
-f0 = 50; 
-PHI = 0; 
-fs = 100; 
-nc = 2;
-ifig = 22; 
-
-
-t = ct_dt(A,f0,PHI,fs,nc,ifig);
-
-
-A = 6; 
-f0 = 50; 
-PHI = -pi/3; 
-fs = 100; 
-nc = 2;
-ifig = 23; 
-
-
-t = ct_dt(A,f0,PHI,fs,nc,ifig); 
-y = 3*cos(2*pi*50*t);
-plot(t,y,'*')
-legend('x(t)','x[n]','y(t)')
-%% Exercise 3
-%
-% 
-
-
-
-close all
-A = 1; 
-f0 = 50; 
-PHI = -pi/2; 
-fs = 80; 
-nc = 5;
-ifig = 31; 
-
-
-t = ct_dt(A,f0,PHI,fs,nc,ifig); 
-
-
-y = cos(2*pi*30*t + pi/2);
-
-plot(t,y,'*')
-legend('x(t)','x[n]','y(t)')
-
-
-%% Exercise 4
-%
-%
-close all
-A = 1; 
-f0 = 60; 
-PHI = 0; 
-fs = 50; 
-nc = 12;
-ifig = 41; 
-
-
-t = ct_dt(A,f0,PHI,fs,nc,ifig); 
-
-y = cos(2*pi*10*t);
-
-plot(t,y,'*')
-legend('x(t)','x[n]','y(t)')
-
-%% Appendix 1: Listing of the file ct_dt.m
-%
-%     Please include a listing of the function here, complete with any 
-%     modifications that you may have made.
-%
-%     function t = ct_dt(A,f0,PHI,fs,nc, ifig)
-%     %A 	    amplitude of cosine;
-%     %f0 	CT frequency of cosine (cycles/sec);
-%     %PHI 	phase of cosine (radians);
-%     %fs	    sampling frequency (samples/sec.)
-%     %nc 	number of CT cycles to be displayed
-%     %ifig   optional Figure number to use in the title of the plot
-%
-%     ...
-
+%% codes
 \end{lstlisting}
 \subsection{The function of ct\_dt}
 \begin{lstlisting}
-function t = ct_dt(A,f0,PHI,fs,nc, ifig)
-%A 	    amplitude of cosine;
-%f0 	CT frequency of cosine (cycles/sec);
-%PHI 	phase of cosine (radians);
-%fs	    sampling frequency (samples/sec.)
-%nc 	number of CT cycles to be displayed
-%ifig   option Figure number to use in the title of the plot
-%t      time vector used to plot CT cosine
-if (nargin < 5 | nargin > 6)
-    error('in call to ct_dt: there should be 5 arguments')
-end
-if (A < 0 )
-    error(['in call to ct_dt: Amplitude of cosine, A,' ...
-        'should not be negative'])
-end
-if (fs<0)
-    error(['in call to ct_dt: the sampling frequency,'...
-           ' fs,should be positive'])
-end
-if (nc<0)
-    error('in call to ct_dt: nc should be positive')
-end
-if (exist('ifig'))
-    pFig = ['Fig. ', num2str(ifig),':  '];
-else
-    pFig = [''];
-end
-    
-
-figure, clf      
-Ts=1/fs; %time between samples
-Tp=1/abs(f0);  %period of CT cosine (sec/cycle)
-F0 = f0/fs; %DT frequency (cycles/sample)
-%DT plot will display samples n=0 to n=nmax
-nmax = nc/abs(F0); 
-%CT plot will display t=0 to t=tmax
-tmax = nmax * Ts; 
-% define t vector for CT plots to:
-%  have a length greater than or equal to 200
-%  with every kth element corresponding to a sampling instant
-k = ceil(200/nmax);
-t=0:Ts/k:tmax; 
-xa = A*cos(2*pi*f0*t + PHI);
-plot(t,xa);
-hold on
-n=0:nmax;
-nTs = n*Ts;
-xn = A*cos(2*pi*F0*n + PHI);
-stem(nTs,xn);
-
-p0=['x_a(t)=A cos(2\pi f_0 t), '];
-p1=[' A='];
-p2=[', f0='];
-p3=[', PHI='];
-p4=[', fs='];
-p5=[', nc='];
-p6=[', User='];
-name=getenv('USER'); % gets the users login id
-title( [pFig p0 p1 num2str(A) p2 num2str(f0) p3 num2str(PHI) ...
-         p4 num2str(fs) p5 num2str(nc) p6 name ] )
-xlabel('t (seconds), n')
+%%
 
 \end{lstlisting}
 
