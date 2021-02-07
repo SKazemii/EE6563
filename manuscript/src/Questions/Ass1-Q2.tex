@@ -45,7 +45,7 @@
 
 
 
-\textit{\gls{ACF}  and \gls{PACF} plots allow you to determine the time series at zero hoe much correlation has with other lags. Figure \ref{fig:Ass1_D1_PACF_ACF} and \ref{fig:Ass1_D2_PACF_ACF} indicate these two plot for our datasets.}
+\textit{\gls{ACF} and \gls{PACF} plots allow us to determine how correlated points are with each other. Figures \ref{fig:Ass1_D1_PACF_ACF} and \ref{fig:Ass1_D2_PACF_ACF} indicate these two plots for our datasets. }
 
 
 
@@ -70,14 +70,9 @@
 
 \textit{These two plots are used to find the q and p for the ARIMA model. For example, if \gls{ACF} decays towards zero, and \gls{PACF} have only q significant value then our time series is a AR(q) process.}
 
-\begin{table}[H]
-\centering
-\caption{The combination of the result of the \gls{KPSS} and \gls{ADF}.}
-\label{tab:1}
-\input{tables/Ass1/1.tex}
-\end{table}
 
-\textit{The below figures (figure \ref{fig:Ass1_D1_Lag_Plots} and \ref{fig:Ass1_D2_Lag_Plots} ) show the lag plot of the two datasets. In each figure, there are four lag plots. As these plots illustrate, both datasets are linear, therefore our time series are a AR process.  }
+
+\textit{The below figures (figures \ref{fig:Ass1_D1_Lag_Plots} and \ref{fig:Ass1_D2_Lag_Plots} ) show the lag plot of the two datasets for different lags. As these plots illustrate, both datasets have diagonal shapes that indicate datasets are not a stationary time series.  }
 
 
 \begin{figure}[H]
@@ -99,14 +94,16 @@
 \end{figure}
 
 
+\textit{Figures \ref{fig:Ass1_D1_Lag_Plots_residual} and \ref{fig:Ass1_D2_Lag_Plots_residual} show the lag plot of the residual component for different lags. As figure \ref{fig:Ass1_D1_Lag_Plots_residual} illustrates, the first dataset has round shapes for lags 2 to 4. Therefore, the time series is stationary for lags 2 to 4 and a weak correlation on lag 1.}
 
+\textit{Figure \ref{fig:Ass1_D2_Lag_Plots_residual} illustrates a clustered around the diagonal that turns to a round shape by increasing the lag. Hence, the dataset has a weak positive autocorrelation. }
 
 \begin{figure}[H]
     \centering
     \begin{minipage}[b]{1\textwidth}
         \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_Lag_Plots_residual.png}
     \end{minipage}
-    \caption{A different lag plot of residual component of the first dataset.}
+    \caption{A different lag plot of residual component on the first dataset.}
     \label{fig:Ass1_D1_Lag_Plots_residual}
 \end{figure}
 
@@ -115,7 +112,44 @@
     \begin{minipage}[b]{1\textwidth}
         \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_Lag_Plots_residual.png}
     \end{minipage}
-    \caption{A different lag plot of residual component of the second dataset.}
+    \caption{A different lag plot of residual component on the second dataset.}
     \label{fig:Ass1_D2_Lag_Plots_residual}
 \end{figure}
 
+\textit{In order to turn the second dataset to a stationary dataset, we can use a first-order differencing. Tables \ref{tab:Ass1_D2_ADF_1_diff} and \ref{tab:Ass1_D2_ADF_1_diff} indicate the result of \gls{ADF} and \gls{KPSS} on the first-order differencing. These two tests show that the data is a stationary dataset.}
+
+\begin{table}[H]
+\centering
+\caption{The result of the \gls{ADF} test on the $1^{st}$ order differensing in the second dataset.}
+\label{tab:Ass1_D2_ADF_1_diff}
+\input{tables/Ass1/Ass1_D2_ADF_1_diff.tex}
+\end{table}
+
+\begin{table}[H]
+\centering
+\caption{The result of the \gls{KPSS} test on the $1^{st}$ order differensing in the second dataset.}
+\label{tab:Ass1_D2_KPSS_1_diff}
+\input{tables/Ass1/Ass1_D2_KPSS_1_diff.tex}
+\end{table}
+
+
+\textit{If we look at the \gls{ACF} and \gls{PACF} (figure \ref{fig:Ass1_D2_PACF_ACF_1_diff}),  we can conclude that the data is probably random. Or in other words, there is no autocorrelation between samples. Likewise, figure \ref{fig:Ass1_D2_Lag_Plots_1_diff} confirms this theory.}
+
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_PACF_ACF_1_diff.png}
+    \end{minipage}
+    \caption{A plot of the \gls{ACF} and \gls{PACF} on the $1^{st}$ order differensing.}
+    \label{fig:Ass1_D2_PACF_ACF_1_diff}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_Lag_Plots_1_diff.png}
+    \end{minipage}
+    \caption{A different lag plot on the $1^{st}$ order differensing.}
+    \label{fig:Ass1_D2_Lag_Plots_1_diff}
+\end{figure}
