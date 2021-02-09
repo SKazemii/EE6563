@@ -7,14 +7,14 @@
 %so these are my starting points
 %must be stationary
 %these two plot do not tell us much
-\textit{For this part, we need to select the order of the \gls{AR} term (p). Therefore, \gls{PACF} and \gls{ACF} were plotted at first step (see figures \ref{fig:Ass1_D1_PACF_ACF_X} and \ref{fig:Ass1_D2_PACF_ACF_X}).}  
+\textit{For this part, we need to select the order of the \gls{AR} term (p). Therefore, \gls{PACF} and \gls{ACF} were plotted at the first step (see figures \ref{fig:Ass1_D1_PACF_ACF_X} and \ref{fig:Ass1_D2_PACF_ACF_X}).}  
 
 \begin{figure}[H]
     \centering
     \begin{minipage}[b]{1\textwidth}
         \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_PACF_ACF_X.png}
     \end{minipage}
-    \caption{A plot of the \gls{PACF} and \gls{ACF} of the residual part of the first dataset (residual of the STL method).}
+    \caption{A plot of the \gls{PACF} and \gls{ACF} on the residual part of the first dataset (residual of the STL method).}
     \label{fig:Ass1_D1_PACF_ACF_X}
 \end{figure}
 
@@ -23,19 +23,19 @@
     \begin{minipage}[b]{1\textwidth}
         \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_PACF_ACF_X.png}
     \end{minipage}
-    \caption{A plot of the \gls{PACF} and \gls{ACF} of the residual part of the second dataset (residual of the STL method).}
+    \caption{A plot of the \gls{PACF} and \gls{ACF} on the residual part of the second dataset (residual of the STL method).}
     \label{fig:Ass1_D2_PACF_ACF_X}
 \end{figure}
 
 
-\textit{Sinse \gls{ACF} decaying in both figures, it can be concluded that the process is an Auto Regressive process. Also, based on \gls{PACF} in the first plot (figure \ref{fig:Ass1_D1_PACF_ACF_X}), the parameter of the \gls{AR} model should be start with lags 1 and 2 due to these two lags have a significant value. Likewise, for the second dataset, we should start with lags 1 to lags 4 (see figure \ref{fig:Ass1_D2_PACF_ACF_X}).}
+\textit{Since \gls{ACF} is decaying in both figures, it can conclude that these processes are an Auto-Regressive process. Also, based on \gls{PACF} in the first plot (figure \ref{fig:Ass1_D1_PACF_ACF_X}), the order of the \gls{AR} model should be either 1 and 2 due to these two lags have a significant value. Likewise, for the second dataset, we should select p a value between 1 to 4 (see figure \ref{fig:Ass1_D2_PACF_ACF_X}).}
 
 \begin{figure}[H]
     \centering
     \begin{minipage}[b]{1\textwidth}
         \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_ARs models.png}
     \end{minipage}
-    \caption{The residual signal (blue) and the prediction of \gls{AR} (orange) for the first dataset.}
+    \caption{A part of residual signal (blue) and the prediction of \gls{AR} (orange) for the first dataset.}
     \label{fig:Ass1_D1_ARs_models}
 \end{figure}
 
@@ -44,12 +44,12 @@
     \begin{minipage}[b]{1\textwidth}
         \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_ARs models.png}
     \end{minipage}
-    \caption{The residual signal (blue) and the prediction of \gls{AR} (orange) for the second dataset.}
+    \caption{A part of residual signal (blue) and the prediction of \gls{AR} (orange) for the second dataset.}
     \label{fig:Ass1_D2_ARs_models}
 \end{figure}
 
 
-\textit{Figure \ref{fig:Ass1_D1_ARs_models} and \ref{fig:Ass1_D2_ARs_models} indicate the output of our models on the datasets. In addition, tables \ref{tab:Ass1_D1_AR} and \ref{tab:Ass1_D2_AR} show others parameters of these models. }
+\textit{Figures \ref{fig:Ass1_D1_ARs_models} and \ref{fig:Ass1_D2_ARs_models} indicate the output of our models on the datasets. As these two figures indicate, it is hard to select the best model based on the trained signal. Therefore, we need some criteria to help us to find the best model. Tables \ref{tab:Ass1_D1_AR} and \ref{tab:Ass1_D2_AR} show these criteria on these models. }
 
 \begin{table}[H]
 \centering
@@ -67,8 +67,5 @@
 
 
 
+\textit{\Gls{AIC} and \gls{BIC} show the simplicity and goodness of an \gls{AR} model. If a model has a lower \Gls{AIC} and \gls{BIC}, it will be generally better than others. So for the first dataset, \gls{AR}(2) is better than \gls{AR}(1), and for the second dataset, \gls{AR}(4) is lower than among others.}
 
-
-
-
-\textit{\Gls{AIC} and \gls{BIC} that show simplicity and goodness of a \gls{AR} model. The model that has a lower \gls{AIC} and \gls{BIC} is generally better than others for example, AR() .}
