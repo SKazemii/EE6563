@@ -358,7 +358,7 @@ for idx, ar_order in enumerate(ar_orders):
 
     print("[INFO] train autoregression...")
     model = ARIMA(train, order=(ar_order, 0, 0))
-    model_fit = model.fit()
+    model_fit = model.fit(disp=-1)
 
     fitted_model_dict[ar_order] = model_fit
 
@@ -385,12 +385,22 @@ for idx, ar_order in enumerate(ar_orders):
 for idx, ar_order in enumerate(ar_orders):
     plt.figure(0)
     plt.subplot(len(ar_orders), 1, idx + 1)
-    plt.plot(train[:100])
-    plt.plot(fitted_model_dict[ar_order].fittedvalues[:100])
+    plt.plot(train[-100:])
+    plt.plot(fitted_model_dict[ar_order].fittedvalues[-100:])
     plt.title("AR({:1.0f}) Fit".format(ar_order), fontsize=16)
 
 plt.tight_layout()
 plt.savefig(os.path.join(fig_dir, a + "ARs models.png"))
+
+plt.figure()
+for idx, ar_order in enumerate(ar_orders):
+    plt.subplot(len(ar_orders), 1, idx + 1)
+    plt.plot(train[-100:] - fitted_model_dict[ar_order].fittedvalues[-100:])
+    plt.title("Training Errors of AR({:1.0f})".format(ar_order), fontsize=16)
+
+
+plt.tight_layout()
+plt.savefig(os.path.join(fig_dir, a + "Training Errors of ARs models.png"))
 
 print("[INFO] AIC and BIC of autoregression models...")
 for ar_order in ar_orders:

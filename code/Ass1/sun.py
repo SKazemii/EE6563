@@ -401,8 +401,7 @@ https://towardsdatascience.com/trend-seasonality-moving-average-auto-regressive-
 """
 
 
-X = decomposition_STL.resid.values
-
+X = series_diff.values
 plt.figure()
 fig, axes = plt.subplots(2, 1)
 plot_acf(X, lags=50, ax=axes[0])
@@ -432,9 +431,10 @@ for idx, ar_order in enumerate(ar_orders):
 
     print("[INFO] train autoregression...")
     model = ARIMA(train, order=(ar_order, 0, 0))
-    model_fit = model.fit()
+    model_fit = model.fit(disp=-1)
 
     fitted_model_dict[ar_order] = model_fit
+    print(model_fit.summary())
 
     col_list.append("AR({:1.0f})".format(ar_order))
 
@@ -445,7 +445,7 @@ for idx, ar_order in enumerate(ar_orders):
     RMS_list.append("{:2.3f}".format(np.sqrt(mean_squared_error(test, predictions))))
     mae_list.append("{:2.3f}".format(np.mean(np.abs(predictions - test))))
     mpe_list.append("{:2.3f}".format(np.mean((predictions - test) / test)))
-    cor_list.append("{:2.3f}".format(np.corrcoef(predictions, test)[0, 1]))
+    #    cor_list.append("{:2.3f}".format(np.corrcoef(predictions, test)[0, 1]))
 
     plt.figure()
     xpos = np.arange(len(X))
@@ -456,16 +456,28 @@ for idx, ar_order in enumerate(ar_orders):
     plt.legend(["train+Test", "Predictions"])
     plt.savefig(os.path.join(fig_dir, a + "_" + str(idx + 1) + "_AR2.png"))
 
+
+plt.figure()
 for idx, ar_order in enumerate(ar_orders):
-    plt.figure(0)
     plt.subplot(len(ar_orders), 1, idx + 1)
-    plt.plot(train[:100])
-    plt.plot(fitted_model_dict[ar_order].fittedvalues[:100])
+    plt.plot(train[-100:])
+    plt.plot(fitted_model_dict[ar_order].fittedvalues[-100:])
     plt.title("AR({:1.0f}) Fit".format(ar_order), fontsize=16)
 
 
 plt.tight_layout()
 plt.savefig(os.path.join(fig_dir, a + "ARs models.png"))
+
+
+plt.figure()
+for idx, ar_order in enumerate(ar_orders):
+    plt.subplot(len(ar_orders), 1, idx + 1)
+    plt.plot(train[-100:].T.squeeze() - fitted_model_dict[ar_order].fittedvalues[-100:])
+    plt.title("Training Errors of AR({:1.0f})".format(ar_order))
+
+
+plt.tight_layout()
+plt.savefig(os.path.join(fig_dir, a + "Training Errors of ARs models.png"))
 
 print("[INFO] AIC and BIC of autoregression models...")
 for ar_order in ar_orders:
@@ -476,12 +488,9 @@ for ar_order in ar_orders:
 
 
 df = pd.DataFrame(
-    np.row_stack(
-        [ord_list, AIC_list, BIC_list, RMS_list, cor_list, mpe_list, mae_list]
-    ),
-    index=["lag(s)", "AIC", "BIC", "RMS error", "Correlation", "MPE", "MAE"],
+    np.row_stack([ord_list, AIC_list, BIC_list, RMS_list, mpe_list, mae_list]),
+    index=["lag(s)", "AIC", "BIC", "RMS error", "MPE", "MAE"],
 )
 df.columns = col_list
-print(df)
 with open(os.path.join(tbl_dir, a + "AR.tex"), "w") as tf:
     tf.write(df.to_latex(index=True))
