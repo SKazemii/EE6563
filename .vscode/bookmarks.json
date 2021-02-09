@@ -1,29 +1,9 @@
 [
 	{
-		"path": "$ROOTPATH$/code/Ass1/sun.py",
-		"bookmarks": [
-			{
-				"line": 287,
-				"column": 0,
-				"label": ""
-			},
-			{
-				"line": 327,
-				"column": 0,
-				"label": ""
-			},
-			{
-				"line": 355,
-				"column": 0,
-				"label": ""
-			}
-		]
-	},
-	{
 		"path": "$ROOTPATH$/code/Ass1/Temp.py",
 		"bookmarks": [
 			{
-				"line": 318,
+				"line": 324,
 				"column": 0,
 				"label": ""
 			}

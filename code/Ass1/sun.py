@@ -1,4 +1,8 @@
 """https://www.machinelearningplus.com/time-series/time-series-analysis-python/"""
+import warnings
+
+warnings.filterwarnings("ignore")
+
 import math
 import os
 
@@ -13,6 +17,8 @@ from sklearn.metrics import mean_squared_error
 from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 from statsmodels.tsa import seasonal, stattools
 from statsmodels.tsa.ar_model import AutoReg
+from statsmodels.tsa.arima_model import ARIMA
+
 
 plt.rcParams["figure.figsize"] = (14, 7)
 a = "Ass1_D2_"
@@ -353,7 +359,6 @@ plt.savefig(os.path.join(fig_dir, a + "PACF_ACF_series.png"))
 #########               stationary test: Lag Plots                ##########
 ############################################################################
 
-'''(Points get wide and scattered with increasing lag -> lesser correlation)\n"'''
 print("[INFO] Lag plot for residual component...")
 
 fig, axes = plt.subplots(2, 2, sharex=True, sharey=True, dpi=100)
@@ -394,6 +399,8 @@ plt.savefig(os.path.join(fig_dir, a + "Lag_Plots_2_diff.png"))
 """
 https://towardsdatascience.com/trend-seasonality-moving-average-auto-regressive-model-my-journey-to-time-series-data-with-edc4c0c8284b
 """
+
+
 X = decomposition_STL.resid.values
 
 plt.figure()
@@ -416,12 +423,15 @@ RMS_list = list()
 cof_list = list()
 ord_list = list()
 col_list = list()
+mae_list = list()
+mpe_list = list()
+cor_list = list()
 
 
 for idx, ar_order in enumerate(ar_orders):
 
     print("[INFO] train autoregression...")
-    model = AutoReg(train, lags=ar_order)
+    model = ARIMA(train, order=(ar_order, 0, 0))
     model_fit = model.fit()
 
     fitted_model_dict[ar_order] = model_fit
@@ -434,9 +444,20 @@ for idx, ar_order in enumerate(ar_orders):
     predictions = model_fit.predict(
         start=len(train), end=len(train) + len(test) - 1, dynamic=False
     )
-    rmse = np.sqrt(mean_squared_error(test, predictions))
-    print("\n[INFO] RMS Error: {:1.2f}".format(rmse))
-    RMS_list.append("{:2.3f}".format(rmse))
+
+    RMS_list.append("{:2.3f}".format(np.sqrt(mean_squared_error(test, predictions))))
+    mae_list.append("{:2.3f}".format(np.mean(np.abs(predictions - test))))
+    mpe_list.append("{:2.3f}".format(np.mean((predictions - test) / test)))
+    cor_list.append("{:2.3f}".format(np.corrcoef(predictions, test)[0, 1]))
+
+    plt.figure()
+    xpos = np.arange(len(X))
+    plt.plot(X[2700:], "r", linewidth=0.5)
+    plt.plot(
+        xpos[len(X) - n_predict - 2700 : len(X) - 2700], predictions[:], color="blue"
+    )
+    plt.legend(["train+Test", "Predictions"])
+    plt.savefig(os.path.join(fig_dir, a + "_" + str(idx + 1) + "_AR2.png"))
 
 
 plt.tight_layout()
@@ -451,24 +472,12 @@ for ar_order in ar_orders:
 
 
 df = pd.DataFrame(
-    np.row_stack([ord_list, AIC_list, BIC_list, RMS_list]),
-    index=["AR order", "AIC", "BIC", "RMS error"],
+    np.row_stack(
+        [ord_list, AIC_list, BIC_list, RMS_list, cor_list, mpe_list, mae_list]
+    ),
+    index=["lag(s)", "AIC", "BIC", "RMS error", "Correlation", "MPE", "MAE"],
 )
 df.columns = col_list
 print(df)
 with open(os.path.join(tbl_dir, a + "AR.tex"), "w") as tf:
     tf.write(df.to_latex(index=True))
-
-plt.figure()
-plt.plot(test, color="red")
-plt.plot(predictions, color="blue")
-plt.legend(["Test", "Predictions"])
-plt.savefig(os.path.join(fig_dir, a + "AR.png"))
-
-
-plt.figure()
-xpos = np.arange(len(X))
-plt.plot(X[2700:], "r", linewidth=0.5)
-plt.plot(xpos[len(X) - n_predict - 2700 : len(X) - 2700], predictions[:], color="blue")
-plt.legend(["train+Test", "Predictions"])
-plt.savefig(os.path.join(fig_dir, a + "AR2.png"))
