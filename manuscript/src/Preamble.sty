@@ -36,4 +36,14 @@
 
 \usepackage[nonumberlist,nogroupskip]{glossaries}
 
-\bibliographystyle{ieeetr}
+\usepackage[style=ieee]{biblatex} 
+\addbibresource{references.bib}
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=red,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+%\bibliographystyle{abbrv}

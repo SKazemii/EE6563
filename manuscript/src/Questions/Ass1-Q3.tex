@@ -1,1 +1,16 @@
 \item \textbf{Try modeling the residuals as an AR process. Use the tools at your disposal to decide on an appropriate order and analyse the results. What is the impact of selecting different orders on the remaining residuals?}
+
+\textit{For this question, we need to select the order of the \gls{AR} term (p). }
+
+
+2.How to find the order of the AR term (p)
+\# PACF plot of 1st differenced series
+
+
+You see how ACF is declining in amplitude exponentially, while PACF cuts off after lag 1. This may suggest that you\'re dealing with AR(1) process.
+
+Note that the ACF shows exponential decay. This is indicative of a stationary series.
+
+Note that the ACF shows an oscillation, indicative of a seasonal series. Note the peaks occur at lags of 12 months, 
+
+The Akaike Information Critera (AIC) is a widely used measure of a statistical model. It basically quantifies 1) the goodness of fit, and 2) the simplicity/parsimony, of the model into a single statistic. When comparing two models, the one with the lower AIC is generally “better”.
