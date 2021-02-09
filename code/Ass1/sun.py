@@ -83,6 +83,7 @@ print("[INFO] Saving and showing the plot of Moving Avarage function")
 # r.agg, r.apply, r.count, r.exclusions, r.max, r.median, r.name, r.quantile, r.kurt, r.cov, r.corr, r.aggregate, r.std, r.skew, r.sum, r.var
 r = series.rolling(window=12)
 
+plt.figure()
 axes = plt.axes()
 series.plot(color="red", ax=axes)
 r.mean().plot(style="b", linewidth=3, ax=axes)
@@ -345,9 +346,9 @@ plt.savefig(os.path.join(fig_dir, a + "PACF_ACF_1_diff.png"))
 
 plt.figure()
 fig, axes = plt.subplots(2, 1)
-plot_acf(series_2diff, lags=50, ax=axes[0])
-plot_pacf(series_2diff, lags=50, ax=axes[1])
-plt.savefig(os.path.join(fig_dir, a + "PACF_ACF_2_diff.png"))
+plot_acf(series, lags=150, ax=axes[0])
+plot_pacf(series, lags=150, ax=axes[1])
+plt.savefig(os.path.join(fig_dir, a + "PACF_ACF_series.png"))
 ############################################################################
 #########               stationary test: Lag Plots                ##########
 ############################################################################
@@ -395,31 +396,68 @@ https://towardsdatascience.com/trend-seasonality-moving-average-auto-regressive-
 """
 X = decomposition_STL.resid.values
 
+plt.figure()
+fig, axes = plt.subplots(2, 1)
+plot_acf(X, lags=50, ax=axes[0])
+plot_pacf(X, lags=50, ax=axes[1])
+plt.savefig(os.path.join(fig_dir, a + "PACF_ACF_X.png"))
+
+
 print("[INFO] spliting dataset to train and test set...")
-n_predict = 30
+n_predict = 14
 train, test = X[1 : len(X) - n_predict], X[len(X) - n_predict :]
 
+ar_orders = [1, 2, 3, 4]
+fitted_model_dict = {}
 
-print("[INFO] train autoregression...")
-model = AutoReg(train, lags=6)
-model_fit = model.fit()
+AIC_list = list()
+BIC_list = list()
+RMS_list = list()
+cof_list = list()
+ord_list = list()
+col_list = list()
 
 
-print("[INFO] Coefficients:\n%s\n" % (model_fit.params))
-# make predictions
-predictions = model_fit.predict(
-    start=len(train), end=len(train) + len(test) - 1, dynamic=False
+for idx, ar_order in enumerate(ar_orders):
+
+    print("[INFO] train autoregression...")
+    model = AutoReg(train, lags=ar_order)
+    model_fit = model.fit()
+
+    fitted_model_dict[ar_order] = model_fit
+    plt.subplot(len(ar_orders), 1, idx + 1)
+    plt.plot(train[:100])
+    plt.plot(model_fit.fittedvalues[:100])
+    plt.title("AR({:1.0f}) Fit".format(ar_order), fontsize=16)
+    col_list.append("AR({:1.0f})".format(ar_order))
+
+    predictions = model_fit.predict(
+        start=len(train), end=len(train) + len(test) - 1, dynamic=False
+    )
+    rmse = np.sqrt(mean_squared_error(test, predictions))
+    print("\n[INFO] RMS Error: {:1.2f}".format(rmse))
+    RMS_list.append("{:2.3f}".format(rmse))
+
+
+plt.tight_layout()
+plt.savefig(os.path.join(fig_dir, a + "ARs models.png"))
+
+print("[INFO] AIC and BIC of autoregression models...")
+for ar_order in ar_orders:
+    AIC_list.append("{:2.3f}".format(fitted_model_dict[ar_order].aic))
+    cof_list.append(fitted_model_dict[ar_order].params)
+    ord_list.append(ar_order)
+    BIC_list.append("{:2.3f}".format(fitted_model_dict[ar_order].bic))
+
+
+df = pd.DataFrame(
+    np.row_stack([ord_list, AIC_list, BIC_list, RMS_list]),
+    index=["AR order", "AIC", "BIC", "RMS error"],
 )
-# predictions = model_fit.forecast(n_predict, dynamic=False)
-
-print("[INFO] AutoReg Model Results (summary): ")
-print(model_fit.summary())
-
-for i in range(len(predictions)):
-    print("\tPredicted={:1.2f},\t\tExpected={:1.2f}".format(predictions[i], test[i]))
-rmse = np.sqrt(mean_squared_error(test, predictions))
-print("\n[INFO] RMS Error: {:1.2f}".format(rmse))
-
+df.columns = col_list
+print(df)
+with open(os.path.join(tbl_dir, a + "AR.tex"), "w") as tf:
+    tf.write(df.to_latex(index=True))
 
 plt.figure()
 plt.plot(test, color="red")
@@ -427,13 +465,6 @@ plt.plot(predictions, color="blue")
 plt.legend(["Test", "Predictions"])
 plt.savefig(os.path.join(fig_dir, a + "AR.png"))
 
-
-plt.figure()
-xpos = np.arange(len(X))
-plt.plot(X, "r", linewidth=0.5)
-plt.plot(xpos[len(X) - n_predict : len(X)], predictions[:], color="blue")
-plt.legend(["train+Test", "Predictions"])
-plt.savefig(os.path.join(fig_dir, a + "AR1.png"))
 
 plt.figure()
 xpos = np.arange(len(X))

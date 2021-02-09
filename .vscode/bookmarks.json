@@ -3,17 +3,27 @@
 		"path": "$ROOTPATH$/code/Ass1/sun.py",
 		"bookmarks": [
 			{
-				"line": 286,
+				"line": 287,
 				"column": 0,
 				"label": ""
 			},
 			{
-				"line": 326,
+				"line": 327,
 				"column": 0,
 				"label": ""
 			},
 			{
-				"line": 354,
+				"line": 355,
+				"column": 0,
+				"label": ""
+			}
+		]
+	},
+	{
+		"path": "$ROOTPATH$/code/Ass1/Temp.py",
+		"bookmarks": [
+			{
+				"line": 318,
 				"column": 0,
 				"label": ""
 			}
