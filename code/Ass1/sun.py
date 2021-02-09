@@ -435,10 +435,7 @@ for idx, ar_order in enumerate(ar_orders):
     model_fit = model.fit()
 
     fitted_model_dict[ar_order] = model_fit
-    plt.subplot(len(ar_orders), 1, idx + 1)
-    plt.plot(train[:100])
-    plt.plot(model_fit.fittedvalues[:100])
-    plt.title("AR({:1.0f}) Fit".format(ar_order), fontsize=16)
+
     col_list.append("AR({:1.0f})".format(ar_order))
 
     predictions = model_fit.predict(
@@ -458,6 +455,13 @@ for idx, ar_order in enumerate(ar_orders):
     )
     plt.legend(["train+Test", "Predictions"])
     plt.savefig(os.path.join(fig_dir, a + "_" + str(idx + 1) + "_AR2.png"))
+
+for idx, ar_order in enumerate(ar_orders):
+    plt.figure(0)
+    plt.subplot(len(ar_orders), 1, idx + 1)
+    plt.plot(train[:100])
+    plt.plot(fitted_model_dict[ar_order].fittedvalues[:100])
+    plt.title("AR({:1.0f}) Fit".format(ar_order), fontsize=16)
 
 
 plt.tight_layout()
