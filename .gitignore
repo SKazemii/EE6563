@@ -12,6 +12,7 @@
 *.cb2
 .*.lb
 
+
 ## Intermediate documents:
 *.dvi
 *.xdv
@@ -284,3 +285,6 @@ TSWLatexianTemp*
 #*Notes.bib
 
 .idea
+
+*.mat
+*.h5
