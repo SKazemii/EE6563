@@ -13,6 +13,14 @@ This project uses two different datasets, Stepscan and UoM-Gait-Dataset. The UoM
 
 The second dataset that used for this project called Stepscan \cite{Connor2015ComparingBiometrics}. This dataset consists a spatial-temporal tensor, X, with dimensions $S × T × H × W$ where S represents the number of samples. T is the number of temporal observations, H and W are the dimension of image in pixels. Figure \ref{fig:training_data} indicates the this tensor in two various time for a sample.
 
+\begin{figure}[]
+    \centering
+    \includegraphics{figures/project/frame1.png}
+    \caption{different time observation of a footprint images in the Stepscan dataset.}
+    \label{fig:Stepscan_dataset}
+\end{figure}
+
+
 containing the spatial footprint
 
 For changing the images to time series data, there are two methods. In the first method, the values of each pixel over time consider as a time series. As a result for each sample, This method produce $H × W$ time series.
