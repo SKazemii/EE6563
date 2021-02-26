@@ -1,12 +1,14 @@
-[
-	{
-		"path": "$ROOTPATH$/code/Ass1/Temp.py",
-		"bookmarks": [
-			{
-				"line": 324,
-				"column": 0,
-				"label": ""
-			}
-		]
-	}
-]
+{
+	"files": [
+		{
+			"path": "code/Ass1/Temp.py",
+			"bookmarks": [
+				{
+					"line": 324,
+					"column": 0,
+					"label": ""
+				}
+			]
+		}
+	]
+}
