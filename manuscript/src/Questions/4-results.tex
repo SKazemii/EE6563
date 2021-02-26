@@ -1,22 +1,32 @@
-\section{Results}
-\begin{figure}[]
-    \centering
-    \includegraphics{figures/project/1.png}
-    \caption{CBE Thermal Comfort Tool home page.}
-    \label{fig:cbe_ashrae}
-\end{figure}
+\section{Constraints}
+The constraints in this project could fall into two groups. The first constraint is related to the limitation on laboratory conditions \cite{Connor2018BiometricFeatures}. In real-world circumstances, many situations such as walking speed, clothing, footwear, and load carriage could affect our results, whereas our datasets could cover some of these real-world conditions. For example, except for the walking speed and footwear, both datasets do not have useful information for other real-world situations. Consequently, our results are optimistically biased. Table \ref{tab:1_vul} indicates some inhibiting factors. 
 
-Nunc id cursus metus aliquam eleifend mi in nulla posuere. Gravida in fermentum et sollicitudin ac orci phasellus. Dolor sit amet consectetur adipiscing elit ut. Commodo viverra maecenas accumsan lacus vel facilisis volutpat. Sem viverra aliquet eget sit amet tellus. Enim nulla aliquet porttitor lacus. Tempor nec feugiat nisl pretium fusce. Diam in arcu cursus euismod quis viverra nibh. Eget egestas purus viverra accumsan in nisl nisi scelerisque eu. Diam sollicitudin tempor id eu nisl nunc. Odio aenean sed adipiscing diam donec adipiscing. Ac tortor vitae purus faucibus ornare suspendisse sed. Vel turpis nunc eget lorem. Gravida cum sociis natoque penatibus et. Nec sagittis aliquam malesuada bibendum arcu vitae elementum curabitur. Porttitor leo a diam sollicitudin. Venenatis tellus in metus vulputate eu scelerisque felis imperdiet. Commodo nulla facilisi nullam vehicula.
+Another significant limitation in the Stepscan dataset is the lack of relative footprint location. The dataset included only aligned and segmented footprint images. The location of samples concerning each other is unknown. This information could play a significant role in predicting the location of future footsteps. 
+
+ 
+
+\section{Proposed Work}
+
+There are two modes for footprint recognition or generally in the biometric system: verification or identification mode \cite{Jain2004AnRecognition}. In verification mode, the biometric system use for accessing buildings or data. In other words, the system compares the claimed person with its dataset to determine whether or not the claim is valid. These systems consume less processing power and time consumption \cite{Jain2004AnRecognition}. 
+
+
+
+This project will focus on verification. Since each participant has multiple samples in our dataset, we hope to find some temporal features. These features help us to construct a classifier which can discriminate between our dataset’s various participants. Since both datasets contain various walking speeds, it would be a good idea to find a classifier based on the participants' speeds.
+
+In recent years, improving the computational process of computers and other benefits of \gls{dnn} causes many researchers (like \cite{IsmailFawaz2019DeepReview} and \cite{Costilla-Reyes2018DeepSensors}) to move towards \gls{dnn} for the classification of time series data. Therefore, these algorithms will review in this project. 
+
+
+
+Having spatial features along with temporal information give us a freedom to select and combine many classifiers in the pipeline to increase our accuracy. We also plan to use some techniques learned in time-series analysis course hopefully elicit some useful features for future works.
+ 
+Furthermore, this research will employ two available datasets (UoM-Gait-Dataset and Stepscan), and will be implemented in python. The source codes are available on the GitHub repository \cite{SKazemii/EE6563}. 
 
 \begin{center}
-
-%	\vspace{-1em}
 	\begin{table}[!t]
-	\caption{Statistical summary for numerical variables.
-	{\label{tab:stats_num_data}}}
-%	\vspace{-0.5em}
+	\caption{Some inhibiting factors in gait recognition.}
+	\label{tab:1_vul}
+	\hspace{3em}
 %	\setlength\extrarowheight{-2pt}
-	\input{tables/project/tbl_resp_speed.tex}
+	\input{tables/project/1_vul.tex}
 	\end{table}
-%\vspace{-2em}
 \end{center}
