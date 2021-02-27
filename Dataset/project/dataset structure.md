@@ -196,3 +196,24 @@
       │     ├──────── metadata: shape (320, 3)
       │     └──────── timestamps: shape (320, 300)
       └── surveydata: shape (5, 7)
+
+ The metadata has one row for each corresponding footstep, and the following columns (from left to right) 
+
+0 - Subject ID 
+1 – Duration of the footstep 
+
+2 – PassID. This is number of passes the subject makes on the tiles (does not reset with each participant, assume that the first PassID of a subject is their first pass) 
+
+3 – Binary value. an index explaining whether this is the last footprint of a L-R-L or an R-L-R stride.   
+
+4 – The footprint number in this recording for this subject (i.e., first, second, third, and so on).  It does not reset with each pass. Each new participant starts at 0 and goes to the their final footprint, N. 
+
+5 – Which direction is the participant walking? Denoted as FootprintUp in the code.  When viewed in matlab, this shows whether it is a left-to-right pass, or a right-to-left pass.  
+
+6 – The y location of the footprint from the full walk. 
+
+7 – The x location of the footprint from the full walk. 
+
+8 – The time location of the footprint in the full walk.  
+
+9 (align only) – The angle used to align the footprint with the template.  

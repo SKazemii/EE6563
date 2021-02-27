@@ -288,3 +288,4 @@ TSWLatexianTemp*
 
 *.mat
 *.h5
+*.pickle
