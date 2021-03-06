@@ -28,14 +28,14 @@ with open(os.path.join(cfg.pickle_dir, "df_label.pickle"), "rb") as handle:
 ###########################################################################################################
 ###########################################################################################################
 
-X = np.zeros( (1745, 18) )
-Y = np.zeros( (1745, 36) )
-Z = np.zeros( (1745, 111) )
-index = ["Sample_" + str(i) for i in range(1745)]
+X = np.zeros( (1744, 18) )
+Y = np.zeros( (1744, 36) )
+Z = np.zeros( (1744, 126) )
+index = ["Sample_" + str(i) for i in range(1744)]
 
 
 print("[INFO] Extracting features...")
-for i in range(1745):
+for i in range(1744):
     X[i,:] = tsfel.time_series_features_extractor(tsfel.get_features_by_domain("temporal"), df_sum[index[i]]).values
     Y[i,:] = tsfel.time_series_features_extractor(tsfel.get_features_by_domain("statistical"), df_sum[index[i]]).values
     Z[i,:] = tsfel.time_series_features_extractor(tsfel.get_features_by_domain("spectral"), df_sum[index[i]]).values
@@ -66,7 +66,7 @@ with open(os.path.join(cfg.pickle_dir, "df_sum_spectral_features.pickle"), "wb")
 ###########################################################################################################
 ###########################################################################################################
 
-for i in range(1745):
+for i in range(1744):
     X[i,:] = tsfel.time_series_features_extractor(tsfel.get_features_by_domain("temporal"), df_max[index[i]]).values
     Y[i,:] = tsfel.time_series_features_extractor(tsfel.get_features_by_domain("statistical"), df_max[index[i]]).values
     Z[i,:] = tsfel.time_series_features_extractor(tsfel.get_features_by_domain("spectral"), df_max[index[i]]).values
@@ -97,7 +97,7 @@ with open(os.path.join(cfg.pickle_dir, "df_max_spectral_features.pickle"), "wb")
 ###########################################################################################################
 ###########################################################################################################
 
-for i in range(1745):
+for i in range(1744):
     X[i,:] = tsfel.time_series_features_extractor(tsfel.get_features_by_domain("temporal"), df_xCe[index[i]]).values
     Y[i,:] = tsfel.time_series_features_extractor(tsfel.get_features_by_domain("statistical"), df_xCe[index[i]]).values
     Z[i,:] = tsfel.time_series_features_extractor(tsfel.get_features_by_domain("spectral"), df_xCe[index[i]]).values
@@ -128,7 +128,7 @@ with open(os.path.join(cfg.pickle_dir, "df_xCe_spectral_features.pickle"), "wb")
 ###########################################################################################################
 ###########################################################################################################
 
-for i in range(1745):
+for i in range(1744):
     X[i,:] = tsfel.time_series_features_extractor(tsfel.get_features_by_domain("temporal"), df_yCe[index[i]]).values
     Y[i,:] = tsfel.time_series_features_extractor(tsfel.get_features_by_domain("statistical"), df_yCe[index[i]]).values
     Z[i,:] = tsfel.time_series_features_extractor(tsfel.get_features_by_domain("spectral"), df_yCe[index[i]]).values

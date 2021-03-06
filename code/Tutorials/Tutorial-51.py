@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Feb  9 21:02:53 2021
-
-@author: pkumar1
-"""
-
 from pandas import read_csv
 import pandas as pd
 from random import seed
@@ -19,7 +12,7 @@ from statsmodels.tsa.ar_model import AutoReg
 from sklearn.metrics import mean_squared_error
 from math import sqrt
 # load dataset
-df = pd.read_csv(r'file:///C:/Users/pkumar1/OneDrive - University of New Brunswick/time_series_course/Tutorial/totorial-1/wwwusage.csv', names=['value'], header=0)
+df = pd.read_csv("/Users/saeedkazemi/Documents/Python/EE6563/Dataset/Tutorial/wwwusage.csv", names=['value'], header=0)
 plt.plot(df.values)
 
 # Original Series

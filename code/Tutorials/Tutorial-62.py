@@ -165,21 +165,34 @@ df_differenced = df_train.diff().dropna()
 # Second Differencing
 df_differenced = df_differenced.diff().dropna()
 
+
+# ADF Test on each column
+for name, column in df_differenced.iteritems():
+    adfuller_test(column, name=column.name)
+    print("\n")
+    
+    
 # select the order of VAR model
 AIC = list()
+BIC = list()
 model = VAR(df_differenced)
 for i in [1, 2, 3, 4, 5, 6, 7, 8, 9]:
     result = model.fit(i)
     AIC.append(result.aic)
+    BIC.append(result.bic)
     print("Lag Order =", i)
     print("AIC : ", result.aic)
     print("BIC : ", result.bic)
     print("FPE : ", result.fpe)
     print("HQIC: ", result.hqic, "\n")
+#plt.plot(np.arange(1, 10), AIC, label="AIC")
+plt.plot(np.arange(1, 10), AIC, label="BIC")
+plt.plot(4, AIC[4], marker=(5, 0), label="BIC")
 
 # x = model.select_order(maxlags=12)
 # x.summary()
-
+plt.plot(AIC)
+plt.show()
 model_fitted = model.fit(4)
 model_fitted.summary()
 

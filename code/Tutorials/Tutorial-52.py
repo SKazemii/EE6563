@@ -1,32 +1,35 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Feb 10 14:00:32 2021
-
-@author: pkumar1
-"""
-
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Feb  2 13:05:25 2021
-
-@author: pkumar1
-"""
-
 import numpy as np, pandas as pd
 from statsmodels.graphics.tsaplots import plot_acf, plot_pacf,acf
 import matplotlib.pyplot as plt
 from statsmodels.tsa.stattools import adfuller
 from statsmodels.tsa.arima_model import ARIMA
 
+
+def detect_classify_anomalies(df,window):    
+    #df=pd.Series(test-fc_series)
+    df['error']=pd.Series(df)
+    df['meanval'] = df['error'].rolling(window=window).mean()
+    df['deviation'] = df['error'].rolling(window=window).std()
+    df['-3s'] = df['meanval'] - (2 * df['deviation'])
+    df['3s'] = df['meanval'] + (2 * df['deviation'])
+    df['-2s'] = df['meanval'] - (1.75 * df['deviation'])
+    df['2s'] = df['meanval'] + (1.75 * df['deviation'])
+    df['-1s'] = df['meanval'] - (1.5 * df['deviation'])
+    df['1s'] = df['meanval'] + (1.5 * df['deviation'])
+    return df
+
+
 plt.rcParams.update({'figure.figsize':(9,7), 'figure.dpi':120})
 
 # Import data
 #https://vincentarelbundock.github.io/Rdatasets/doc/datasets/WWWusage.html
 #A time series of the numbers of users connected to the Internet through a server every minute.
-df = pd.read_csv(r'file:///C:/Users/pkumar1/OneDrive - University of New Brunswick/time_series_course/Tutorial/totorial-1/wwwusage_Anomaly.csv', names=['value'], header=0)
+df = pd.read_csv("/Users/saeedkazemi/Documents/Python/EE6563/Dataset/Tutorial/wwwusage_Anomaly.csv", names=['value'], header=0)
 #plt.plot(df.values)
 # Original Series
-
+plt.figure(figsize=(12,5), dpi=100)
+plt.plot(df, label='actual')
+plt.show()
 # Create Training and Test
 train = df.value[:80]
 test = df.value[80:]
@@ -107,6 +110,3 @@ def detect_classify_anomalies(df,window):
     df['-1s'] = df['meanval'] - (1.5 * df['deviation'])
     df['1s'] = df['meanval'] + (1.5 * df['deviation'])
     return df
-   
-    return df
-

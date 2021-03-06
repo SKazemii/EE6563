@@ -15,7 +15,7 @@ print("[INFO] defining functions....")
 def centriod(img):
     wx = list()
     wy = list()
-    for j in range(60):
+    for j in range(90):
         non_zero_elements = np.nonzero(img[j, :, :])
         x = 0
         y = 0
@@ -63,23 +63,23 @@ Data_max = list()
 Data_xCe = list()
 Data_yCe = list()
 
-for sample in range(barefoots.shape[0]):
+for sample in range(barefoots.shape[0]-1):
     img = np.squeeze(barefoots[sample, :, :, :])
     aa = np.sum(img, axis=2)
     bb = np.sum(aa, axis=1)
-    Data_sum.append(bb[:60])
+    Data_sum.append(bb[:90])
 
     img = np.squeeze(barefoots[sample, :, :, :])
     aa = np.max(img, axis=2)
     bb = np.max(aa, axis=1)
-    Data_max.append(bb[:60])
+    Data_max.append(bb[:90])
 
     wx, wy = centriod(img)
     Data_xCe.append(wx)
     Data_yCe.append(wy)
 
-index = ["Sample_" + str(i) for i in np.arange(barefoots.shape[0])]
-column = [i for i in np.arange(60)]
+index = ["Sample_" + str(i) for i in np.arange(barefoots.shape[0]-1)]
+column = [i for i in np.arange(90)]
 
 df_sum = pd.DataFrame(Data_sum, columns=column, index=index).T
 with open(os.path.join(cfg.pickle_dir, "df_sum.pickle"), "wb") as handle:
@@ -97,7 +97,7 @@ df_yCe = pd.DataFrame(Data_yCe, columns=column, index=index).T
 with open(os.path.join(cfg.pickle_dir, "df_yCe.pickle"), "wb") as handle:
     pickle.dump(df_yCe, handle)
 
-df_label = pd.DataFrame(metadata[:, 0], index=index, columns=["ID"])
+df_label = pd.DataFrame(metadata[0:1744, 0], index=index, columns=["ID"])
 with open(os.path.join(cfg.pickle_dir, "df_label.pickle"), "wb") as handle:
     pickle.dump(df_label, handle)
 
