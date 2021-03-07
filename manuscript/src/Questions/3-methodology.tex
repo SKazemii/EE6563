@@ -22,3 +22,49 @@ Costilla-Reyes et al. \cite{Costilla-Reyes2016TemporalSystem} extracted five fea
 Later, they in \cite{Costilla-Reyes2018DeepSensors} used an end-to-end convolutional neural network to extract Spatio-temporal features automatically. This technique increased their score by about 7 percent.
 
 Barandas et al. in \cite{Barandas2020TSFEL:Library} introduced a Python package entitled Time Series Feature Extraction Library (TSFEL). This Python package could compute more than 60 different features from the time-series data.
+
+
+
+\section{Features Extraction and Selection}
+
+As we mentioned before, our goal is to develop a model for
+classification. For this classification task, we use $128$ features in four categories. These different groups of features set are explained briefly here and more details about them can be found in Appendix I. After extracting features from each time series, some of these features that were unneeded, irrelevant and redundant were eliminated. Feature selection causes the complexity of the model to reduce.
+
+\subsection{Temporal Features}
+The first set of features that extracted
+
+
+
+
+index-specific while the rest are general economic variables and
+are replicated for every index in the data set. This rich set of variables could be categorized in eight different groups that are primitive variables, technical indicators, world stock market indices, the
+exchange rate of U.S. dollar to the other currencies, commodities,
+data from big companies of the U.S. markets, future contracts, and
+other useful variables. Some of these variables are important as
+they represent mechanisms that naturally affect the stock markets,
+directly or indirectly. Some other variables, on the other hand, are
+useful as they provide clues or signs that can help the system to
+predict the short-term future of the markets, even if they do not
+represent causal relations. We briefly explain different groups of
+our variable set here and more details about them can be found in
+Appendix I.
+Primitive variables: Close price and day of the week for which
+the prediction is supposed to be made are primitive variables used
+in this work.
+Technical indicators: Technical analysts use technical indicators
+which are extracted from historical data of stocks prices and trading information to analyze short-term movement of prices.
+
+
+
+
+In this section, we describe the extracted features that are used to classify the models, including datasets, parameters of the networks,
+evaluation methodology and baseline algorithms. Then, the evaluation results are reported.
+6.1. Data gathering and preparation
+The datasets used in this work include daily direction of the
+close of S&P 500 index, NASDAQ Composite, Dow Jones Industrial
+Average, NYSE Composite, and RUSSELL 2000. Each sample has 82
+variables that already have been explained and its assigned label
+is determined according to the Eq. (5), where closet refers to the
+closing price at day t It is worth mentioning that for each index
+only technical indicators and primitive variables are unique and
+the other variables, like big U.S. companies or price of commodities, are common between different indices.
