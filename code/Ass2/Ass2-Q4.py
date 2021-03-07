@@ -110,7 +110,7 @@ fig = plt.plot(series_diff)
 plt.savefig(os.path.join(fig_dir, a + "1diff_Close_signal.png"))
 
 print("[INFO] 'df' is now a stationary dataset...")
-df = series[series.columns[0:9]]
+df = df_scaled[series.columns[0:9]]
 df["Close"] = series_diff
 df.dropna(inplace=True)
 
@@ -245,15 +245,20 @@ for i, (col, ax) in enumerate(zip(df.columns, axes.flatten())):
     ax.tick_params(labelsize=6)
 
 plt.tight_layout()
-plt.savefig(os.path.join(fig_dir, a + "Forecast_vs_Actuals.png"))
+plt.savefig(os.path.join(fig_dir, a + "00_Forecast_vs_Actuals.png"))
 
 
 fig = plt.figure(dpi=150, figsize=(12, 7))
 df_results["Close_original_forecast"].plot(legend=True).autoscale(axis="x", tight=True)
 series["Close"][-nobs:].plot(legend=True)
 plt.tight_layout()
-plt.savefig(os.path.join(fig_dir, a + "Forecast_vs_Actuals_of_close.png"))
+plt.savefig(os.path.join(fig_dir, a + "00_Forecast_vs_Actuals_of_close.png"))
 
+
+rmse = np.sqrt(
+    mean_squared_error(series["Close"][-nobs:], df_results["Close_original_forecast"])
+)
+print("[INFO] RMS error: %.3f" % rmse)
 ############################################################################
 #########            Rolling Forecast of ARIMA model.             ##########
 ############################################################################
@@ -286,7 +291,7 @@ for t in range(nobs):
 
     # Forecast
     fc = model_fit.forecast(y=forecast_input, steps=1)
-    print((fc.squeeze().tolist()))
+    # print((fc.squeeze().tolist()))
 
     predictions.append(fc.squeeze().tolist())
     # print(df_test.iloc[t, :])
@@ -299,7 +304,7 @@ for t in range(nobs):
 
 
 # print(predictions.shape)
-print(predictions)
+# print(predictions)
 
 print("[INFO] Invert the transformation to get the real forecast... ")
 df_forecast = pd.DataFrame(
@@ -313,13 +318,13 @@ for col in columns:
     if col == "Close":
         df_fc[str(col) + "_original_forecast"] = (
             series["Close"].iloc[-100]
-            + (-Standard_scaler.scale_[0]) * df_fc[str(col) + "_forecast"].cumsum()
+            + (Standard_scaler.scale_[0]) * df_fc[str(col) + "_forecast"].cumsum()
         )
     else:
         df_fc[str(col) + "_original_forecast"] = (
-            Standard_scaler.scale_[i]) * df_fc[str(col) + "_forecast"]
-            + Standard_scaler.mean_[i]
-        )
+            Standard_scaler.scale_[i] * df_fc[str(col) + "_forecast"]
+        ) + Standard_scaler.mean_[i]
+
         i = i + 1
 
 
@@ -340,37 +345,32 @@ for i, (col, ax) in enumerate(zip(df.columns, axes.flatten())):
     ax.tick_params(labelsize=6)
 
 plt.tight_layout()
-plt.savefig(os.path.join(fig_dir, a + "Rolling_Forecast_vs_Actuals.png"))
+plt.savefig(os.path.join(fig_dir, a + "0_Rolling_Forecast_vs_Actuals.png"))
 
 
 fig = plt.figure(dpi=150, figsize=(12, 7))
 df_results["Close_original_forecast"].plot(legend=True).autoscale(axis="x", tight=True)
 series["Close"][-nobs:].plot(legend=True)
 plt.tight_layout()
-plt.savefig(os.path.join(fig_dir, a + "Rolling_Forecast_vs_Actuals_of_close.png"))
+plt.savefig(os.path.join(fig_dir, a + "0_Rolling_Forecast_vs_Actuals_of_close.png"))
 
 
-fig = plt.figure(dpi=150, figsize=(12, 7))
-df_results["Close_original_forecast"].plot(legend=True).autoscale(axis="x", tight=True)
-series["Close"][-nobs:].plot(legend=True)
-plt.tight_layout()
-plt.savefig(os.path.join(fig_dir, a + "Forecast_vs_Actuals_of_close.png"))
+# df_fc["original_forecast"] = (
+#     series["Close"].iloc[-nobs]
+#     + (-Standard_scaler.scale_[0]) * df_fc["close_forecast"].cumsum()
+# )
+# df_results = df_fc["original_forecast"]
 
+# print("[INFO] saving the plot of forecast...")
+# plt.figure(dpi=150)
+# plt.plot(series["Close"], label="training and testing data")
+# plt.plot(df_results.T, label="forecast")
+# plt.title("Forecast vs Actuals")
+# plt.legend(loc="upper left", fontsize=8)
+# plt.tight_layout()
+# plt.savefig(os.path.join(fig_dir, a + "0_Rolling_Forecast_vs_Actuals.png"))
 
-df_fc["original_forecast"] = (
-    series["Close"].iloc[-nobs]
-    + (-Standard_scaler.scale_[0]) * df_fc["close_forecast"].cumsum()
+rmse = np.sqrt(
+    mean_squared_error(series["Close"][-nobs:], df_results["Close_original_forecast"])
 )
-df_results = df_fc["original_forecast"]
-
-print("[INFO] saving the plot of forecast...")
-plt.figure(dpi=150)
-plt.plot(series["Close"], label="training and testing data")
-plt.plot(df_results.T, label="forecast")
-plt.title("Forecast vs Actuals")
-plt.legend(loc="upper left", fontsize=8)
-plt.tight_layout()
-plt.savefig(os.path.join(fig_dir, a + "Rolling_Forecast_vs_Actuals.png"))
-
-rmse = np.sqrt(mean_squared_error(series["Close"][-nobs:], df_fc["original_forecast"]))
 print("[INFO] RMS error: %.3f" % rmse)

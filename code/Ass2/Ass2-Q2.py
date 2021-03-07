@@ -134,7 +134,7 @@ with open(os.path.join(tbl_dir, a + "ADF_1diff.tex"), "w") as tf:
 ############################################################################
 #########                     fitting ARIMA                       ##########
 ############################################################################
-nobs = 100
+nobs = 35
 orders = [1, 1, 1]
 
 print("[INFO] Create Training and Test set...")
@@ -149,10 +149,10 @@ model_fitted = model.fit(disp=-1)
 
 print("[INFO] saving the plot of residual...")
 residuals = pd.Series(model_fitted.resid, index=train.index)
-fig, ax = plt.subplots(3, 1)
+fig, ax = plt.subplots(2, 1)
 residuals.plot(title="Residuals", ax=ax[0])
 residuals.plot(kind="kde", title="Density", ax=ax[1])
-plot_acf(residuals, title="ACF", ax=ax[2])
+# plot_acf(residuals, lags=50, title="ACF", ax=ax[2])
 plt.savefig(os.path.join(fig_dir, a + "residual_plot.png"))
 
 
@@ -248,8 +248,7 @@ print("[INFO] Test RMS error: %.3f" % rmse)
 ############################################################################
 #########            Rolling Forecast of ARIMA model.             ##########
 ############################################################################
-nobs = 100
-orders = [1, 1, 1]
+
 X = series["Close"].values
 size = len(X) - nobs
 window = 500  # = 3 * 365

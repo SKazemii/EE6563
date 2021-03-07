@@ -51,6 +51,17 @@ series = pd.read_csv(
     date_parser=parser,
 ).dropna()
 
+fig, axes = plt.subplots(nrows=3, ncols=3, dpi=120, figsize=(10, 6))
+
+for i, ax in enumerate(axes.flatten()):
+    data = series[series.columns[i]]
+    ax.plot(data, color="blue", linewidth=1)
+    ax.set_title(series.columns[i])
+
+plt.tight_layout()
+plt.savefig(os.path.join(fig_dir, a + "raw_signal.png"))
+
+
 ############################################################################
 #########                      Standardzation                     ##########
 ############################################################################
@@ -250,7 +261,6 @@ plt.figure()
 plt.plot(series["Close"][window:size], label="train set")
 plt.legend()
 plt.savefig(os.path.join(fig_dir, a + "Rolling_trainset.png"))
-
 
 
 for t in range(nobs):
