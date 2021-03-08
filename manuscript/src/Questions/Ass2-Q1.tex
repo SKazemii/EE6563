@@ -8,270 +8,140 @@
 
 
 
-\textit{Explain your process,
-present your chosen model, 
-examine the residuals, 
-and evaluate its performance as follows:
-}
 
-\textit{Figures \ref{fig:Ass1_D1_raw_signal} and \ref{fig:Ass1_D2_raw_signal} indicate the raw signal of both data sets. Likewise, figure \ref{fig:Ass1_D1_raw_signal_1986} to  \ref{fig:Ass1_D2_raw_signal_1990} illustrate a short period in two datasets. }
+\textit{ The general process for \gls{arima} model is the following:}
+\begin{enumerate}
+\item \textit{Visualize the Time Series Data (Figure
+        \ref{fig:Ass2_Q2_raw_signal})}
+\item \textit{Transform and make the time series data stationary (Figure
+        \ref{fig:Ass2_Q2_1diff_signal})}
+\item \textit{Plot the \gls{ACF} and \gls{PACF} (Figure
+        \ref{fig:Ass2_Q2_PACF_ACF_1diff})}
+\item \textit{Construct the \gls{arima} Model or Seasonal \gls{arima} based on the data }
+\item \textit{Identify optimal model based on Information Criteria, like \gls{AIC} }
+\item \textit{Evaluate the residuals using statistical test, \gls{ACF}, \gls{PACF}, etc. (Figure
+         \ref{fig:Ass2_Q2_best_model_residual})}
+\item \textit{Use the model to make predictions (Figure
+        \ref{fig:Ass2_Q2_Automatic_model_forcasting})}
+\item \textit{Calculate forecasting error}
 
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_raw_signal.png}
-    \end{minipage}
-    \caption{The raw signal of the first dataset.}
-    \label{fig:Ass1_D1_raw_signal}
-\end{figure}
 
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_raw_signal.png}
-    \end{minipage}
-    \caption{The raw signal of the second dataset.}
-    \label{fig:Ass1_D2_raw_signal}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_raw_signal_1986.png}
-    \end{minipage}
-    \caption{Visualizing a short period of the first dataset.}
-    \label{fig:Ass1_D1_raw_signal_1986}
-\end{figure}
+\end{enumerate}
 
 
 \begin{figure}[H]
     \centering
     \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_raw_signal_1990.png}
+        \includegraphics[width=\textwidth]{figures/Ass2/Ass2_Q2_raw_signal.png}
     \end{minipage}
-    \caption{Visualizing a short period of the second dataset.}
-    \label{fig:Ass1_D2_raw_signal_1990}
+    \caption{The raw signal of the dataset.}
+    \label{fig:Ass2_Q2_raw_signal}
 \end{figure}
 
-\textit{For intuition, Table \ref{tab:Ass1_D1_raw_signal} to  \ref{tab:Ass1_D2_raw_signal_summary_statistics} show the top raw of two datasets along with the descriptive statistics of two time-series datasets.}
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{figures/Ass2/Ass2_Q2_PACF_ACF.png}
+    \end{minipage}
+    \caption{A plot of \gls{ACF} and \gls{PACF} of the dataset.}
+    \label{fig:Ass2_Q2_PACF_ACF}
+\end{figure}
 
 
-\begin{table}[H]
- \centering
-\caption{The first five rows of the raw signal in the first dataset.}
-\label{tab:Ass1_D1_raw_signal}
-\input{tables/Ass1/Ass1_D1_raw_signal.tex}
-\end{table}
-
-\begin{table}[H]
- \centering
-\caption{The descriptive statistics of the first dataset.}
-\label{tab:Ass1_D1_raw_signal_summary_statistics}
-\input{tables/Ass1/Ass1_D1_raw_signal_summary_statistics.tex}
-\end{table}
-
-\begin{table}[H]
- \centering
-\caption{The first five rows of the raw signal in the second dataset.}
-\label{tab:Ass1_D2_raw_signal}
-\input{tables/Ass1/Ass1_D2_raw_signal.tex}
-\end{table}
-
-\begin{table}[H]
- \centering
-\caption{The descriptive statistics of the second dataset.} \label{tab:Ass1_D2_raw_signal_summary_statistics}
-\input{tables/Ass1/Ass1_D2_raw_signal_summary_statistics.tex}
-\end{table}
+\textit{Figures \ref{fig:Ass2_Q2_raw_signal} and \ref{fig:Ass2_Q2_PACF_ACF} indicate the raw signal along with its \gls{ACF} and \gls{PACF} plots. \gls{ACF} and \gls{PACF} plots allow us to determine how correlated points are with each other. Furthermore, the period of the seasonal component can be calculated by \gls{ACF}. As can be seen, \gls{ACF} plot has no oscillation, therefore there is no seasonal component related to the our time series.}
 
 
 
 
-
-
-\textit{For decomposing the time series, the below methods used:}
-    \begin{enumerate}
-    \item \textit{Seasonal\_decompose (Figure
-        \ref{fig:Ass1_D1_seasonal_decompose} and \ref{fig:Ass1_D2_seasonal_decompose})}
-        
-    \item \textit{STL (Figure
-        \ref{fig:Ass1_D1_STL} and \ref{fig:Ass1_D2_STL})}
-        
-    \item \textit{Linear Regression method (Figure
-        \ref{fig:Ass1_D1_LinearRegression_diff} and \ref{fig:Ass1_D2_LinearRegression_diff})}
-        
-    \item \textit{Difference method (Figure
-        \ref{fig:Ass1_D1_one_diff} and \ref{fig:Ass1_D2_one_diff})}
-        
-    \item \textit{Fitting a polynomial (Figure
-        \ref{fig:Ass1_D1_fiting_polynomial} and \ref{fig:Ass1_D2_fiting_polynomial})}
-        
-    \item \textit{Moving Average window (Figure
-        \ref{fig:Ass1_D1_Moving_Avrage} and \ref{fig:Ass1_D2_Moving_Avrage})}
-
-    \end{enumerate}
-
-\textit{\newline \newline Some mentioned methods used only for extracting only one type of component (trend or seasonality), while others like STL 
-and Seasonal\_decompose provided all three parts. Table \ref{tab:Ass1_comparing_methods} compares these methods together.}
-
-\textit{Also, there are two models for the reconstruction of time series, Additive and Multiplicative Model. In this assignment, the additive model was only used because the multiplicative model is not appropriate for zero and negative values.}
+\textit{In order to turn the dataset to a stationary dataset, we used a first-order differencing. Table \ref{tab:Ass2_Q2_ADF_1diff} indicates the result of \gls{ADF}  on the first-order differencing. As this test shows, the data is a stationary data. Figures \ref{fig:Ass2_Q2_1diff_signal} and \ref{fig:Ass2_Q2_PACF_ACF_1diff} indicate the $1^{st}$ order differencing signal along with its \gls{ACF} and \gls{PACF} plots. These two plots also show that the data is stationary. }
 
 \begin{table}[H]
 \centering
-\caption{Comparing the implemented methods.}
-\label{tab:Ass1_comparing_methods}
-\input{tables/Ass1/Ass1_comparing_methods.tex}
+\caption{The result of the \gls{ADF} on the $1^{st}$ order differencing in the dataset.}
+\label{tab:Ass2_Q2_ADF_1diff}
+\input{manuscript/src/tables/Ass2/Ass2_Q2_ADF_1diff}
 \end{table}
 
-
-\textit{For finding the seasonal component, we need to find the period of the time series. For doing this, the resampling method was used to smooth the plots of two datasets. Figures \ref{fig:Ass1_D1_resample} and \ref{fig:Ass1_D2_resample} indicate the smooth version of the two datasets. }
-
 \begin{figure}[H]
     \centering
     \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_resample.png}
+        \includegraphics[width=\textwidth]{manuscript/src/figures/Ass2/Ass2_Q2_PACF_ACF_1diff.png}
     \end{minipage}
-    \caption{Resampling plot of the first dataset. The period of this dataset is 365 samples/cycle. }
-    \label{fig:Ass1_D1_resample}
+    \caption{ A plot of the \gls{ACF} and \gls{PACF} on the $1^{st}$ order differencing in the dataset.}
+    \label{fig:Ass2_Q2_PACF_ACF_1diff}
 \end{figure}
-
 \begin{figure}[H]
     \centering
     \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_resample.png}
+        \includegraphics[width=\textwidth]{manuscript/src/figures/Ass2/Ass2_Q2_1diff_signal.png}
     \end{minipage}
-    \caption{Resampling plot of the second dataset. The period of this dataset is 130 samples/cycle.}
-    \label{fig:Ass1_D2_resample}
+    \caption{ The signal of $1^{st}$ order differencing.}
+    \label{fig:Ass2_Q2_1diff_signal}
 \end{figure}
 
 
-\textit{Furthermore, the period of the time-series data can calculate by \gls{ACF} (figures \ref{fig:Ass1_D1_PACF_ACF_series} and \ref{fig:Ass1_D2_PACF_ACF_series}). This plot has an oscillation, indicative of a seasonal series and the peaks occurred at each period. }
 
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_PACF_ACF_series.png}
-    \end{minipage}
-    \caption{The \gls{ACF} and \gls{PACF} of the first dataset. The peaks occur at the lag of 365 that means the period is 365 samples/cycle.}
-    \label{fig:Ass1_D1_PACF_ACF_series}
-\end{figure}
+\textit{We used grid search and interpreting \gls{ACF} and \gls{PACF} plots to select the best order for \gls{arima}.}
 
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_PACF_ACF_series.png}
-    \end{minipage}
-    \caption{The \gls{ACF} and \gls{PACF} of the second dataset. The peaks occur at the lag of 130 that means the period is 130 samples/cycle.}
-    \label{fig:Ass1_D2_PACF_ACF_series}
-\end{figure}
+\textit{Since both \gls{ACF} and \gls{PACF} (see figure \ref{fig:Ass2_Q2_PACF_ACF_1diff}) have one significant lag, it can conclude that both AR order (q) and MA order (p) are one. Also, based on using $1^{st}$ order differencing, the integrated order (d) set 1.}
+
+\textit{In grid search, we set a space search to find the model that had the lowest error. Table \ref{tab:ass2_Q2_1} shows our space search. This method selected the order \gls{arima}(1, 1, 1) as the best-fitted model.}
+
+\begin{table}[H]
+\centering
+\caption{The space search of grid search.}
+\label{tab:ass2_Q2_1}
+\input{manuscript/src/tables/Ass2/ass2_Q2_1}
+\end{table}
+
+\textit{Figure \ref{fig:Ass2_Q2_best_model_residual} indicates the residual of best-fitted model. As this plot illustrates, the residual signal of model has a Gaussian distribution with zero mean. In addition, the \gls{ACF} plot shows that this signal is a stationary signal.}
+
 
 
 \begin{figure}[H]
     \centering
     \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_seasonal_decompose.png}
+        \includegraphics[width=\textwidth]{manuscript/src/figures/Ass2/Ass2_Q2_best_model_residual.png}
     \end{minipage}
-    \caption{Decomposition of the first dataset by seasonal\_decompose method}
-    \label{fig:Ass1_D1_seasonal_decompose}
+    \caption{The residual  of the best-fitted model (\gls{arima}(1, 1, 1)) based on grid search.}
+    \label{fig:Ass2_Q2_best_model_residual}
+\end{figure}
+
+  
+\textit{To predict, we split data into test and train set. About 35 samples for test set and others for training. Figure \ref{fig:Ass2_Q2_Automatic_model_forcasting} demonstrates the output of the best-fitted model. As can be seen, the model could predict the upward trend. The obtained RMS error was 294.506.}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{manuscript/src/figures/Ass2/Ass2_Q2_Automatic_model_forcasting.png}
+    \end{minipage}
+    \caption{The prediction and actual data of \gls{arima}(1, 1, 1) model.}
+    \label{fig:Ass2_Q2_Automatic_model_forcasting}
+\end{figure}
+
+
+\textit{For the rolling window approach, we predicted only one day. Then the actual value of this day was added to the training set while our training set had a fixed size. We considered less than 500 samples (approximately three years).}
+
+\textit{Since both the training data set did not change, we used the same order of the last part. Figures \ref{fig:Ass2_Q2_Rolling_Forecast} and \ref{fig:Ass2_Q2_Rolling_Forecast_1} demonstrate the output of the rolling window model. As can be seen, the model could follow the the test set. In addition, the RMS error was reduced from 294.506 to 69.371.}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{manuscript/src/figures/Ass2/Ass2_Q2_Rolling_Forecast_1.png}
+    \end{minipage}
+    \caption{The prediction and actual data of \gls{arima}(1, 1, 1) model in rolling windows approach.}
+    \label{fig:Ass2_Q2_Rolling_Forecast_1}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_seasonal_decompose.png}
+        \includegraphics[width=\textwidth]{manuscript/src/figures/Ass2/Ass2_Q2_Rolling_Forecast.png}
     \end{minipage}
-    \caption{Decomposition of the second dataset by seasonal\_decompose method}
-    \label{fig:Ass1_D2_seasonal_decompose}
+    \caption{The prediction and test set of \gls{arima}(1, 1, 1) model in rolling windows approach.}
+    \label{fig:Ass2_Q2_Rolling_Forecast}
 \end{figure}
 
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_STL.png}
-    \end{minipage}
-    \caption{Decomposition of the first dataset by STL method}
-    \label{fig:Ass1_D1_STL}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_STL.png}
-    \end{minipage}
-    \caption{Decomposition of the second dataset by STL method}
-    \label{fig:Ass1_D2_STL}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_LinearRegression_diff.png}
-    \end{minipage}
-    \caption{Decomposition of the first dataset by Linear Regression and difference method.}
-    \label{fig:Ass1_D1_LinearRegression_diff}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_LinearRegression_diff.png}
-    \end{minipage}
-    \caption{Decomposition of the second dataset by Linear Regression and difference method.}
-    \label{fig:Ass1_D2_LinearRegression_diff}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_one_diff.png}
-    \end{minipage}
-    \caption{Detrending of the first dataset by the first-order differencing.}
-    \label{fig:Ass1_D1_one_diff}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_one_diff.png}
-    \end{minipage}
-    \caption{Detrending of the second dataset by the first-order differencing.}
-    \label{fig:Ass1_D2_one_diff}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_fiting_polynomial.png}
-    \end{minipage}
-    \caption{Seasonal component of the first dataset by fitting a polynomial (Degree of the polynomial is 4).}
-    \label{fig:Ass1_D1_fiting_polynomial}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_fiting_polynomial.png}
-    \end{minipage}
-    \caption{Seasonal component of the second dataset by fitting a polynomial (Degree of the polynomial is 2).}
-    \label{fig:Ass1_D2_fiting_polynomial}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D1_Moving_Avrage.png}
-    \end{minipage}
-    \caption{Seasonal component of the first dataset by Moving Average. The size of the window was set to 100.}
-    \label{fig:Ass1_D1_Moving_Avrage}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass1/Ass1_D2_Moving_Avrage.png}
-    \end{minipage}
-    \caption{Seasonal component of the second dataset by Moving Average. The size of the window was set to 12.  }
-    \label{fig:Ass1_D2_Moving_Avrage}
-\end{figure}
 
 
 
