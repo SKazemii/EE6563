@@ -48,12 +48,12 @@
 \end{figure}
 
 
-\textit{Figures \ref{fig:Ass2_Q2_raw_signal} and \ref{fig:Ass2_Q2_PACF_ACF} indicate the raw signal along with its \gls{ACF} and \gls{PACF} plots. \gls{ACF} and \gls{PACF} plots allow us to determine how correlated points are with each other. Furthermore, the period of the seasonal component can be calculated by \gls{ACF}. As can be seen, \gls{ACF} plot has no oscillation, therefore there is no seasonal component related to the our time series.}
+\textit{Figures \ref{fig:Ass2_Q2_raw_signal} and \ref{fig:Ass2_Q2_PACF_ACF} indicate the raw signal along with its \gls{ACF} and \gls{PACF} plots. \gls{ACF} and \gls{PACF} plots allow us to determine how correlated points are with each other. Furthermore, the period of the seasonal component can calculate by \gls{ACF}. As can be seen, the \gls{ACF} plot has no oscillation. Therefore there is no seasonal component related to our time series.}
 
 
 
 
-\textit{In order to turn the dataset to a stationary dataset, we used a first-order differencing. Table \ref{tab:Ass2_Q2_ADF_1diff} indicates the result of \gls{ADF}  on the first-order differencing. As this test shows, the data is a stationary data. Figures \ref{fig:Ass2_Q2_1diff_signal} and \ref{fig:Ass2_Q2_PACF_ACF_1diff} indicate the $1^{st}$ order differencing signal along with its \gls{ACF} and \gls{PACF} plots. These two plots also show that the data is stationary. }
+\textit{In order to turn the dataset into a stationary dataset, we used a first-order differencing. Table \ref{tab:Ass2_Q2_ADF_1diff} indicates the result of \gls{ADF}  on the first-order differencing. As this test shows, the data got a stationary data. Figures \ref{fig:Ass2_Q2_1diff_signal} and \ref{fig:Ass2_Q2_PACF_ACF_1diff} indicate the $1^{st}$ order differencing signal along with its \gls{ACF} and \gls{PACF} plots. These two plots also show that the data is stationary. }
 
 \begin{table}[H]
 \centering
@@ -83,7 +83,7 @@
 
 \textit{We used grid search and interpreting \gls{ACF} and \gls{PACF} plots to select the best order for \gls{arima}.}
 
-\textit{Since both \gls{ACF} and \gls{PACF} (see figure \ref{fig:Ass2_Q2_PACF_ACF_1diff}) have one significant lag, it can conclude that both AR order (q) and MA order (p) are one. Also, based on using $1^{st}$ order differencing, the integrated order (d) set 1.}
+\textit{Since both \gls{ACF} and \gls{PACF} (see figure \ref{fig:Ass2_Q2_PACF_ACF_1diff}) had one significant lag, it concluded that both AR order (q) and MA order (p) were one. Also, based on using $1^{st}$ order differencing, the integrated order (d) set 1.}
 
 \textit{In grid search, we set a space search to find the model that had the lowest error. Table \ref{tab:ass2_Q2_1} shows our space search. This method selected the order \gls{arima}(1, 1, 1) as the best-fitted model.}
 
@@ -94,7 +94,7 @@
 \input{manuscript/src/tables/Ass2/ass2_Q2_1}
 \end{table}
 
-\textit{Figure \ref{fig:Ass2_Q2_best_model_residual} indicates the residual of best-fitted model. As this plot illustrates, the residual signal of model has a Gaussian distribution with zero mean. In addition, the \gls{ACF} plot shows that this signal is a stationary signal.}
+\textit{Figure \ref{fig:Ass2_Q2_best_model_residual} indicates the residual of the best-fitted model. As this plot illustrates, the residual signal had a Gaussian distribution with zero mean. Besides, the \gls{ACF} plot shows that this signal was stationary.}
 
 
 
@@ -108,7 +108,7 @@
 \end{figure}
 
   
-\textit{To predict, we split data into test and train set. About 35 samples for test set and others for training. Figure \ref{fig:Ass2_Q2_Automatic_model_forcasting} demonstrates the output of the best-fitted model. As can be seen, the model could predict the upward trend. The obtained RMS error was 294.506.}
+\textit{To predict, we split data into test and train sets. We considered about 35 samples for the test set and others for training. Figure \ref{fig:Ass2_Q2_Automatic_model_forcasting} demonstrates the output of the best-fitted model. As can be seen, the model could predict the upward trend. The obtained RMS error was 294.506. Although this model could predict the first sample, it could not follow the rest perfectly.}
 
 \begin{figure}[H]
     \centering
@@ -120,9 +120,17 @@
 \end{figure}
 
 
-\textit{For the rolling window approach, we predicted only one day. Then the actual value of this day was added to the training set while our training set had a fixed size. We considered less than 500 samples (approximately three years).}
+\textit{For the rolling window approach, we predicted only one day. Then the actual value of this day was added to the training set while our training set had a fixed size. We considered 500 samples (three years). The figure below shows the training set.}
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{manuscript/src/figures/Ass2/Ass2_Q2_Rolling_trainset.png}
+    \end{minipage}
+    \caption{The training set for rolling window approach.}
+    \label{fig:Ass2_Q2_Rolling_trainset}
+\end{figure}
 
-\textit{Since both the training data set did not change, we used the same order of the last part. Figures \ref{fig:Ass2_Q2_Rolling_Forecast} and \ref{fig:Ass2_Q2_Rolling_Forecast_1} demonstrate the output of the rolling window model. As can be seen, the model could follow the the test set. In addition, the RMS error was reduced from 294.506 to 69.371.}
+\textit{Since the training set did not change, we used the same order of the last model. Figures \ref{fig:Ass2_Q2_Rolling_Forecast} and \ref{fig:Ass2_Q2_Rolling_Forecast_1} demonstrate the output of the rolling window model. As can be seen, the model could follow the test set. Besides, the RMS error reduced from 294.506 to 69.371.}
 
 \begin{figure}[H]
     \centering
