@@ -255,7 +255,7 @@ window = 570  # = 3 * 365
 train, test = X[window:size], X[size : len(X)]
 history = [x for x in train]
 predictions = list()
-
+print(train.shape)
 
 plt.figure()
 plt.plot(series["Close"][window:-nobs], label="train set")
