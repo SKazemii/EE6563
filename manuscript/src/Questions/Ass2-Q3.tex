@@ -1,1 +1,151 @@
 \item \textbf{Finally, repeat the analysis in 3 but for a VAR-based approach. Explore the relationships between the chosen variables using appropriate tools. Again, there is no fixed number of variables assigned – use your judgement and justify your decisions.  Using a VAR framework, show the impact of including additional variables in your prediction. Repeat the analysis in 2 (a) and (b) using the updated models.} 
+
+\textit{Likewise the last question, we visualized the first nine signals to see what kind of data we have.} 
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{figures/Ass2/Ass2_Q3_raw_signal.png}
+    \end{minipage}
+    \caption{The visualization of the first nine columns.}
+    \label{fig:Ass2_Q4_raw_signal}
+\end{figure}
+
+
+
+
+\textit{As these signals had the different range, we  standardized all data to have the same range. Figure \ref{fig:Ass2_Q4_standard_data} indicates the standardized signals. Also, we applied \gls{ADF} on these signals to find out that these signals were stationary or non-stationary. Table \ref{tab:Ass2_Q4_ADF_results} shows the result of this test on the dataset.}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{figures/Ass2/Ass2_Q4_standard_data.png}
+    \end{minipage}
+    \caption{The visualization of the first nine columns. Columns were standardized.}
+    \label{fig:Ass2_Q4_standard_data}
+\end{figure}
+
+
+\begin{table}[H]
+\centering
+\caption{The result of the \gls{ADF} on the dataset.}
+\label{tab:Ass2_Q4_ADF_results}
+\input{manuscript/src/tables/Ass2/Ass2_Q3_ADF_results1}
+\end{table}
+
+\textit{According to table \ref{tab:Ass2_Q4_ADF_results} all columns were stationary except the "Close price".  
+We used a first-order differencing to turn this time series to a stationary data. Figures \ref{fig:Ass2_Q4_1diff_Close_signal} and \ref{fig:Ass2_Q4_PACF_ACF_1diff} indicate this $1^{st}$ order differencing signal along with its \gls{ACF} and \gls{PACF} plots. These two plots also show that the data got stationary.}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{figures/Ass2/Ass2_Q4_1diff_Close_signal.png}
+    \end{minipage}
+    \caption{The $1^{st}$ order differencing of "Close price" data.}
+    \label{fig:Ass2_Q4_1diff_Close_signal}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{figures/Ass2/Ass2_Q3_PACF_ACF_1diff.png}
+    \end{minipage}
+    \caption{A plot of \gls{ACF} and \gls{PACF} on the $1^{st}$ order differencing in "Close price".}
+    \label{fig:Ass2_Q4_PACF_ACF_1diff}
+\end{figure}
+
+\textit{After transforming and making stationary, we applied 
+\gls{ACF} and \gls{PACF} on the our target variable, here it was "Close price". Since PACF (see figure \ref{fig:Ass2_Q4_PACF_ACF_1diff}) had one significant lag, it can conclude that order of AR was one.}
+
+\textit{Also to find the best fitted model, we searched on different orders. For searching area, we used all lags between 1 and 13. Figure \ref{fig:Ass2_Q4_AIC_plot} shows the \gls{AIC} over the different orders. The best order in terms of simplicity and goodness belonged to order 7 (VAR(7) model). }
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{manuscript/src/figures/Ass2/Ass2_Q4_AIC_plot.png}
+    \end{minipage}
+    \caption{The \gls{AIC} over the different orders of VAR model.}
+    \label{fig:Ass2_Q4_AIC_plot}
+\end{figure}
+
+\textit{Figure \ref{fig:Ass2_Q4_residual_plot} indicates the residual of fitted model only for the first variable. As this plot illustrates, the residual signal of model had a Gaussian distribution with zero mean. In addition, the \gls{ACF} plot shows that this signal is a stationary signal.}
+
+
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{manuscript/src/figures/Ass2/Ass2_Q4_residual_plot.png}
+    \end{minipage}
+    \caption{The residual of the fitted model.}
+    \label{fig:Ass2_Q4_residual_plot}
+\end{figure}
+
+
+\textit{In addition, we applied Durbin Watson Statistic to estimate their correlation between residuals. This correlation shows whether or not pattern has any leftover pattern in the residuals. As table \ref{tab:Ass2_Q4_DW_results} indicates Durbin Watson results were close to 2. It means there are not correlation between residuals. } 
+
+\begin{table}[H]
+\centering
+\caption{The result of Durbin Watson test on the dataset.}
+\label{tab:Ass2_Q4_DW_results}
+\input{manuscript/src/tables/Ass2/Ass2_Q4_DW_results}
+\end{table}
+
+
+
+
+\textit{Figure \ref{fig:Ass2_Q4_residual_plot} indicates the residual of fitted model only for the first variable. As this plot illustrates, the residual signal of model had a Gaussian distribution with zero mean. In addition, the \gls{ACF} plot shows that this signal is a stationary signal.}
+
+
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{manuscript/src/figures/Ass2/Ass2_Q4_residual_plot.png}
+    \end{minipage}
+    \caption{The residual of the fitted model.}
+    \label{fig:Ass2_Q4_residual_plot}
+\end{figure}
+
+\textit{To forecast, we split data into test and train set like last two parts. After prediction, we reversed differencing and standardization to get the real forecast. Figures \ref{fig:Ass2_Q4_Forecast_vs_Actuals} and \ref{fig:Ass2_Q4_Forecast_vs_Actuals_of_close} demonstrate the output of the fitted model. As can be seen, the model could predict like the \gls{arima} (question 2a), and because of using the exogenous variables, the prediction had some ripples that followed the the actual data. These ripples decreased the RMS error to 271.592.} 
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{manuscript/src/figures/Ass2/Ass2_Q4_Forecast_vs_Actuals.png}
+    \end{minipage}
+    \caption{The prediction and actual data of VAR model.}
+    \label{fig:Ass2_Q4_Forecast_vs_Actuals}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{manuscript/src/figures/Ass2/Ass2_Q4_Forecast_vs_Actuals_of_close.png}
+    \end{minipage}
+    \caption{The prediction and actual data of VAR model.}
+    \label{fig:Ass2_Q4_Forecast_vs_Actuals_of_close}
+\end{figure}
+
+
+
+
+\textit{For the rolling window approach, we used the same procedure in question 2. Figures \ref{fig:Ass2_Q4_Rolling_Forecast_vs_Actuals} and \ref{fig:Ass2_Q4_Rolling_Forecast_vs_Actuals_of_close} demonstrate the output of the rolling window model for VAR. As can be seen, the model could follow the the test set better than previous models. The RMS error decreased to 261.581. Since we used additional information of exogenous variables, the prediction had some ripples.}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{manuscript/src/figures/Ass2/Ass2_Q4_Rolling_Forecast_vs_Actuals.png}
+    \end{minipage}
+    \caption{The prediction and actual data of VAR model.}
+    \label{fig:Ass2_Q4_Rolling_Forecast_vs_Actuals}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{manuscript/src/figures/Ass2/Ass2_Q4_Rolling_Forecast_vs_Actuals_of_close.png}
+    \end{minipage}
+    \caption{The prediction and actual data of VAR model.}
+    \label{fig:Ass2_Q4_Rolling_Forecast_vs_Actuals_of_close}
+\end{figure}
