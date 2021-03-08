@@ -12,8 +12,16 @@
 \end{figure}
 
 
-\textit{Before any transformation, we needed to find out which variables must be chosen. So that we applied two tools, Granger causality and Johanson's Cointegration test. Granger causality test implemented over the first 20 variables. Then we applied the second test on variables that were Granger causes. Tables \ref{} and \ref{tab:Ass2_Q4_coin} show the results of these two tests.
-Based on these tests, signals mom, mom1, mom2, and ROC\_X had a relation with the target variable ("Close price").}
+\textit{Before any transformation, we needed to find out which variables must choose, so that we applied two tools, Granger causality and Johanson's Cointegration test. Granger causality test implemented over the first 20 variables. Then we used the second test on variables that were Granger causes. Tables \ref{tab:Ass2_Q4_Granger_results1} and \ref{tab:Ass2_Q4_coin} show the results of these two tests.
+Based on these tests, signals mom, mom1, ROC\_X and EMA\_X had a relation with the target variable ("Close price"). We stored these variables for the next steps.}
+
+\begin{table}[H]
+\centering
+\caption{The result of Granger causality test.}
+\label{tab:Ass2_Q4_Granger_results1}
+\input{manuscript/src/tables/Ass2/Ass2_Q4_Granger_results1}
+\end{table}
+
 
 \begin{table}[H]
 \centering
@@ -22,7 +30,8 @@ Based on these tests, signals mom, mom1, mom2, and ROC\_X had a relation with th
 \input{manuscript/src/tables/Ass2/Ass2_Q4_coin}
 \end{table}
 
-\textit{As these signals had the different range, we  standardized all data to have the same range. Figure \ref{fig:Ass2_Q4_standard_data} indicates the standardized signals. Also, we applied \gls{ADF} on these signals to find out that these signals were stationary or non-stationary. Table \ref{tab:Ass2_Q4_ADF_results} shows the result of this test on the dataset.}
+
+\textit{As figure \ref{fig:Ass2_Q4_raw_signal} shown, signals had a different range. Therefore, we standardized all data to have the same scale. Figure \ref{fig:Ass2_Q4_standard_data} indicates the standardized variables. Also, we applied \gls{ADF} on these signals to find out that these signals were stationary or non-stationary. Table \ref{tab:Ass2_Q4_ADF_results} shows the result of this test on the dataset.}
 
 \begin{figure}[H]
     \centering
@@ -38,11 +47,11 @@ Based on these tests, signals mom, mom1, mom2, and ROC\_X had a relation with th
 \centering
 \caption{The result of the \gls{ADF} on the dataset.}
 \label{tab:Ass2_Q4_ADF_results}
-\input{manuscript/src/tables/Ass2/Ass2_Q3_ADF_results1}
+\input{manuscript/src/tables/Ass2/Ass2_Q4_ADF_results1}
 \end{table}
 
-\textit{According to table \ref{tab:Ass2_Q4_ADF_results} all columns were stationary except the "Close price".  
-We used a first-order differencing to turn this time series to a stationary data. Figures \ref{fig:Ass2_Q4_1diff_Close_signal} and \ref{fig:Ass2_Q4_PACF_ACF_1diff} indicate this $1^{st}$ order differencing signal along with its \gls{ACF} and \gls{PACF} plots. These two plots also show that the data got stationary.}
+\textit{According to table \ref{tab:Ass2_Q4_ADF_results} all columns were stationary except "Close price" and EMA variables.  
+We used a first-order differencing to turn this time series to a stationary data. Figures \ref{fig:Ass2_Q4_1diff_Close_signal} and \ref{fig:Ass2_Q4_PACF_ACF_1diff} indicate this $1^{st}$ order differencing for "Close price" signal along with its \gls{ACF} and \gls{PACF} plots. These two plots also show that the data got stationary. Table \ref{tab:Ass2_Q4_ADF_results2} shows the ADF test on the $1^{st}$ order differencing variables.}
 
 \begin{figure}[H]
     \centering
@@ -62,10 +71,23 @@ We used a first-order differencing to turn this time series to a stationary data
     \label{fig:Ass2_Q4_PACF_ACF_1diff}
 \end{figure}
 
-\textit{After transforming and making stationary, we applied 
-\gls{ACF} and \gls{PACF} on the our target variable, here it was "Close price". Since PACF (see figure \ref{fig:Ass2_Q4_PACF_ACF_1diff}) had one significant lag, it can conclude that order of AR was one.}
+\begin{table}[H]
+\centering
+\caption{The result of the \gls{ADF} on the $1^{st}$ order differencing variables.}
+\label{tab:Ass2_Q4_ADF_results2}
+\input{manuscript/src/tables/Ass2/Ass2_Q4_ADF_results2}
+\end{table}
 
-\textit{Also to find the best fitted model, we searched on different orders. For searching area, we used all lags between 1 and 13. Figure \ref{fig:Ass2_Q4_AIC_plot} shows the \gls{AIC} over the different orders. The best order in terms of simplicity and goodness belonged to order 7 (VAR(7) model). }
+
+\textit{After transforming and making stationary, we needed to find the best-fitted model. Thus we searched on different orders. For the searching area, we used all lags between 1 and 50. Figure \ref{fig:Ass2_Q4_AIC_plot} shows the \gls{AIC} over the different orders. The best order in terms of \gls{AIC} belonged to order 9 (VAR(9) model). We could do the same procedure to find the best order based on other information criteria. The table below shows these results.}
+
+\begin{table}[H]
+\centering
+\caption{The result of other information criteria.}
+\label{tab:Ass2_Q4_criteria}
+\input{manuscript/src/tables/Ass2/Ass2_Q4_criteria}
+\end{table}
+
 
 \begin{figure}[H]
     \centering
@@ -102,29 +124,8 @@ We used a first-order differencing to turn this time series to a stationary data
 
 
 
-\textit{Figure \ref{fig:Ass2_Q4_residual_plot} indicates the residual of fitted model only for the first variable. As this plot illustrates, the residual signal of model had a Gaussian distribution with zero mean. In addition, the \gls{ACF} plot shows that this signal is a stationary signal.}
+\textit{To forecast, we split data into test and train set like last two parts. After prediction, we reversed differencing and standardization to get the real forecast. Figure \ref{fig:Ass2_Q4_Forecast_vs_Actuals_of_close} demonstrate the output of the fitted model only for "Close price". As can be seen, the model could predict like the \gls{arima} (question 2a), and because of using the exogenous variables, the prediction had some ripples that followed the the actual data. These ripples decreased the RMS error to 271.592.} 
 
-
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{manuscript/src/figures/Ass2/Ass2_Q4_residual_plot.png}
-    \end{minipage}
-    \caption{The residual of the fitted model.}
-    \label{fig:Ass2_Q4_residual_plot}
-\end{figure}
-
-\textit{To forecast, we split data into test and train set like last two parts. After prediction, we reversed differencing and standardization to get the real forecast. Figures \ref{fig:Ass2_Q4_Forecast_vs_Actuals} and \ref{fig:Ass2_Q4_Forecast_vs_Actuals_of_close} demonstrate the output of the fitted model. As can be seen, the model could predict like the \gls{arima} (question 2a), and because of using the exogenous variables, the prediction had some ripples that followed the the actual data. These ripples decreased the RMS error to 271.592.} 
-
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{manuscript/src/figures/Ass2/Ass2_Q4_Forecast_vs_Actuals.png}
-    \end{minipage}
-    \caption{The prediction and actual data of VAR model.}
-    \label{fig:Ass2_Q4_Forecast_vs_Actuals}
-\end{figure}
 
 \begin{figure}[H]
     \centering
