@@ -152,8 +152,8 @@ res = grangers_causation_matrix(
 )
 print("[INFO] saving Results of Granger Causality test on file...")
 with open(os.path.join(tbl_dir, a + "Granger_results.tex"), "w") as tf:
-    tf.write(res.to_latex(index=True))
-print(res)
+    tf.write(res.T.to_latex(index=True))
+# print(res)
 ss = ["Close"] + res.T.query("Causality>0").index.to_list()
 
 df1 = series[ss]
@@ -221,7 +221,7 @@ for i in range(12):
 print("[INFO] saving Results of Dickey-Fuller Test on file...")
 with open(os.path.join(tbl_dir, a + "ADF_results.tex"), "w") as tf:
     tf.write(ADF_result.to_latex(index=True))
-print(ADF_result)
+# print(ADF_result)
 
 
 ############################################################################
@@ -244,9 +244,35 @@ df["EMA_200"] = df_scaled["EMA_200"].diff()
 df["EMA_50"] = df_scaled["EMA_50"].diff()
 df.dropna(inplace=True)
 
-for name, column in df.iteritems():
-    adfuller_test(column, name=column.name)
-    print("\n")
+ADF_result = pd.DataFrame(
+    np.zeros([7, 12]),
+    columns=df.columns[0:12],
+    index=[
+        "ADF Statistic",
+        "p-value",
+        "#Lags Used",
+        "Number of Observations Used",
+        "Critical Value (1%)",
+        "Critical Value (5%)",
+        "Critical Value (10%)",
+    ],
+)
+for i in range(12):
+    data = df[df.columns[i]]
+
+    result1 = stattools.adfuller(data, autolag="AIC")
+    ADF_result[df.columns[i]] = pd.Series(
+        result1[0:4],
+        index=["ADF Statistic", "p-value", "#Lags Used", "Number of Observations Used"],
+    )
+    for j in enumerate(result1[4].items()):
+        ADF_result.iloc[4 + j[0], i] = round(j[1][1], 4)
+
+
+print("[INFO] saving Results of Dickey-Fuller Test on file...")
+with open(os.path.join(tbl_dir, a + "ADF_results_d.tex"), "w") as tf:
+    tf.write(ADF_result.to_latex(index=True))
+# print(ADF_result)
 
 ############################################################################
 #########                     Making VAR model                     #########
@@ -366,7 +392,7 @@ print("[INFO] RMS error: %.3f" % rmse)
 ############################################################################
 
 
-window = 500  # = 3 * 365
+window = 570  # = 3 * 365
 
 df_train, df_test = df[window:-nobs], df[-nobs:]
 

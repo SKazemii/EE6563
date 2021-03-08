@@ -248,8 +248,7 @@ print("[INFO] RMS error: %.3f" % rmse)
 ############################################################################
 
 X = series["Close"].values
-size = len(X) - nobs
-window = 500  # = 3 * 365
+window = 570  # = 3 * 365
 
 df_train, df_test = df[window:-nobs], df[-nobs:]
 exog_train, exog_test = exog[window:-nobs], exog[-nobs:]
@@ -258,7 +257,7 @@ history_exog = exog_train
 predictions = list()
 
 plt.figure()
-plt.plot(series["Close"][window:size], label="train set")
+plt.plot(series["Close"][window:-nobs], label="train set")
 plt.legend()
 plt.savefig(os.path.join(fig_dir, a + "Rolling_trainset.png"))
 

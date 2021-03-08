@@ -170,8 +170,8 @@ df_differenced = df_differenced.diff().dropna()
 for name, column in df_differenced.iteritems():
     adfuller_test(column, name=column.name)
     print("\n")
-    
-    
+
+
 # select the order of VAR model
 AIC = list()
 BIC = list()
@@ -185,7 +185,7 @@ for i in [1, 2, 3, 4, 5, 6, 7, 8, 9]:
     print("BIC : ", result.bic)
     print("FPE : ", result.fpe)
     print("HQIC: ", result.hqic, "\n")
-#plt.plot(np.arange(1, 10), AIC, label="AIC")
+# plt.plot(np.arange(1, 10), AIC, label="AIC")
 plt.plot(np.arange(1, 10), AIC, label="BIC")
 plt.plot(4, AIC[4], marker=(5, 0), label="BIC")
 
@@ -194,7 +194,7 @@ plt.plot(4, AIC[4], marker=(5, 0), label="BIC")
 plt.plot(AIC)
 plt.show()
 model_fitted = model.fit(4)
-model_fitted.summary()
+print(model_fitted.summary())
 
 # 6. Check for Serial Correlation of Residuals (Errors) using Durbin Watson Statistic
 # Serial correlation of residuals is used to check if there is any leftover pattern in the residuals (errors).

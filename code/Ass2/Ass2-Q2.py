@@ -251,14 +251,14 @@ print("[INFO] Test RMS error: %.3f" % rmse)
 
 X = series["Close"].values
 size = len(X) - nobs
-window = 500  # = 3 * 365
+window = 570  # = 3 * 365
 train, test = X[window:size], X[size : len(X)]
 history = [x for x in train]
 predictions = list()
 
 
 plt.figure()
-plt.plot(series["Close"][window:size], label="train set")
+plt.plot(series["Close"][window:-nobs], label="train set")
 plt.legend()
 plt.savefig(os.path.join(fig_dir, a + "Rolling_trainset.png"))
 
@@ -303,43 +303,3 @@ plt.plot(
 )
 plt.legend()
 plt.savefig(os.path.join(fig_dir, a + "Rolling_Forecast_1.png"))
-
-
-############################################################################
-#########         Rolling Window Forecast of ARIMA model.         ##########
-############################################################################
-# window = 2
-# size = len(X) - 100  # int(len(X) * 0.66)
-# train, test = X[0:size], X[size : len(X)]
-# model = ARIMA(train, order=(window, 1, 0))
-# model_fit = model.fit(disp=-1)
-# coef = model_fit.params
-# print(model_fit.summary())
-
-# history = train[len(train) - window : len(train)].tolist()
-# print("coef = ", coef)
-
-# predictions = list()
-# for t in range(len(test)):
-#     yhat = coef[0]  # constant term
-#     for d in range(window):
-#         yhat += coef[d + 1] * history[window - d - 1]  # y=c0+c1x1+c2x2+c3x3
-#     predictions.append(yhat)
-
-#     obs = test[t]  # observation
-#     history.append(obs)
-
-#     history = history[-window:]
-
-#     print("predicted=%f, expected=%f" % (yhat, obs))
-
-# rmse = np.sqrt(mean_squared_error(test, predictions))
-# print("Test RMSE: %.3f" % rmse)
-# # plot
-# plt.figure()
-# x_total = test
-# xpos = np.arange(len(test))
-# plt.plot(x_total, linewidth=2, label="Actual")
-# plt.plot(xpos, predictions, color="red", label="Forecast")
-# plt.legend(loc="upper left", fontsize=8)
-# plt.savefig(os.path.join(fig_dir, a + "4.png"))
