@@ -124,13 +124,13 @@ We used a first-order differencing to turn this time series to a stationary data
 
 
 
-\textit{To forecast, we split data into test and train set like last two parts. After prediction, we reversed differencing and standardization to get the real forecast. Figure \ref{fig:Ass2_Q4_Forecast_vs_Actuals_of_close} demonstrate the output of the fitted model only for "Close price". As can be seen, the model could predict like the \gls{arima} (question 2a), and because of using the exogenous variables, the prediction had some ripples that followed the the actual data. These ripples decreased the RMS error to 271.592.} 
+\textit{To forecast, we split data into test and train set like last two parts. After prediction, we reversed differencing and standardization to get the real forecast. Figure \ref{fig:Ass2_Q4_Forecast_vs_Actuals_of_close} demonstrate the output of the fitted model only for "Close price". As can be seen, although the model could predict perfectly at the first, it got flat slope. The RMS error for this model was 339.599.} 
 
 
 \begin{figure}[H]
     \centering
     \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{manuscript/src/figures/Ass2/Ass2_Q4_Forecast_vs_Actuals_of_close.png}
+        \includegraphics[width=.9\textwidth]{manuscript/src/figures/Ass2/Ass2_Q4_Forecast_vs_Actuals_of_close.png}
     \end{minipage}
     \caption{The prediction and actual data of VAR model.}
     \label{fig:Ass2_Q4_Forecast_vs_Actuals_of_close}
@@ -139,16 +139,8 @@ We used a first-order differencing to turn this time series to a stationary data
 
 
 
-\textit{For the rolling window approach, we used the same procedure in question 2. Figures \ref{fig:Ass2_Q4_Rolling_Forecast_vs_Actuals} and \ref{fig:Ass2_Q4_Rolling_Forecast_vs_Actuals_of_close} demonstrate the output of the rolling window model for VAR. As can be seen, the model could follow the the test set better than previous models. The RMS error decreased to 261.581. Since we used additional information of exogenous variables, the prediction had some ripples.}
+\textit{For the rolling window approach, we used the same procedure in question 2. Figure \ref{fig:Ass2_Q4_Rolling_Forecast_vs_Actuals_of_close} demonstrate the output of the rolling window model for VAR. As can be seen, the model could follow the the test set better than the previous models. The RMS error decreased to 117.565.}
 
-\begin{figure}[H]
-    \centering
-    \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{manuscript/src/figures/Ass2/Ass2_Q4_Rolling_Forecast_vs_Actuals.png}
-    \end{minipage}
-    \caption{The prediction and actual data of VAR model.}
-    \label{fig:Ass2_Q4_Rolling_Forecast_vs_Actuals}
-\end{figure}
 
 \begin{figure}[H]
     \centering
