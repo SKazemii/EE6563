@@ -23,6 +23,8 @@ from statsmodels.tsa.ar_model import AutoReg
 from statsmodels.tsa.arima_model import ARMA, ARIMA
 from statsmodels.tsa.api import VAR
 
+from statsmodels.tsa.stattools import grangercausalitytests
+from statsmodels.tsa.vector_ar.vecm import coint_johansen
 
 plt.rcParams["figure.figsize"] = (14, 7)
 a = "Ass2_Q4_"
@@ -39,84 +41,29 @@ def parser(x):
     return datetime.strptime(x, "%Y-%m-%d")
 
 
-print("[INFO] Reading the first dataset")
-series = pd.read_csv(
-    dataset_file,
-    header=0,
-    index_col=0,
-    parse_dates=True,
-    squeeze=True,
-    date_parser=parser,
-).dropna()
-
-############################################################################
-#########                      Standardzation                     ##########
-############################################################################
-Standard_scaler = preprocessing.StandardScaler()
-series_scaled = Standard_scaler.fit_transform(series.iloc[:, 0:9].values)
-df_scaled = pd.DataFrame(series_scaled, index=series.index, columns=series.columns[0:9])
-
-############################################################################
-#########      Saving and showing the plot of the raw signal      ##########
-############################################################################
-
-print("[INFO] Saving and showing the plot of the first dataset")
-df = list()
-fig, axes = plt.subplots(nrows=3, ncols=3, dpi=120, figsize=(10, 6))
-
-ADF_result = pd.DataFrame(
-    np.zeros([7, 9]),
-    columns=series.columns[0:9],
-    index=[
-        "ADF Statistic",
-        "p-value",
-        "#Lags Used",
-        "Number of Observations Used",
-        "Critical Value (1%)",
-        "Critical Value (5%)",
-        "Critical Value (10%)",
-    ],
-)
-for i, ax in enumerate(axes.flatten()):
-    data = df_scaled[series.columns[i]]
-    ax.plot(data, color="blue", linewidth=1)
-    ax.set_title(series.columns[i])
-
-    result1 = stattools.adfuller(data, autolag="AIC")
-    ADF_result[series.columns[i]] = pd.Series(
-        result1[0:4],
-        index=["ADF Statistic", "p-value", "#Lags Used", "Number of Observations Used"],
-    )
-    for j in enumerate(result1[4].items()):
-        ADF_result.iloc[4 + j[0], i] = round(j[1][1], 4)
-
-plt.tight_layout()
-plt.savefig(os.path.join(fig_dir, a + "standard_data.png"))
-
-print("[INFO] saving Results of Dickey-Fuller Test on file...")
-with open(os.path.join(tbl_dir, a + "ADF_results.tex"), "w") as tf:
-    tf.write(ADF_result.to_latex(index=True))
+def adjust(val, length=6):
+    return str(val).ljust(length)
 
 
-############################################################################
-######### Making stationary dataset and the Granger Causality test #########
-############################################################################
-print("[INFO] calculating the first difference...")
-series_diff = df_scaled["Close"].copy(deep=True)
-series_diff = df_scaled["Close"].diff()
-series_diff.dropna(inplace=True)
-plt.figure()
-fig = plt.plot(series_diff)
-plt.savefig(os.path.join(fig_dir, a + "1diff_Close_signal.png"))
+def cointegration_test(df, alpha=0.05):
+    """Perform Johanson's Cointegration Test and Report Summary"""
+    out = coint_johansen(df, -1, 5)
+    d = {"0.90": 0, "0.95": 1, "0.99": 2}
+    traces = out.lr1
+    cvts = out.cvt[:, d[str(1 - alpha)]]
 
-print("[INFO] 'df' is now a stationary dataset...")
-df = df_scaled[series.columns[0:9]]
-df["Close"] = series_diff
-df.dropna(inplace=True)
-
-print("[INFO] calculating the Granger Causality test...")
-maxlag = 30
-test = "ssr_chi2test"
+    # Summary
+    print("Name   ::  Test Stat > C(95%)    =>   Signif  \n", "--" * 20)
+    for col, trace, cvt in zip(df.columns, traces, cvts):
+        print(
+            adjust(col),
+            ":: ",
+            adjust(round(trace, 2), 9),
+            ">",
+            adjust(cvt, 8),
+            " =>  ",
+            trace > cvt,
+        )
 
 
 def grangers_causation_matrix(data, variables, test="ssr_chi2test", verbose=False):
@@ -149,30 +96,178 @@ def grangers_causation_matrix(data, variables, test="ssr_chi2test", verbose=Fals
     return df
 
 
-res = grangers_causation_matrix(df, variables=df.columns)
+def adfuller_test(series, signif=0.05, name="", verbose=False):
+    """Perform ADFuller to test for Stationarity of given series and print report"""
+    r = stattools.adfuller(series, autolag="AIC")
+    output = {
+        "test_statistic": round(r[0], 4),
+        "pvalue": round(r[1], 4),
+        "n_lags": round(r[2], 4),
+        "n_obs": r[3],
+    }
+    p_value = output["pvalue"]
+
+    def adjust(val, length=6):
+        return str(val).ljust(length)
+
+    # Print Summary
+    print(f'    Augmented Dickey-Fuller Test on "{name}"', "\n   ", "-" * 47)
+    print(f" Null Hypothesis: Data has unit root. Non-Stationary.")
+    print(f" Significance Level    = {signif}")
+    print(f' Test Statistic        = {output["test_statistic"]}')
+    print(f' No. Lags Chosen       = {output["n_lags"]}')
+
+    for key, val in r[4].items():
+        print(f" Critical value {adjust(key)} = {round(val, 3)}")
+
+    if p_value <= signif:
+        print(f" => P-Value = {p_value}. Rejecting Null Hypothesis.")
+        print(f" => Series is Stationary.")
+    else:
+        print(f" => P-Value = {p_value}. Weak evidence to reject the Null Hypothesis.")
+        print(f" => Series is Non-Stationary.")
+
+
+print("[INFO] Reading the first dataset")
+series = pd.read_csv(
+    dataset_file,
+    header=0,
+    index_col=0,
+    parse_dates=True,
+    squeeze=True,
+    date_parser=parser,
+).dropna()
+
+b = 20
+############################################################################
+#########                  Granger Causality test                  #########
+############################################################################
+
+# 2. Granger Causality test
+maxlag = 12
+test = "ssr_chi2test"
+
+res = grangers_causation_matrix(
+    series.iloc[:, 0:b], variables=series.iloc[:, 0:b].columns
+)
 print("[INFO] saving Results of Granger Causality test on file...")
 with open(os.path.join(tbl_dir, a + "Granger_results.tex"), "w") as tf:
     tf.write(res.to_latex(index=True))
+print(res)
+ss = ["Close"] + res.T.query("Causality>0").index.to_list()
 
+df1 = series[ss]
+
+cointegration_test(df1)
+
+# 3. Cointegration Test
+# Cointegration test helps to establish the presence of a statistically
+# significant connection between two or more time series.
+# Cointegration is a technique used to find a possible correlation between time series processes in the long term.
+# df = df[["Close", "mom", "ROC_5", "ROC_10", "ROC_15"]]
+############################################################################
+#########                      Standardzation                     ##########
+############################################################################
+Standard_scaler = preprocessing.StandardScaler()
+series_scaled = Standard_scaler.fit_transform(df1.values)
+df_scaled = pd.DataFrame(series_scaled, index=df1.index, columns=df1.columns)
+
+
+# for name, column in df_scaled.iteritems():
+#     adfuller_test(column, name=column.name)
+#     print("\n")
+############################################################################
+#########      Saving and showing the plot of the raw signal      ##########
+############################################################################
+
+print("[INFO] Saving and showing the plot of the first dataset")
+df = list()
+fig, axes = plt.subplots(nrows=3, ncols=4, dpi=120, figsize=(14, 7))
+
+for i, ax in enumerate(axes.flatten()):
+    data = df_scaled[df_scaled.columns[i]]
+    ax.plot(data, color="blue", linewidth=1)
+    ax.set_title(df_scaled.columns[i])
+
+plt.tight_layout()
+plt.savefig(os.path.join(fig_dir, a + "standard_data.png"))
+
+
+ADF_result = pd.DataFrame(
+    np.zeros([7, 12]),
+    columns=df_scaled.columns[0:12],
+    index=[
+        "ADF Statistic",
+        "p-value",
+        "#Lags Used",
+        "Number of Observations Used",
+        "Critical Value (1%)",
+        "Critical Value (5%)",
+        "Critical Value (10%)",
+    ],
+)
+for i in range(12):
+    data = df_scaled[df_scaled.columns[i]]
+
+    result1 = stattools.adfuller(data, autolag="AIC")
+    ADF_result[df_scaled.columns[i]] = pd.Series(
+        result1[0:4],
+        index=["ADF Statistic", "p-value", "#Lags Used", "Number of Observations Used"],
+    )
+    for j in enumerate(result1[4].items()):
+        ADF_result.iloc[4 + j[0], i] = round(j[1][1], 4)
+
+
+print("[INFO] saving Results of Dickey-Fuller Test on file...")
+with open(os.path.join(tbl_dir, a + "ADF_results.tex"), "w") as tf:
+    tf.write(ADF_result.to_latex(index=True))
+print(ADF_result)
+
+
+############################################################################
+######### Making stationary dataset and the Granger Causality test #########
+############################################################################
+print("[INFO] calculating the first difference...")
+series_diff = df_scaled["Close"].copy(deep=True)
+series_diff = df_scaled["Close"].diff()
+series_diff.dropna(inplace=True)
+plt.figure()
+fig = plt.plot(series_diff)
+plt.savefig(os.path.join(fig_dir, a + "1diff_Close_signal.png"))
+
+print("[INFO] 'df' is now a stationary dataset...")
+df = df_scaled
+df["Close"] = series_diff
+df["EMA_10"] = df_scaled["EMA_10"].diff()
+df["EMA_20"] = df_scaled["EMA_20"].diff()
+df["EMA_200"] = df_scaled["EMA_200"].diff()
+df["EMA_50"] = df_scaled["EMA_50"].diff()
+df.dropna(inplace=True)
+
+for name, column in df.iteritems():
+    adfuller_test(column, name=column.name)
+    print("\n")
 
 ############################################################################
 #########                     Making VAR model                     #########
 ############################################################################
 print("[INFO] spliting dataset into train and test set...")
-nobs = 100
+nobs = 35
 df_train, df_test = df[0:-nobs], df[-nobs:]
 
 AIC = list()
 model = VAR(df_train)
-for i in np.arange(1, 14):
+ms = 50
+for i in np.arange(1, ms):
     result = model.fit(i)
     AIC.append(result.aic)
 
-
+x = model.select_order(maxlags=ms)
+print(x)
 plt.figure()
 min_p_value = np.min(AIC)
 lagm = AIC.index(min_p_value)
-plt.plot(np.arange(1, 14), AIC, label="AIC")
+plt.plot(np.arange(1, ms), AIC, label="AIC")
 plt.plot(lagm + 1, min_p_value, marker=(5, 0), color="red", label="min value")
 plt.legend()
 plt.savefig(os.path.join(fig_dir, a + "AIC_plot.png"))
@@ -180,7 +275,7 @@ plt.savefig(os.path.join(fig_dir, a + "AIC_plot.png"))
 
 model_fitted = model.fit(lagm)
 # print(model_fitted.summary())
-
+x = model.select_order(maxlags=ms)
 
 ############################################################################
 #########                    Durbin Watson Test                    #########
@@ -192,6 +287,13 @@ for col, val in zip(df.columns, out):
     print(col, "\t:\t ", round(val, 2))
 
 
+print("[INFO] saving the plot of residual...")
+fig, ax = plt.subplots(3, 1)
+residuals = model_fitted.resid["Close"]
+residuals.plot(title="Residuals", ax=ax[0])
+residuals.plot(kind="kde", title="Density", ax=ax[1])
+plot_acf(residuals, title="ACF", ax=ax[2])
+plt.savefig(os.path.join(fig_dir, a + "residual_plot.png"))
 ############################################################################
 #########                    Forecast VAR model                    #########
 ############################################################################
@@ -217,8 +319,8 @@ i = 1
 for col in columns:
     if col == "Close":
         df_fc[str(col) + "_original_forecast"] = (
-            series["Close"].iloc[-100]
-            + Standard_scaler.scale_[0] * df_fc[str(col) + "_forecast"].cumsum()
+            series["Close"].iloc[-nobs]
+            + (Standard_scaler.scale_[0]) * df_fc[str(col) + "_forecast"].cumsum()
         )
     else:
         df_fc[str(col) + "_original_forecast"] = (
@@ -245,14 +347,14 @@ for i, (col, ax) in enumerate(zip(df.columns, axes.flatten())):
     ax.tick_params(labelsize=6)
 
 plt.tight_layout()
-plt.savefig(os.path.join(fig_dir, a + "00_Forecast_vs_Actuals.png"))
+plt.savefig(os.path.join(fig_dir, a + "Forecast_vs_Actuals.png"))
 
 
 fig = plt.figure(dpi=150, figsize=(12, 7))
 df_results["Close_original_forecast"].plot(legend=True).autoscale(axis="x", tight=True)
-series["Close"][-nobs:].plot(legend=True)
+series["Close"].plot(legend=True)
 plt.tight_layout()
-plt.savefig(os.path.join(fig_dir, a + "00_Forecast_vs_Actuals_of_close.png"))
+plt.savefig(os.path.join(fig_dir, a + "Forecast_vs_Actuals_of_close.png"))
 
 
 rmse = np.sqrt(
@@ -268,6 +370,7 @@ window = 500  # = 3 * 365
 
 df_train, df_test = df[window:-nobs], df[-nobs:]
 
+
 history_train = df_train
 predictions = list()
 
@@ -278,14 +381,11 @@ plt.savefig(os.path.join(fig_dir, a + "Rolling_trainset.png"))
 
 
 for t in range(nobs):
-    model = VAR(history_train)
+    model = VAR(df_train)
     model_fit = model.fit(lagm)
 
-    lag_order = model_fit.k_ar
-
-    # Input data for forecasting
     # print(df_train)
-    forecast_input = df_train.values[-lag_order:]
+    forecast_input = df_train.values[-lagm:]
     # print(forecast_input)
     # print(forecast_input.shape)
 
@@ -297,10 +397,15 @@ for t in range(nobs):
     # print(df_test.iloc[t, :])
 
     history_train = history_train.append(df_test.iloc[t, :])
-    # print(history_train)
+    # print(history_train.shape)
+
+    # print(df_train.append([df_test.iloc[t, :]]))
+    df_train = df_train.append([df_test.iloc[t, :]])
+    df_train = df_train.iloc[1:, :]
+    # print(df_train)
 
     history_train = history_train[1:]
-    # print(history_train)
+    # print(df_train.shape)
 
 
 # print(predictions.shape)
@@ -317,8 +422,8 @@ i = 1
 for col in columns:
     if col == "Close":
         df_fc[str(col) + "_original_forecast"] = (
-            series["Close"].iloc[-100]
-            + (Standard_scaler.scale_[0]) * df_fc[str(col) + "_forecast"].cumsum()
+            series["Close"].iloc[-nobs]
+            + (-Standard_scaler.scale_[0]) * df_fc[str(col) + "_forecast"].cumsum()
         )
     else:
         df_fc[str(col) + "_original_forecast"] = (
@@ -345,30 +450,15 @@ for i, (col, ax) in enumerate(zip(df.columns, axes.flatten())):
     ax.tick_params(labelsize=6)
 
 plt.tight_layout()
-plt.savefig(os.path.join(fig_dir, a + "0_Rolling_Forecast_vs_Actuals.png"))
+plt.savefig(os.path.join(fig_dir, a + "Rolling_Forecast_vs_Actuals.png"))
 
 
 fig = plt.figure(dpi=150, figsize=(12, 7))
 df_results["Close_original_forecast"].plot(legend=True).autoscale(axis="x", tight=True)
-series["Close"][-nobs:].plot(legend=True)
+series["Close"].plot(legend=True)
 plt.tight_layout()
-plt.savefig(os.path.join(fig_dir, a + "0_Rolling_Forecast_vs_Actuals_of_close.png"))
+plt.savefig(os.path.join(fig_dir, a + "Rolling_Forecast_vs_Actuals_of_close.png"))
 
-
-# df_fc["original_forecast"] = (
-#     series["Close"].iloc[-nobs]
-#     + (-Standard_scaler.scale_[0]) * df_fc["close_forecast"].cumsum()
-# )
-# df_results = df_fc["original_forecast"]
-
-# print("[INFO] saving the plot of forecast...")
-# plt.figure(dpi=150)
-# plt.plot(series["Close"], label="training and testing data")
-# plt.plot(df_results.T, label="forecast")
-# plt.title("Forecast vs Actuals")
-# plt.legend(loc="upper left", fontsize=8)
-# plt.tight_layout()
-# plt.savefig(os.path.join(fig_dir, a + "0_Rolling_Forecast_vs_Actuals.png"))
 
 rmse = np.sqrt(
     mean_squared_error(series["Close"][-nobs:], df_results["Close_original_forecast"])
