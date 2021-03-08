@@ -82,14 +82,14 @@ Based on this test, signals mom, mom1, mom2, and ROC\_X were Granger causality o
     \label{fig:Ass2_Q3_residual_plot}
 \end{figure}
 
-\textit{To forecast, we split data into test and train set like the part 2. After prediction, we needed to reverse all transforms to get the real forecast. Figure \ref{fig:Ass2_Q3_Forecast_vs_Actuals} demonstrates the output of the fitted model. As can be seen, the model could predict like the \gls{arima} (question 2a). Because of using the exogenous variables, the prediction had some ripples that follow the ripples on the actual data.}
+\textit{To forecast, we split data into test and train set like the part 2. After prediction, we needed to reverse all transforms to get the real forecast. Figure \ref{fig:Ass2_Q3_Forecast_vs_Actuals} demonstrates the output of the fitted model. As can be seen, the model could predict like the \gls{arima} (question 2a), and because of using the exogenous variables, the prediction had some ripples that followed the the actual data. These ripples decreased the RMS error to 271.592.} 
 
 \begin{figure}[H]
     \centering
     \begin{minipage}[b]{1\textwidth}
         \includegraphics[width=\textwidth]{manuscript/src/figures/Ass2/Ass2_Q3_Forecast_vs_Actuals.png}
     \end{minipage}
-    \caption{The prediction and actual data of \gls{arima}(1, 0, 1) model.}
+    \caption{The prediction and actual data of \gls{arima}X(1, 0, 1) model.}
     \label{fig:Ass2_Q3_Forecast_vs_Actuals}
 \end{figure}
 
@@ -97,14 +97,14 @@ Based on this test, signals mom, mom1, mom2, and ROC\_X were Granger causality o
 
 
 
-\textit{For the rolling window approach, we used the same procedure in question 2. Figure \ref{fig:Ass2_Q3_Rolling_Forecast_vs_Actuals} demonstrates the output of the rolling window model for \gls{arima}X. As can be seen, the model could follow the the test set. The RMS error decreased to 261.581. The prediction still had some ripples that caused by reduced from 261.581.}
+\textit{For the rolling window approach, we used the same procedure in question 2. Figure \ref{fig:Ass2_Q3_Rolling_Forecast_vs_Actuals} demonstrates the output of the rolling window model for \gls{arima}X. As can be seen, the model could follow the the test set better than previous models. The RMS error decreased to 261.581. Since we used additional information of exogenous variables, the prediction had some ripples.}
 
 \begin{figure}[H]
     \centering
     \begin{minipage}[b]{1\textwidth}
         \includegraphics[width=\textwidth]{manuscript/src/figures/Ass2/Ass2_Q3_Rolling_Forecast_vs_Actuals.png}
     \end{minipage}
-    \caption{The prediction and actual data of \gls{arima}(1, 0, 1) model in rolling windows approach.}
+    \caption{The prediction and actual data of \gls{arima}X(1, 0, 1) model in rolling windows approach.}
     \label{fig:Ass2_Q3_Rolling_Forecast_vs_Actuals}
 \end{figure}
 
