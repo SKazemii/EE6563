@@ -86,7 +86,7 @@ we used a first-order differencing to turn these time series into the stationary
     \label{fig:Ass2_Q3_residual_plot}
 \end{figure}
 
-\textit{To forecast, we split data into test and train set like part 2. After prediction, we needed to reverse all transformations to get the real forecast. Figure \ref{fig:Ass2_Q3_Forecast_vs_Actuals} demonstrates the output of the fitted model. As can be seen, the model could predict like the \gls{arima} (question 2a), and because of using the exogenous variables, the prediction could follow  some ripples that followed the actual data. These ripples decreased the RMS error to 271.592.} 
+\textit{To forecast, we split data into test and train set like part 2. After prediction, we needed to reverse all transformations to get the real forecast. Figure \ref{fig:Ass2_Q3_Forecast_vs_Actuals} demonstrates the output of the fitted model. As can be seen, because of using the exogenous variables, the model could predict some changes, and for others could not follow the actual data. The RMS error was 328.647.} 
 
 \begin{figure}[H]
     \centering
@@ -101,7 +101,7 @@ we used a first-order differencing to turn these time series into the stationary
 
 
 
-\textit{For the rolling window approach, we used the same procedure in question 2. Figure \ref{fig:Ass2_Q3_Rolling_Forecast_vs_Actuals} demonstrates the output of the rolling window model for \gls{arima}X. As can be seen, the model could follow the the test set better than previous models. The RMS error decreased to 251.236. Since we used additional information of exogenous variables, the prediction had some ripples.}
+\textit{For the rolling window approach, we used the same procedure in question 2. Figure \ref{fig:Ass2_Q3_Rolling_Forecast_vs_Actuals} demonstrates the output of the rolling window model for \gls{arima}X. As can be seen, the model could follow the test set better than previous model. The RMS error decreased from 328.647 to 256.297. It seems that the prediction of both models had a negative bias.}
 
 \begin{figure}[H]
     \centering
