@@ -4,10 +4,10 @@ print("[INFO] importing libraries....")
 import os
 import numpy as np
 import h5py
-import matplotlib.pyplot as plt
 import pandas as pd
 import config as cfg
 import pickle
+import matplotlib.pyplot as plt
 
 print("[INFO] defining functions....")
 
@@ -54,8 +54,7 @@ ss = np.concatenate(
     (img[18, 21:65, 17:42], img[25, 21:65, 17:42], img[32, 21:65, 17:42]), axis=1
 )
 i = plt.imshow(ss)
-plt.tight_layout()
-plt.savefig(os.path.join(cfg.fig_dir, "frame.png"))
+plt.savefig(os.path.join(cfg.fig_dir, "frame.png"), bbox_inches="tight")
 
 print("[INFO] storing in pandas dataframe ....")
 Data_sum = list()
@@ -63,7 +62,7 @@ Data_max = list()
 Data_xCe = list()
 Data_yCe = list()
 
-for sample in range(barefoots.shape[0]-1):
+for sample in range(barefoots.shape[0] - 1):
     img = np.squeeze(barefoots[sample, :, :, :])
     aa = np.sum(img, axis=2)
     bb = np.sum(aa, axis=1)
@@ -78,7 +77,7 @@ for sample in range(barefoots.shape[0]-1):
     Data_xCe.append(wx)
     Data_yCe.append(wy)
 
-index = ["Sample_" + str(i) for i in np.arange(barefoots.shape[0]-1)]
+index = ["Sample_" + str(i) for i in np.arange(barefoots.shape[0] - 1)]
 column = [i for i in np.arange(90)]
 
 df_sum = pd.DataFrame(Data_sum, columns=column, index=index).T
@@ -111,7 +110,7 @@ df_sum["Sample_150"].plot(ax=axes)
 df_sum["Sample_400"].plot(ax=axes)
 
 plt.legend(["Sample 1", "Sample 100", "Sample 200", "Sample 300", "Sample 400"])
-plt.savefig(os.path.join(cfg.fig_dir, "df_sum.png"))
+plt.savefig(os.path.join(cfg.fig_dir, "df_sum.png"), bbox_inches="tight")
 
 
 print("[INFO] Saving and showing the plot of the some samples...")
@@ -124,7 +123,7 @@ df_max["Sample_150"].plot(ax=axes)
 df_max["Sample_400"].plot(ax=axes)
 
 plt.legend(["Sample 1", "Sample 100", "Sample 200", "Sample 300", "Sample 400"])
-plt.savefig(os.path.join(cfg.fig_dir, "df_max.png"))
+plt.savefig(os.path.join(cfg.fig_dir, "df_max.png"), bbox_inches="tight")
 
 print("[INFO] Saving and showing the plot of the some samples...")
 plt.figure()
@@ -136,7 +135,7 @@ df_xCe["Sample_150"].plot(ax=axes)
 df_xCe["Sample_400"].plot(ax=axes)
 
 plt.legend(["Sample 1", "Sample 100", "Sample 200", "Sample 300", "Sample 400"])
-plt.savefig(os.path.join(cfg.fig_dir, "df_xCe.png"))
+plt.savefig(os.path.join(cfg.fig_dir, "df_xCe.png"), bbox_inches="tight")
 
 print("[INFO] Saving and showing the plot of the some samples...")
 plt.figure()
@@ -148,4 +147,4 @@ df_yCe["Sample_150"].plot(ax=axes)
 df_yCe["Sample_400"].plot(ax=axes)
 
 plt.legend(["Sample 1", "Sample 100", "Sample 200", "Sample 300", "Sample 400"])
-plt.savefig(os.path.join(cfg.fig_dir, "df_yCe.png"))
+plt.savefig(os.path.join(cfg.fig_dir, "df_yCe.png"), bbox_inches="tight")

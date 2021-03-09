@@ -1,8 +1,11 @@
 import os
 import numpy as np
 import datetime
+import matplotlib.pyplot as plt
 
-a = "Ass1_D2_"
+
+plt.rcParams["figure.figsize"] = (14, 7)
+plt.rcParams["figure.dpi"] = 128
 
 
 classifier_name = "knn"  # {lda, knn, svm, reg}
@@ -45,9 +48,7 @@ svmspace = {
     "random_state": [seed],
 }
 
-ldaspace = {
-    "n_components": [10, 15, 20, 25, 30]
-}
+ldaspace = {"n_components": [10, 15, 20, 25, 30]}
 
 regspace = {
     "C": [1, 10, 100, 1000],
@@ -57,8 +58,7 @@ print("[INFO] Setting directories")
 project_dir = os.getcwd()
 fig_dir = os.path.join(project_dir, "manuscript", "src", "figures", "project")
 tbl_dir = os.path.join(project_dir, "manuscript", "src", "tables", "project")
-data_dir = os.path.join(project_dir, "Dataset",
-                        "project", "Step Scan Dataset", "[H5]")
+data_dir = os.path.join(project_dir, "Dataset", "project", "Step Scan Dataset", "[H5]")
 dataset_file = os.path.join(data_dir, "footpressures_align.h5")
 pickle_dir = os.path.join(project_dir, "Dataset", "project", "pickle")
 output_dir = os.path.join(project_dir, "code", "project", "output")
