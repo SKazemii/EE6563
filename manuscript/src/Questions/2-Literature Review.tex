@@ -1,0 +1,25 @@
+\section{Literature Review}
+
+%\subsection{The subsection also appears in the bookmarks}
+DARPA, the Defense Advanced Research Projects Agency of the USA, started to research gait recognition by vision data in the early 2000s \cite{Connor2018BiometricFeatures}. Besides vision data \cite{Chen2006GaitModel}, some studies have instead used accelerometry from smartphones \cite{Mantyjarvi2005IdentifyingAccelerometers}, audio \cite{Geiger2013Gait-basedFeatures}, and underfoot pressures data \cite{Nakajima2000Footprint-BasedRecognition}. 
+
+
+
+
+
+
+
+Addlesee in \cite{Addlesee1997TheFloor} used a new sensor (Active floor) for the first investigations into footprint recognition. This sensor was a square carpet tile maintained at the corners by some load cells and supplied the \gls{grf}. Orr and Abowd \cite{Orr2000TheTracking} extracted ten temporal features from the \gls{grf} curve. 
+
+Moustakidis et al. \cite{Moustakidis2008SubjectSignals} extracted temporal features from the wavelet decomposition of \gls{grf} and then applied a kernel-based support vector machine. These studies have limitations in terms of the small sample sizes used for classification (e.g., 15 \cite{Orr2000TheTracking}, 10 \cite{Moustakidis2008SubjectSignals}, and 15 \cite{MiddletonARecognition}), and moderate classification rates ($CR < 90\%$).
+
+Pataky in \cite{Pataky2012GaitIndividuals} could achieve a 99.6\% classification rate in a 104-participant dataset. This result was based on spatial alignment and automated dimensionality reduction. He used a template image that was made in \cite{Pataky2011AnEvaluation}. Pataky named this template the Munster-104 template.
+
+In 2015, Cantoral-Ceballos \cite{Cantoral-Ceballos2015IntelligentEnvironments} introduced an intelligent carpet system. This carpet system (iMAGiMAT) worked based on the deformation of 116 distributed \gls{pof}. So that applying pressure to this system would change the intensity of the transmitted light. Thus the nature of the output of this sensor is time-series data.
+ 
+Costilla-Reyes et al. \cite{Costilla-Reyes2016TemporalSystem} extracted five features directly from raw data of the iMAGiMAT sensor. These features were spatial Average (SA), standard deviation (SD), adjacent mean (AM), cumulative sum (CS), and cumulative product (CP).
+They implemented 14 various machine learning methods for classification. The best result belonged to the Random Forest model with a validation score of $90.84 \pm 2.46\%$. 
+
+Later, they in \cite{Costilla-Reyes2018DeepSensors} used an end-to-end convolutional neural network to extract Spatio-temporal features automatically. This technique increased their score by about 7 percent.
+
+%Barandas et al. in \cite{Barandas2020TSFEL:Library} introduced a Python package entitled Time Series Feature Extraction Library (TSFEL). This Python package could compute more than 60 different features from the time-series data.

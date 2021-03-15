@@ -1,83 +1,86 @@
-\begin{tabularx}{\linewidth}{@{}rlcc@{}}
-\caption{My caption} \\
+{\small
+\hspace*{-4cm}\begin{tabularx}{\linewidth}{@{}rlcc@{}}
+\caption{list of features} \\
 \label{tab:Features_list}\\
 
 \toprule
-  \#  &  Features Name & Categories Name (type) & Description\\
+  \#  &  Features Name & {Categories Name } & \# features \\
 \midrule
 \endfirsthead
 \toprule
-  \#  &  Features Name & Categories Name (type) & Description\\
+  \#  &  Features Name & {Categories Name } & \# features \\
 \midrule
 \endhead
 \midrule
-\multicolumn{2}{r}{\footnotesize( To be continued)}
+\multicolumn{4}{r}{\footnotesize( To be continued)}
 \endfoot
 \bottomrule
 \endlastfoot
 
-  1 & ECDF              & Statistical domain & A\\
-  2 & ECDF Percentile      & Statistical domain & A         \\
-  3 & ECDF Percentile Count & Statistical domain & A\\
-  4 & Histogram    & Statistical domain & A \\
-  5 & Interquartile range               & Statistical domain & A \\
-  6 & Kurtosis                   & Statistical domain & A \\
-  7 & Max         & Statistical domain & A \\
-  8 & Mean         & Statistical domain  & A\\
-  9 & Mean absolute deviation         & Statistical domain  & A\\
-  10 & Median         & Statistical domain  & A\\
-  11 & Median absolute deviation         & Statistical domain  & A\\
-  12 & Min         & Statistical domain  & A\\
-  13 & Root mean square         & Statistical domain  & A\\
-  14 & Skewness         & Statistical domain  & A\\
-  15 & Standard deviation         & Statistical domain  & A\\
-  16 & Variance         & Statistical domain  & A\\
-  17 & Absolute energy         & Temporal domain  & A\\
-  18 & Area under the curve         & Temporal domain  & A\\
-  19 & Autocorrelation         & Temporal domain  & A\\
-  20 & Centroid         & Temporal domain  & A\\
-  21 & Entropy         & Temporal domain  & A\\
-  22 & Mean absolute diff         & Temporal domain  & A\\
-  23 & Mean diff         & Temporal domain  & A\\
-  24 & Median absolute diff         & Temporal domain  & A\\
-  25 & Median diff         & Temporal domain  & A\\
-  27 & Negative turning points         & Temporal domain  & A\\
-  28 & Peak to peak distance         & Temporal domain  & A\\
-  29 & Positive turning points         & Temporal domain  & A\\
-  30 & Signal distance         & Temporal domain  & A\\
-  31 & Slope         & Temporal domain  & A\\
-  32 & Sum absolute diff         & Temporal domain  & A\\
-  33 & Total energy         & Temporal domain  & A\\
-  34 & Zero crossing rate         & Temporal domain  & A\\
-  35 & Neighbourhood peaks         & Temporal domain  & A\\
-  36 & FFT mean coefficient         & Spectral domain  & A\\
-  37 & Fundamental frequency         & Spectral domain  & A\\
-  38 & Human range energy         & Spectral domain  & A\\
-  39 & LPCC         & Spectral domain  & A\\
-  40 & MFCC         & Spectral domain  & A\\
-  41 & Max power spectrum         & Spectral domain  & A\\
-  42 & Maximum frequency         & Spectral domain  & A\\
-  43 & Median frequency         & Spectral domain  & A\\
-  44 & Power bandwidth         & Spectral domain  & A\\
-  45 & Spectral centroid         & Spectral domain  & A\\
-  46 & Spectral decrease         & Spectral domain  & A\\
-  47 & Spectral distance         & Spectral domain  & A\\
-  48 & Spectral entropy         & Spectral domain  & A\\
-  49 & Spectral kurtosis         & Spectral domain  & A\\
-  50 & Spectral positive turning points         & Spectral domain  & A\\
-  51 & Spectral roll-off         & Spectral domain  & A\\
-  52 & Spectral roll-on         & Spectral domain  & A\\
-  53 & Spectral skewness         & Spectral domain  & A\\
-  54 & Spectral slope         & Spectral domain  & A\\
-  55 & Spectral spread         & Spectral domain  & A\\
-  56 & Spectral variation         & Spectral domain  & A\\
-  57 & Wavelet absolute mean         & Spectral domain  & A\\
-  58 & Wavelet energy         & Spectral domain  & A\\
-  59 & Wavelet standard deviation         & Spectral domain  & A\\
-  60 & Wavelet entropy         & Spectral domain  & A\\
-  61 & Wavelet variance         & Spectral domain  & A\\
-
-\end{tabularx}
-
+%  1 & ECDF              & Statistical  & A\\
+%  2 & ECDF Percentile      & Statistical  & A         \\
+%  3 & ECDF Percentile Count & Statistical  & A\\
+  1 & Histogram    & Statistical  & 10 \\
+%  5 & Interquartile range               & Statistical  & A \\
+%  6 & Kurtosis                   & Statistical  & A \\
+  2 & Max         & Statistical  & 1 \\
+  3 & Mean         & Statistical   & 1\\
+  4 & Mean absolute deviation         & Statistical   & 1\\
+  5 & Median         & Statistical   & 1\\
+  6 & Median abs deviation         & Statistical   & 1\\
+  7 & Min         & Statistical   & 1\\
+  8 & Root mean square         & Statistical   & 1\\
+  %9 & Skewness         & Statistical   & A\\
+  9 & Standard deviation         & Statistical   & 1\\
+  10 & Variance         & Statistical   & 1 \\ \hline
+   11 & AR coefficients & \Gls{AR} & 8\\\hline
+  12 & Absolute energy         & Temporal  & 1 \\%& The absolute energy of the signal.\\
+  13 & Area under the curve         & Temporal   & 1\\ %& Computes the area under the curve of the signal.\\
+  %19 & Autocorrelation         & Temporal   & -1\\
+  14 & Centroid         & Temporal   & 1 \\%& Computes the centroid along the time axis\\
+  15 & Entropy         & Temporal   & 1 \\%& Computes the Shannon entropy of the signal\\
+  16 & Mean absolute diff         & Temporal   & 1\\ %& Computes mean absolute differences of the signal\\
+  17 & Mean diff         & Temporal   & 1 \\%& Computes mean of differences of the signal.\\
+  18 & Median absolute diff         & Temporal   & 1 \\%& Computes median absolute differences of the signal.\\
+  19 & Median diff         & Temporal   & 1 \\%& Computes median of differences of the signal. \\
+  20 & Negative turning points         & Temporal   & 1\\ %& Computes number of negative turning points of the signal.\\
+  %28 & Neighbourhood peaks         & Temporal   & 1 & Computes the number of peaks from a neighbourhood of the signal.\\
+  21 & Positive turning points         & Temporal   & 1 \\%& Computes number of positive turning points of the signal. \\
+  %30 & Signal distance         & Temporal   & -1 & \\
+  22 & Slope         & Temporal   & 1 \\\hline%& by fitting a linear equation to the observed data.\\
+  %32 & Sum absolute diff         & Temporal   & A\\
+  %33 & Total energy         & Temporal   & A\\
+  %34 & Zero crossing rate         & Temporal   & -1\\
+  %35 & Neighbourhood peaks         & Temporal   & A\\
+  23 & FFT mean coefficient         & Spectral   & 256\\
+  %37 & Fundamental frequency         & Spectral   & A\\
+  %38 & Human range energy         & Spectral   & A\\
+  %39 & LPCC         & Spectral   & A\\
+  %40 & MFCC         & Spectral   & A\\
+  24 & Max power spectrum         & Spectral   & 1\\
+  25 & Maximum frequency         & Spectral   & 1\\
+  26 & Median frequency         & Spectral   & 1\\
+  %44 & Power bandwidth         & Spectral   & A\\
+  27 & Spectral centroid         & Spectral   & 1\\
+  %46 & Spectral decrease         & Spectral   & A\\
+  %47 & Spectral distance         & Spectral   & A\\
+  28 & Spectral entropy         & Spectral   & 1\\
+  %49 & Spectral kurtosis         & Spectral   & A\\
+  %50 & Spectral turning points         & Spectral   & A\\
+  %51 & Spectral roll-off         & Spectral   & A\\
+  %52 & Spectral roll-on         & Spectral   & A\\
+  %53 & Spectral skewness         & Spectral   & A\\
+  %54 & Spectral slope         & Spectral   & A\\
+  %55 & Spectral spread         & Spectral   & A\\
+  %56 & Spectral variation         & Spectral   & A\\
+  29 & Wavelet abs mean         & Spectral   & 10\\
+  30 & Wavelet energy         & Spectral   & 10\\
+  31 & Wavelet stand deviation         & Spectral   & 10\\
+  32 & Wavelet entropy         & Spectral   & 1\\
+  33 & Wavelet variance         & Spectral   & 10\\ \hline
+  34 & Inter stride         & Temporal   & 1\\ \hline
+\multicolumn{3}{r}{The total number of features} & 341\\
+\end{tabularx}\hspace*{-4cm}
+}
 
 

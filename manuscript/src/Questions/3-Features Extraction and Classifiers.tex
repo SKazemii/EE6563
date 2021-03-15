@@ -1,0 +1,51 @@
+\section{Features Extraction and Classifiers}
+
+In this section, we describe algorithms along with their results. These are including Features Extraction and Selection, hyper-parameters of the classifier, and evaluation methodology. Afterward, the results are reported.
+
+\subsection{Features Extraction and Selection}
+
+As we mentioned before, our goal is to develop a classification model. For this classification task, we use about $34$ features in four categories. These feature sets are explained briefly here, and more details about them can be found in Appendix A.
+
+After extracting features from each time series, some of Low variance and high-correlated features were eliminated. Feature selection causes the complexity of the model to reduce. Ten percent of handcraft features held out for testing our classifier, and others were divided into 10-fold cross-validation for evaluation and training. 
+
+To have equally balanced classes in the test set and cross-validation set, the methods Stratified and StratifiedKFold were used. As a result, all subjects engaged in the test result. %for extracting features from each time series, we need to consider a windows that size with over  Each group of features implemented on a size for extracting features from each time series, we need to consider a windows that  
+ 
+\subsubsection{Temporal Features}
+
+The first set of features extracted was temporal features. In this set, we focused on features that related to the time axis. Features like Entropy, Absolute energy, Centroid, Area under the curve fall into this group. 
+
+\subsubsection{Statistical Features}
+
+Statistical information was another feature set that was extracted from the dataset. Min, Max, variance, and standard deviation were some of the statistical features. The total number of features in this group is about 10 for each time series.  
+
+\subsubsection{Spectral Features}
+
+In the third category, both FFT and wavelet transform were used to extract spectral information from the dataset. Not only the time complexity but also the number of features were more than two other feature sets. 
+Max power spectrum, Maximum frequency, Spectral centroid, Wavelet energy, and FFT mean coefficient were spectral features extracted from the dataset.
+
+\subsubsection{\Gls{AR} coefficients}
+
+The final set of features in this research was the coefficients of \gls{AR}. In this set, the first-order differencing used to make our data stationary. Then based on significant lag on \gls{PACF}, the order of the model  was selected. This approach extracted two features for each time-series signal.
+
+\subsection{Machine learning algorithms}
+
+These time-series features fed to four different types of machine learning models with tuned hyper-parameters. The hyper-parameters tuning was implemented by grid search and performance evaluation with a 10  StratifiedKFold cross-validation. Table \ref{tab:1_ML} shows these models along with their best-tuned hyper-parameters.
+
+\subsection{Results Progress}
+
+Results of four different machine learning algorithms in several types of features are shown in table \ref{tab:1_ML}. For comparing algorithms, the accuracy metric was used. 
+ 
+The LDA classifier’s best performance was a 69.2\% accuracy, as shown in table \ref{tab:1_ML}. This result comes from classifying the combination of all features. 
+The kNN algorithm had similar performance on all kinds of features except \gls{AR} features. All algorithms had the worst results on this group of features.
+
+The SVM performed best with the mixture of all features, at 56\% accuracy (see table \ref{tab:1_ML}). All other feature subsets achieved lower than this amount. The worst performance for all these classifiers belonged to the random forest classifier with about 30\%.
+
+\begin{center}
+	\begin{table*}[!t]
+	\caption{Machine learning models along with its best-tuned hyper-parameters.}
+	\label{tab:1_ML}
+	\hspace{-1em}
+%	\setlength\extrarowheight{-2pt}
+	\input{tables/project/1_ML.tex}
+	\end{table*}
+\end{center}

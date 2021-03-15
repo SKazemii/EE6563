@@ -7,8 +7,8 @@ Although biometric identification appears sophisticated when compared to somethi
 One behavioral biometric that has gained recent success and is worth further consideration given current constraints is gait recognition. Usage of gait recognition has grown in the security industry in recent decades due to advances in deep learning. Singh et al. \cite{Singh2019APerspectives} categorized gait recognition into two main categories, vision-based and sensor-based. In vision-based approaches, cameras capture data of a person walking for the purpose of gait recognition. Sensor-based gait recognition is performed using either wearable sensors which produce kinematic data, or floor sensors which produce kinetic data \cite{Connor2018BiometricFeatures}.
 
 
-\section{Datasets}
-This project uses two different datasets, UoM-Gait-Dataset and Stepscan. The UoM-Gait-Dataset was obtained from iMAGiMAT sensor \cite{Cantoral-Ceballos2015IntelligentEnvironments} (an optical floor sensor). This sensor contains about 160 distributed \gls{pof} that indicate the foot pressure signals over time. Some studies like \cite{Costilla-Reyes2020DeepHealthcare} use this dataset to construct an image for their research.
+%\section{Datasets}
+This project uses two different datasets, UoM-Gait-Dataset and Stepscan. The UoM-Gait-Dataset was obtained from iMAGiMAT sensor \cite{Cantoral-Ceballos2015IntelligentEnvironments} (an optical floor sensor). This sensor contains about 160 distributed \gls{pof} that indicate the foot pressure signals over time. Some studies like \cite{Costilla-Reyes2020DeepHealthcare} used this dataset to construct an image for their research.
 
 The second dataset that was used for this project is called the Stepscan dataset \cite{Connor2015ComparingBiometrics}. This dataset was obtained from high-resolution floor tiles that has recently introduced by Stepscan Technologies Inc.
 
@@ -24,9 +24,13 @@ In the final method, some spatial features are extracted from each frame (e.g. c
 
 In this research, the last mentioned method was applied to produce time-series data. Figure \ref{fig:extracted_features} indicates the time series extracted from the Stepscan dataset. The spatial features extracted in each frame were maximum pressure (figure \ref{fig:extracted_features_max}), the center of pressure (COP) (figures \ref{fig:extracted_features_yCe} and \ref{fig:extracted_features_xCe}), and the average pressure (figure \ref{fig:extracted_features_sum}). 
 
+In general, there are two modes for footprint recognition or generally in the biometric system: verification or identification mode \cite{Jain2004AnRecognition}. In verification mode, the biometric system use for accessing buildings or data. In other words, the system compares the claimed person with its dataset to determine whether or not the claim is valid. These systems consume less processing power and time consumption \cite{Jain2004AnRecognition}. 
 
+%Because verification systems only need to compare the presented biometric to a biometric reference stored in the system, they can generate results more quickly and are more accurate than identification systems, even when the size of the database increases.
 
+This project will focus on verification. We hope to engineer some temporal features. These features help us to classify participants. 
 
+The rest of this research is organized as follows: Section 2 provides the relevant works and researches. Then, in Section 3, the time domain features as well as machine learning models are defined. In Section 4, we discuss the results, and there is a proposed work in Section 5.
 
 %As the figure \ref{fig:Stepscan_dataset} shows the data is a image not a time series data. Therefore, we need to convert our data to a time series. 
 
@@ -44,28 +48,28 @@ In this research, the last mentioned method was applied to produce time-series d
      \centering
      \begin{subfigure}[b]{0.5\textwidth}
          \centering
-         \includegraphics[width=\textwidth]{figures/project/df_max.png}
+         \includegraphics[width=0.9\textwidth]{figures/project/df_max.png}
          \caption{The maximum pressure in each frame}
          \label{fig:extracted_features_max}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.5\textwidth}
          \centering
-         \includegraphics[width=\textwidth]{figures/project/df_sum.png}
+         \includegraphics[width=0.9\textwidth]{figures/project/df_sum.png}
          \caption{The average pressure in each frame}
          \label{fig:extracted_features_sum}
      \end{subfigure}
      \vfill
      \begin{subfigure}[b]{0.5\textwidth}
          \centering
-         \includegraphics[width=\textwidth]{figures/project/df_xCe.png}
+         \includegraphics[width=0.9\textwidth]{figures/project/df_xCe.png}
          \caption{The x position in the center of pressure (COP) in each frame}
          \label{fig:extracted_features_xCe}
      \end{subfigure}
      \hfill
      \begin{subfigure}[b]{0.5\textwidth}
          \centering
-         \includegraphics[width=\textwidth]{manuscript/src/figures/project/df_yCe.png}
+         \includegraphics[width=0.9\textwidth]{manuscript/src/figures/project/df_yCe.png}
          \caption{The y position in the center of pressure (COP) in each frame}
          \label{fig:extracted_features_yCe}
      \end{subfigure} 
