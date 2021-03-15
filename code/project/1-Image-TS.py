@@ -49,6 +49,15 @@ with h5py.File(cfg.dataset_file, "r") as hdf:
 print("[INFO] saving 3 samples....")
 img = np.squeeze(barefoots[1, :, :, :])
 
+index = ["Sample_" + str(i) for i in np.arange(barefoots.shape[0] - 1)]
+
+
+df_inter_stride = pd.DataFrame(metadata[0:1744, 6:8], index=index, columns=["x", "y"])
+with open(os.path.join(cfg.pickle_dir, "df_inter_stride.pickle"), "wb") as handle:
+    pickle.dump(df_inter_stride, handle)
+with open(os.path.join(cfg.pickle_dir, "df_inter_stride.txt"), "w") as handle:
+    handle.write(df_inter_stride.to_string())
+
 
 ss = np.concatenate(
     (img[18, 21:65, 17:42], img[25, 21:65, 17:42], img[32, 21:65, 17:42]), axis=1

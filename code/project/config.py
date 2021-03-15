@@ -8,10 +8,13 @@ plt.rcParams["figure.figsize"] = (14, 7)
 plt.rcParams["figure.dpi"] = 128
 
 
-classifier_name = "knn"  # {lda, knn, svm, reg}
-features_name = "all"  # {temporal, statistical, spectral, all}
-transform = "normalization"  # {standardization, normalization, none}
+classifier_name = "lda"  # {lda, knn, svm, reg, tree}
+features_name = "all"  # {temporal, statistical, spectral, all, AR}
+transform = "standardization"  # {standardization, normalization, none}
 
+
+VarianceThresholdflag = True
+Highcorrelatedflag = True
 
 test_size = 0.1
 seed = 10
@@ -21,13 +24,13 @@ Grid_refit = True
 outer_n_splits = 10
 outer_shuffle = True
 
-inner_n_splits = 5
+inner_n_splits = 10
 inner_shuffle = True
 
 
 # define search spaces
 knnspace = {
-    "n_neighbors": np.arange(1, 30, 2),
+    "n_neighbors": np.arange(1, 22, 2),
     "metric": ["euclidean", "manhattan", "chebyshev"],
     "weights": ["distance", "uniform"],
 }
@@ -38,6 +41,10 @@ knnspace = {
 #      "metric_params": [{"V": np.cov(X_train)}],"weights": ["distance", "uniform"],}
 # ]
 
+treespace = {
+    "max_depth": np.arange(3, 33, 2),
+    "criterion": ["gini", "entropy"],
+}
 
 svmspace = {
     "probability": [True],
