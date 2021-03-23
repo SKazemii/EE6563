@@ -16,17 +16,17 @@
 
 \section{Remaining Work}
 
-In recent years, improving the computational process of computers and other benefits of \gls{dnn} have caused many researchers (like \cite{IsmailFawaz2019DeepReview} and \cite{Costilla-Reyes2018DeepSensors}) to move towards \gls{dnn} for the classification of time series data. Therefore, these algorithms will be reviewed in this project.
+In recent years, improvements in the computational process of computers and other benefits of \gls{dnn} have caused many researchers (like \cite{IsmailFawaz2019DeepReview} and \cite{Costilla-Reyes2018DeepSensors}) to move towards \gls{dnn} for the classification of time series data. Therefore, these algorithms will be reviewed in a later stage of this project.
 
-Since the entire time series considered for extracting features, we have had one value for each feature. For instance, while local maximums could be good features, the algorithm returned only the global maximum as a Max feature. We could slide a window on the signal and extract handcraft features. It causes only a part of the data to consider in each moment. In other words, because each data includes several stages of the walking cycle, features should be extracted according to these periods.   
+Because the entire time series were considered for extracting features, we have had one value for each attribute. For instance, while local maximums could be good features, the algorithm returned only the global maximum as a Max feature. We could slide a window on the signal to extract handcrafted features. It causes only a part of the data to consider in each moment. In other words, because each data includes several stages of the walking cycle, features should be extracted according to these periods.   
 
-Moreover, cropping the heel or toe area in each video could separate features based on the walking stages (pressure area). In this idea, each video will be divided into N sub-area and then for each region, we extract features. As a result, these features belong to that area.
+Moreover, cropping the heel or toe area in each video could separate features based on the walking stages (pressure area). By this means, each video will be divided into N sub-area, and then for each region, we reconstruct time-series signals and extract features. As a result, these features belong only to that area or stage of walking.
 
 %Due to using the aligned video, we could consider some pixels over time as 2D signals. Although our features space increased rapidly, we could put a threshold on variance and energy of time-series signals for controlling features space. 
 
-In this research, regardless of eliminating high correlated and low variances features, we should use a more complex feature selection algorithm to eliminated irrelevant and redundant ones. This reduction might increase the accuracy.
+In this research, regardless of eliminating high-correlated and low variance features, we should use a more complex feature selection algorithm to eliminated irrelevant and redundant ones. This reduction might increase the accuracy.
 
 %In addition, it had better to split the dataset into left and right footprints for exploring the effects of extracted features on classifier accuracy. 
  
-Furthermore, this research will implement in python, and the source codes are available on the GitHub repository \cite{SKazemii/EE6563}. 
+
 
