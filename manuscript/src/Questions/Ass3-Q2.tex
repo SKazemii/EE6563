@@ -6,21 +6,46 @@ The dataset collected data from an accelerate sensor carried by different users.
 \label{tab:activity}
 \input{manuscript/src/tables/Ass3/act}
 \end{table}
-For the rest of this assignment, we used a Pndas DataFrame for separating and storing the data and named it DF1. Figure \ref{fig:Ass3_Q2_raw_signal_2} shows signals of x, y, z, and label for the last participant.
+For the rest of this assignment, we used a Pandas DataFrame for separating and storing the data and named it DF1. Figure \ref{fig:Ass3_Q2_raw_signal_2} shows signals of x, y, z, and label for the last participant.
 \begin{figure}[H]
     \centering
     \begin{minipage}[b]{1\textwidth}
-        \includegraphics[width=\textwidth]{figures/Ass3/Ass3_Q2_raw_signal_2.png}
+        \includegraphics[width=\textwidth]{figures/Ass3/Ass3_Q2_raw_signal_21.png}
     \end{minipage}
-    \caption{The signals of x, y, z, and label for the last participant. For better understanding the code of each activity multiply by 500.}
+    \caption{The signals of x, y, z, and label for the last participant. For better understanding, the code of each activity multiply by 500.}
     \label{fig:Ass3_Q2_raw_signal_2}
 \end{figure}
 
+Figures \ref{fig:Ass3_Q3_raw_signal} and \ref{fig:Ass3_Q2_raw_signal} show the raw signal that were filtered based on different users and activities.
 
-This question is a decoding problem. We had an activity that was included different states (walking, standing, and going up-down stairs). Our goal is that to find the hidden states for this activity based on the observation signals.
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{manuscript/src/figures/Ass3/Ass3_Q3_raw_signal.png}
+    \end{minipage}
+    \caption{The signals of x, y, and z for the first participant and ‘Standing  Up,  Walking  and  Going  up-down  stairs’ activity.}
+    \label{fig:Ass3_Q3_raw_signal}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{manuscript/src/figures/Ass3/Ass3_Q2_raw_signal.png}
+    \end{minipage}
+    \caption{The signals of x, y, and z for the second participant and ‘Going  up-down  stairs’ activity.}
+    \label{fig:Ass3_Q2_raw_signal}
+\end{figure}
+
+The next part of this question is a decoding problem. We had an activity that was included different states (walking, standing, and going up-down stairs). Our goal is that to find the hidden states for this activity based on the observation signals.
 Before going into model detail, let first talk about the pre processing step. In this step, first we separated and resized all signals of ‘Standing  Up,  Walking  and  Going  up-down  stairs’ from the dataset. Then, this data were stored in an array with shape of $15 \times 840000 \times 3$. The dimensions of this array show the number of users,  samples, and observation signals respectively.
 For training part, we separated the array by different users. the first ten users were used as training set and others considered for testing the model. Figures \ref{} to \ref{} demonstrate the results of HMM on all users data. Besides, to find the effect of data scale, we used normalized data. Figures \ref{} to \ref{} show these results.
-
+\begin{figure}[H]
+    \centering
+    \begin{minipage}[b]{1\textwidth}
+        \includegraphics[width=\textwidth]{manuscript/src/figures/Ass3/Ass3_Q2_raw_signal.png}
+    \end{minipage}
+    \caption{The signals of x, y, and z for the second participant and ‘Going  up-down  stairs’ activity.}
+    \label{fig:Ass3_Q2_raw_signal}
+\end{figure}
 
 
 
