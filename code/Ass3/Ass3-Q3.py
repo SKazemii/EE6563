@@ -109,12 +109,12 @@ DF1 = pd.concat([DF, DF2], axis=1)
 #########      Saving and showing the plot of the raw signal      ##########
 ############################################################################
 if False:
-    i = 126
+    i = 24
     print("[INFO] Saving and showing the plot of the dataset")
     plt.figure()
-    fig = DF1.iloc[i, 4:].plot(label="x_acceleration")
-    fig = DF1.iloc[i + 1, 4:].plot(label="y_acceleration")
-    fig = DF1.iloc[i + 2, 4:].plot(label="z_acceleration")
+    fig = DF1.iloc[i, 5:].plot(label="x_acceleration")
+    fig = DF1.iloc[i + 1, 5:].plot(label="y_acceleration")
+    fig = DF1.iloc[i + 2, 5:].plot(label="z_acceleration")
     plt.title("Person: " + str(DF1.iloc[i, 0]) + ", activity: " + DF1.iloc[i, 1])
     plt.legend()
     plt.savefig(os.path.join(fig_dir, a + "raw_signal.png"))

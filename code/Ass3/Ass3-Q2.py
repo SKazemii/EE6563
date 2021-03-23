@@ -126,10 +126,10 @@ if False:
 
 data1 = DF1.iloc[:, 5:].values
 
-# from sklearn import preprocessing
+from sklearn import preprocessing
 
-# scaler = preprocessing.MinMaxScaler()
-# data = scaler.fit_transform(data1)
+scaler = preprocessing.MinMaxScaler()
+data1 = scaler.fit_transform(data1)
     
     
 data = np.moveaxis(data1, 1, 0)
@@ -139,8 +139,8 @@ XX = np.array([data[:, i : i + 3] for i in range(0, 45, 3)])
 lengths = DF1.iloc[:, 4].values
 lengths = [int(lengths[i]) for i in range(0, 28, 3)]
 # lengths = [84000] * 10
-w=1000
-ww =80000
+w=0000
+ww =40000
 model = hmm.GaussianHMM(n_components=3).fit(np.vstack(XX[0:10, :, :]), lengths)
 dec = list()
 for i in range(0, 43, 3):
@@ -151,6 +151,6 @@ for i in range(0, 43, 3):
     plt.plot(data[w:ww, i + 1], linewidth=2, label="y_acceleration")
     plt.plot(data[w:ww, i + 2], linewidth=2, label="z_acceleration")
 
-    plt.plot(500* dec[int(i / 3)][w:ww], label="states", color="Blue")
+    plt.plot(dec[int(i / 3)][w:ww], label="states", color="Blue")
     plt.legend(fontsize=11)
-    plt.savefig(os.path.join(fig_dir, a + "states_user_" + str(int(i / 3)) + ".png"))
+    plt.savefig(os.path.join(fig_dir, a + "states_user_" + str(int(i / 3)) + "N.png"))
