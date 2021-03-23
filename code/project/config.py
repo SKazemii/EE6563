@@ -14,7 +14,7 @@ transform = "standardization"  # {standardization, normalization, none}
 
 
 VarianceThresholdflag = True
-Highcorrelatedflag = True
+Highcorrelatedflag = False
 
 test_size = 0.1
 seed = 10
@@ -55,7 +55,7 @@ svmspace = {
     "random_state": [seed],
 }
 
-ldaspace = {"n_components": [10, 15, 20, 25, 30]}
+ldaspace = {"n_components": [10, 15, 20, 25, 30], "sfs__k_features": [1, 4]}
 
 regspace = {
     "C": [1, 10, 100, 1000],

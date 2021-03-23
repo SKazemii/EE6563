@@ -3,14 +3,24 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn import svm
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.pipeline import Pipeline
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 from sklearn.feature_selection import VarianceThreshold
+import sklearn
+
+print(sklearn.__version__)
+
+from sklearn.feature_selection import SequentialFeatureSelector as SFS
+
+import sklearn.model_selection
 from sklearn import preprocessing
-import tsfel
+from sklearn import feature_selection
+
+# import tsfel
 import pickle
 import config as cfg
 import pandas as pd
@@ -397,7 +407,18 @@ elif cfg.classifier_name == "lda":
     print("[INFO] creating model...")
     model = LinearDiscriminantAnalysis()
 
+    sfs = SequentialFeatureSelector(
+        estimator=model,
+        forward=True,
+        floating=False,
+        scoring="accuracy",
+        cv=cv_inner,
+        n_jobs=cfg.Grid_n_jobs,
+    )
     # define search space
+    pipe = Pipeline([("sfs", sfs), ("model", model)])
+    print(pipe.get_params().keys())
+    1 / 0
     space = cfg.ldaspace
 
     # define search
@@ -409,6 +430,7 @@ elif cfg.classifier_name == "lda":
         cv=cv_inner,
         refit=cfg.Grid_refit,
     )
+
     # execute search
     result = search.fit(trainingData, trainingLabels)
 
@@ -435,6 +457,7 @@ elif cfg.classifier_name == "reg":
     result = search.fit(trainingData, trainingLabels)
 
     best_model = result.best_estimator_
+
 elif cfg.classifier_name == "tree":
     print("[INFO] creating model...")
     model = DecisionTreeClassifier(random_state=cfg.seed)
@@ -455,6 +478,7 @@ elif cfg.classifier_name == "tree":
     result = search.fit(trainingData, trainingLabels)
 
     best_model = result.best_estimator_
+
 else:
     print("[ERROR] could not find the classifier")
 
