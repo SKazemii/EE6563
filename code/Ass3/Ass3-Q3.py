@@ -230,7 +230,7 @@ all_obs = np.load(os.path.join(data_dir, "all_obs_ver1.npy"))
 #########                     Showing features                    ##########
 ############################################################################
 if False:
-    plot_data = np.abs(stft(data[0, :]))[99, :]
+    plot_data = np.abs(stft(data[49, :]))[2, :]
     values, locs = peakfind(plot_data, n_peaks=6)
     fp = locs[values > -1]
     fv = values[values > -1]
@@ -240,7 +240,7 @@ if False:
     plt.xlabel("Frequency (bins)")
     plt.ylabel("Amplitude")
     plt.legend()
-    plt.savefig(os.path.join(fig_dir, a + "Peak_freq.png"))
+    plt.savefig(os.path.join(fig_dir, a + "Peak_freq_.png"))
 
 
 ############################################################################

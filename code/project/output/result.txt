@@ -1,0 +1,60 @@
+              precision    recall  f1-score   support
+
+           1       0.75      0.75      0.75         4
+           2       1.00      0.75      0.86         4
+           3       0.60      0.75      0.67         4
+           4       0.75      0.75      0.75         4
+           5       0.75      0.75      0.75         4
+
+    accuracy                           0.75        20
+   macro avg       0.77      0.75      0.75        20
+weighted avg       0.77      0.75      0.75        20
+
+
+###########################################################
+###########################################################
+False Positive (FP):			
+ [1. 0. 2. 1. 1.]
+
+False Negative (FN):			
+ [1. 1. 1. 1. 1.]
+
+True Positive (TP):			
+ [3. 3. 3. 3. 3.]
+
+True Negative (TN):			
+ [15. 16. 14. 15. 15.]
+
+True Positive Rate (TPR)(Recall):		
+ [0.75 0.75 0.75 0.75 0.75] 
+
+True Negative Rate (TNR)(Specificity):		
+ [0.9375 1.     0.875  0.9375 0.9375] 
+
+Positive Predictive Value (PPV)(Precision):
+ [0.75 1.   0.6  0.75 0.75] 
+
+Negative Predictive Value (NPV):
+ [0.9375     0.94117647 0.93333333 0.9375     0.9375    ] 
+
+False Positive Rate (FPR)(False Match Rate (FMR))(False Acceptance Rate (FAR)):		
+ [0.0625 0.     0.125  0.0625 0.0625] 
+
+False Negative Rate (FNR)(False Non-Match Rate (FNMR))(False Rejection Rate (FRR)):		
+ [0.25 0.25 0.25 0.25 0.25] 
+
+False Discovery Rate (FDR):		
+ [0.25 0.   0.4  0.25 0.25] 
+
+Overall accuracy (ACC):			
+ [0.9  0.95 0.85 0.9  0.9 ] 
+
+
+###########################################################
+###########################################################
+Confusion Matrix (CM): 
+[[3 0 1 0 0]
+ [0 3 1 0 0]
+ [0 0 3 1 0]
+ [0 0 0 3 1]
+ [1 0 0 0 3]]

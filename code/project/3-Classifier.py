@@ -12,21 +12,25 @@ from sklearn.metrics import classification_report, confusion_matrix, accuracy_sc
 from sklearn.feature_selection import VarianceThreshold
 import sklearn
 
-print(sklearn.__version__)
 
-from sklearn.feature_selection import SequentialFeatureSelector as SFS
+from mlxtend.feature_selection import SequentialFeatureSelector as SFS
 
 import sklearn.model_selection
 from sklearn import preprocessing
 from sklearn import feature_selection
 
-# import tsfel
+import seaborn as sns
+import tsfel
 import pickle
-import config as cfg
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-import os
+import os, sys
+
+# Custom imports
+import config as cfg
+from modules import RC_model
+
 
 print("[INFO] importing libraries....")
 
@@ -127,7 +131,7 @@ with open(os.path.join(cfg.pickle_dir, "df_AR_features.pickle"), "rb") as handle
 # df_AR ##################################################################################
 with open(os.path.join(cfg.pickle_dir, "df_inter_stride.pickle"), "rb") as handle:
     df_inter_stride = pickle.load(handle)
-print(df_inter_stride)
+
 # df_label ################################################################################
 with open(os.path.join(cfg.pickle_dir, "df_label.pickle"), "rb") as handle:
     df_label = pickle.load(handle)
@@ -229,8 +233,6 @@ print("[INFO] splitting the training and testing sets...")
     random_state=cfg.seed,
 )
 
-print(trainData_spectral.shape)
-
 
 print("[INFO] Deleting High-correlated features...")
 if cfg.Highcorrelatedflag:
@@ -254,8 +256,6 @@ if cfg.Highcorrelatedflag:
     trainData_all.drop(corr_features, axis=1, inplace=True)
     testData_all.drop(corr_features, axis=1, inplace=True)
 
-print(trainData_spectral.shape)
-print(trainData_spectral.columns[0:70])
 
 print("[INFO] Deleting low variance features...")
 if cfg.VarianceThresholdflag:
@@ -272,7 +272,6 @@ if cfg.VarianceThresholdflag:
     trainData_all = selector.fit_transform(trainData_all)
     testData_all = selector.transform(testData_all)
 
-print(trainData_spectral.shape)
 # 1 / 0
 print("[INFO] Standardization of features...")
 if cfg.transform == "standardization":
@@ -359,17 +358,22 @@ if cfg.classifier_name == "knn":
     print("[INFO] creating model...")
     model = KNeighborsClassifier()
 
-    # define search space
+    sfs = SFS(
+        estimator=model,
+        forward=True,
+        floating=False,
+        scoring="accuracy",
+        verbose=1,
+        cv=cv_inner,
+        n_jobs=cfg.Grid_n_jobs,
+    )
+    pipe = Pipeline([("sfs", sfs), ("model", model)])
+
     space = cfg.knnspace
-    # space = [
-    #     {"n_neighbors": np.arange(1, 30, 2), "metric": ["euclidean", "manhattan", "chebyshev"], "weights": ["distance", "uniform"],},
-    #     {"n_neighbors": np.arange(1, 30, 2), "metric": ["mahalanobis", "seuclidean"],
-    #     "metric_params": [{"V": np.cov(trainingData)}],"weights": ["distance", "uniform"],}
-    # ]
 
     # define search
     search = GridSearchCV(
-        model,
+        pipe,
         space,
         scoring="accuracy",
         n_jobs=cfg.Grid_n_jobs,
@@ -385,12 +389,23 @@ elif cfg.classifier_name == "svm":
     print("[INFO] creating model...")
     model = svm.SVC()
 
+    sfs = SFS(
+        estimator=model,
+        forward=True,
+        floating=False,
+        scoring="accuracy",
+        verbose=1,
+        cv=cv_inner,
+        n_jobs=cfg.Grid_n_jobs,
+    )
+    pipe = Pipeline([("sfs", sfs), ("model", model)])
+
     # define search space
     space = cfg.svmspace
 
     # define search
     search = GridSearchCV(
-        model,
+        pipe,
         space,
         scoring="accuracy",
         n_jobs=cfg.Grid_n_jobs,
@@ -402,28 +417,83 @@ elif cfg.classifier_name == "svm":
 
     best_model = result.best_estimator_
 
+elif cfg.classifier_name == "esn":
+    print("[INFO] creating model...")
+    model = RC_model(
+        reservoir=None,
+        n_internal_units=config["n_internal_units"],
+        spectral_radius=config["spectral_radius"],
+        leak=config["leak"],
+        connectivity=config["connectivity"],
+        input_scaling=config["input_scaling"],
+        noise_level=config["noise_level"],
+        circle=config["circ"],
+        n_drop=config["n_drop"],
+        bidir=config["bidir"],
+        dimred_method=config["dimred_method"],
+        n_dim=config["n_dim"],
+        mts_rep=config["mts_rep"],
+        w_ridge_embedding=config["w_ridge_embedding"],
+        readout_type=config["readout_type"],
+        w_ridge=config["w_ridge"],
+        mlp_layout=config["mlp_layout"],
+        num_epochs=config["num_epochs"],
+        w_l2=config["w_l2"],
+        nonlinearity=config["nonlinearity"],
+        svm_gamma=config["svm_gamma"],
+        svm_C=config["svm_C"],
+    )
+
+    # sfs = SFS(
+    #     estimator=model,
+    #     forward=True,
+    #     floating=False,
+    #     scoring="accuracy",
+    #     verbose=1,
+    #     cv=cv_inner,
+    #     n_jobs=cfg.Grid_n_jobs,
+    # )
+    # pipe = Pipeline([("sfs", sfs), ("model", model)])
+
+    # # define search space
+    # space = cfg.svmspace
+
+    # # define search
+    # search = GridSearchCV(
+    #     pipe,
+    #     space,
+    #     scoring="accuracy",
+    #     n_jobs=cfg.Grid_n_jobs,
+    #     cv=cv_inner,
+    #     refit=cfg.Grid_refit,
+    # )
+    # execute search
+    result = model.train(trainingData, trainingLabels)
+
+    best_model = result.best_estimator_
+
 elif cfg.classifier_name == "lda":
     # use LDA as the model
     print("[INFO] creating model...")
     model = LinearDiscriminantAnalysis()
 
-    sfs = SequentialFeatureSelector(
+    sfs = SFS(
         estimator=model,
         forward=True,
         floating=False,
         scoring="accuracy",
+        verbose=1,
         cv=cv_inner,
         n_jobs=cfg.Grid_n_jobs,
     )
     # define search space
     pipe = Pipeline([("sfs", sfs), ("model", model)])
-    print(pipe.get_params().keys())
-    1 / 0
+
     space = cfg.ldaspace
 
     # define search
     search = GridSearchCV(
-        model,
+        pipe,
         space,
         scoring="accuracy",
         n_jobs=cfg.Grid_n_jobs,
@@ -462,12 +532,22 @@ elif cfg.classifier_name == "tree":
     print("[INFO] creating model...")
     model = DecisionTreeClassifier(random_state=cfg.seed)
 
+    sfs = SFS(
+        estimator=model,
+        forward=True,
+        floating=False,
+        scoring="accuracy",
+        verbose=1,
+        cv=cv_inner,
+        n_jobs=cfg.Grid_n_jobs,
+    )
+    pipe = Pipeline([("sfs", sfs), ("model", model)])
     # define search space
     space = cfg.treespace
 
     # define search
     search = GridSearchCV(
-        model,
+        pipe,
         space,
         scoring="accuracy",
         n_jobs=cfg.Grid_n_jobs,
@@ -491,7 +571,7 @@ f.write("##################################################\n\n")
 f.write("Grid_n_jobs:           {}\n".format(cfg.Grid_n_jobs))
 f.write("space:                 {}\n".format(space))
 f.write("inner_n_splits:        {}\n".format(cfg.inner_n_splits))
-f.write("outer_n_splits (dis):  {}\n".format(cfg.outer_n_splits))
+# f.write("outer_n_splits (dis):  {}\n".format(cfg.outer_n_splits))
 f.write("df_all_features.shape: {}\n".format(df_all_features.shape))
 f.write("trainingData.shape:    {}\n".format(trainingData.shape))
 # f.write("evaluationData.shape:  {}\n".format(evaluationData.shape))
@@ -505,9 +585,8 @@ f.write("###### summarize the estimated performance #######\n")
 f.write("####### of the best model on the test set ########\n")
 f.write("##################################################\n\n")
 
-
+pred = list()
 rank_1 = 0
-print(testData)
 for (label, feature) in zip(testLabels, testData):
     # predict the probability of each class label and
     # take the top-5 class labels
@@ -516,6 +595,7 @@ for (label, feature) in zip(testLabels, testData):
 
     # rank-1 prediction increment
     # print(str(label)+" -----> "+str(predictions))
+    pred.append(predictions)
     if label == predictions:
         rank_1 += 1
 
@@ -533,8 +613,80 @@ f.write("best parameters are:\n {}\n\n".format(result.best_params_))
 # evaluate the model of test data
 preds = best_model.predict(testData)
 
+
 # write the classification report to file
 f.write("{}\n".format(classification_report(testLabels, preds)))
+
+
+# display the confusion matrix
+print("[INFO] confusion matrix")
+
+
+# plot the confusion matrix
+
+cm = confusion_matrix(testLabels, preds)
+sns.heatmap(cm, annot=True, cmap="Set2")
+plt.savefig(os.path.join(cfg.fig_dir, cfg.result_name_file + ".png"))
+plt.savefig(os.path.join(cfg.fig_dir, cfg.result_name_file + ".png"))
+
+FP = cm.sum(axis=0) - np.diag(cm)
+FN = cm.sum(axis=1) - np.diag(cm)
+TP = np.diag(cm)
+TN = cm.sum() - (FP + FN + TP)
+
+FP = FP.astype(float)
+FN = FN.astype(float)
+TP = TP.astype(float)
+TN = TN.astype(float)
+
+# Sensitivity, hit rate, recall, or true positive rate
+# reflects the classifier’s ability to detect members of the positive class (pathological state)
+TPR = TP / (TP + FN)
+# Specificity or true negative rate
+# reflects the classifier’s ability to detect members of the negative class (normal state)
+TNR = TN / (TN + FP)
+# Precision or positive predictive value
+PPV = TP / (TP + FP)
+# Negative predictive value
+NPV = TN / (TN + FN)
+# Fall out or false positive rate
+# reflects the frequency with which the classifier makes a mistake by classifying normal state as pathological
+FPR = FP / (FP + TN)
+# False negative rate
+# reflects the frequency with which the classifier makes a mistake by classifying pathological state as normal
+FNR = FN / (TP + FN)
+# False discovery rate
+FDR = FP / (TP + FP)
+# Overall accuracy
+ACC = (TP + TN) / (TP + FP + FN + TN)
+
+f.write("\n###########################################################")
+f.write("\n###########################################################\n")
+f.write("False Positive (FP):\t\t\t\n {}\n\n".format(FP))
+f.write("False Negative (FN):\t\t\t\n {}\n\n".format(FN))
+f.write("True Positive (TP):\t\t\t\n {}\n\n".format(TP))
+f.write("True Negative (TN):\t\t\t\n {}\n\n".format(TN))
+f.write("True Positive Rate (TPR)(Recall):\t\t\n {} \n\n".format(TPR))
+f.write("True Negative Rate (TNR)(Specificity):\t\t\n {} \n\n".format(TNR))
+f.write("Positive Predictive Value (PPV)(Precision):\n {} \n\n".format(PPV))
+f.write("Negative Predictive Value (NPV):\n {} \n\n".format(NPV))
+f.write(
+    "False Positive Rate (FPR)(False Match Rate (FMR))(False Acceptance Rate (FAR)):\t\t\n {} \n\n".format(
+        FPR
+    )
+)
+f.write(
+    "False Negative Rate (FNR)(False Non-Match Rate (FNMR))(False Rejection Rate (FRR)):\t\t\n {} \n\n".format(
+        FNR
+    )
+)
+f.write("False Discovery Rate (FDR):\t\t\n {} \n\n".format(FDR))
+f.write("Overall accuracy (ACC):\t\t\t\n {} \n\n".format(ACC))
+f.write("\n###########################################################")
+f.write("\n###########################################################")
+f.write("\nConfusion Matrix (CM): \n{}".format(cm))
+
+
 f.close()
 
 
@@ -557,4 +709,5 @@ os.system(
     + " "
     + os.path.join(cfg.output_dir + "/history_results/")
     + cfg.result_name_file
+    + ".txt"
 )

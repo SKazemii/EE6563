@@ -12,6 +12,15 @@ import matplotlib.pyplot as plt
 print("[INFO] defining functions....")
 
 
+def interpolate(inp, fi):
+    i, f = (
+        int(fi // 1),
+        fi % 1,
+    )  # Split floating-point index into whole & fractional parts.
+    j = i + 1 if round(f, 4) > 0 else i  # Avoid index error.
+    return (1 - f) * inp[i] + f * inp[j]
+
+
 def centriod(img):
     wx = list()
     wy = list()
@@ -70,24 +79,43 @@ Data_sum = list()
 Data_max = list()
 Data_xCe = list()
 Data_yCe = list()
+new_len = 100
+
 
 for sample in range(barefoots.shape[0] - 1):
     img = np.squeeze(barefoots[sample, :, :, :])
     aa = np.sum(img, axis=2)
     bb = np.sum(aa, axis=1)
-    Data_sum.append(bb[:90])
+    # print(bb)
+    # plt.plot(bb)
+    # plt.show()
+    # 1 / 0
+    bb = np.trim_zeros(bb)
+    delta = (len(bb) - 1) / (new_len - 1)
+    outp = [interpolate(bb, i * delta) for i in range(new_len)]
+    Data_sum.append(outp)
 
     img = np.squeeze(barefoots[sample, :, :, :])
     aa = np.max(img, axis=2)
     bb = np.max(aa, axis=1)
-    Data_max.append(bb[:90])
+    bb = np.trim_zeros(bb)
+    delta = (len(bb) - 1) / (new_len - 1)
+    outp = [interpolate(bb, i * delta) for i in range(new_len)]
+    Data_max.append(outp)
 
     wx, wy = centriod(img)
-    Data_xCe.append(wx)
-    Data_yCe.append(wy)
+    wx = np.trim_zeros(wx)
+    delta = (len(wx) - 1) / (new_len - 1)
+    outp = [interpolate(wx, i * delta) for i in range(new_len)]
+    Data_xCe.append(outp)
+    wy = np.trim_zeros(wy)
+    delta = (len(wy) - 1) / (new_len - 1)
+    outp = [interpolate(wy, i * delta) for i in range(new_len)]
+    Data_yCe.append(outp)
+
 
 index = ["Sample_" + str(i) for i in np.arange(barefoots.shape[0] - 1)]
-column = [i for i in np.arange(90)]
+column = [i for i in np.arange(new_len)]
 
 df_sum = pd.DataFrame(Data_sum, columns=column, index=index).T
 with open(os.path.join(cfg.pickle_dir, "df_sum.pickle"), "wb") as handle:
