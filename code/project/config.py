@@ -9,14 +9,14 @@ plt.rcParams["figure.dpi"] = 128
 
 
 classifier_name = "lda"  # {lda, knn, svm, reg, tree}
-features_name = "all"  # {temporal, statistical, spectral, all, AR}
+features_name = "AR"  # {temporal, statistical, spectral, all, AR}
 transform = "standardization"  # {standardization, normalization, none}
 
 
 VarianceThresholdflag = True
 Highcorrelatedflag = True
 
-test_size = 0.1
+test_size = 0.2
 seed = 10
 Grid_n_jobs = 3
 Grid_refit = True
@@ -29,11 +29,17 @@ inner_shuffle = True
 
 
 # define search spaces
-knnspace = {
+knnspace1 = {
     "model__n_neighbors": np.arange(1, 22, 2),
     "model__metric": ["euclidean", "manhattan", "chebyshev"],
     "model__weights": ["distance", "uniform"],
     "sfs__k_features": [100, 200, 300],
+}
+knnspace = {
+    "n_neighbors": [7, 9, 11],
+    "metric": ["euclidean", "manhattan"],
+    "weights": ["distance"],
+    # "sfs__k_features": [100, 200, 300],
 }
 
 # knnspace = [
@@ -42,13 +48,18 @@ knnspace = {
 #      "metric_params": [{"V": np.cov(X_train)}],"weights": ["distance", "uniform"],}
 # ]
 
-treespace = {
+treespace1 = {
     "model__max_depth": np.arange(3, 33, 2),
     "model__criterion": ["gini", "entropy"],
     "sfs__k_features": [100, 200, 300],
 }
+treespace = {
+    "max_depth": np.arange(6, 9, 1),
+    "criterion": ["entropy"],
+}
 
-svmspace = {
+
+svmspace1 = {
     "model__probability": [True],
     "model__kernel": ["rbf", "linear"],
     "model__decision_function_shape": ["ovr", "ovo"],
@@ -57,10 +68,18 @@ svmspace = {
     "model__random_state": [seed],
     "sfs__k_features": [100, 200, 300],
 }
+svmspace = {
+    "probability": [True],
+    "kernel": ["linear", "rbf"],
+    "C": [1, 0.1],
+    "gamma": [1, 0.1],
+    "random_state": [seed],
+}
 
 ldaspace = {
-    # "model__n_components": [10,20,30],
-    "sfs__k_features": [100],
+    # "n_components": [10, 20, 30],
+    # "model__n_components": [10, 20, 30]
+    # "sfs__k_features": [100],
 }
 
 regspace = {
@@ -142,5 +161,3 @@ esn_config["w_l2"] = 0.001  # weight of the L2 regularization
 esn_config[
     "nonlinearity"
 ] = "relu"  # type of activation function {'relu', 'tanh', 'logistic', 'identity'}
-
-print(esn_config)

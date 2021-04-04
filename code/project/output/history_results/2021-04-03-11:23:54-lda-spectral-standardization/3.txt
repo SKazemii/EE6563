@@ -1,0 +1,79 @@
+##################################################
+################## the settings ##################
+##################################################
+
+model:                 3
+Grid_n_jobs:           3
+space:                 {}
+inner_n_splits:        10
+df_all_features.shape: (1104, 749)
+trainingData.shape:    (883, 271)
+testData.shape:        (221, 271)
+test size:             0.2
+
+
+
+
+##################################################
+###### summarize the estimated performance #######
+####### of the best model on the test set ########
+##################################################
+
+Rank-1: 96.83%
+best parameters are:
+ {}
+
+              precision    recall  f1-score   support
+
+           0       1.00      0.97      0.98       217
+           1       0.36      1.00      0.53         4
+
+    accuracy                           0.97       221
+   macro avg       0.68      0.98      0.76       221
+weighted avg       0.99      0.97      0.98       221
+
+
+###########################################################
+###########################################################
+False Positive (FP):			
+ [0. 7.]
+
+False Negative (FN):			
+ [7. 0.]
+
+True Positive (TP):			
+ [210.   4.]
+
+True Negative (TN):			
+ [  4. 210.]
+
+True Positive Rate (TPR)(Recall):		
+ [0.96774194 1.        ] 
+
+True Negative Rate (TNR)(Specificity):		
+ [1.         0.96774194] 
+
+Positive Predictive Value (PPV)(Precision):
+ [1.         0.36363636] 
+
+Negative Predictive Value (NPV):
+ [0.36363636 1.        ] 
+
+False Positive Rate (FPR)(False Match Rate (FMR))(False Acceptance Rate (FAR)):		
+ [0.         0.03225806] 
+
+False Negative Rate (FNR)(False Non-Match Rate (FNMR))(False Rejection Rate (FRR)):		
+ [0.03225806 0.        ] 
+
+False Discovery Rate (FDR):		
+ [0.         0.63636364] 
+
+Overall accuracy (ACC):			
+ [0.96832579 0.96832579] 
+
+
+###########################################################
+###########################################################
+Confusion Matrix (CM): 
+[[210   7]
+ [  0   4]]

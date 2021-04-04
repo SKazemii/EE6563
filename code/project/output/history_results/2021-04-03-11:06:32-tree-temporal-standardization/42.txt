@@ -1,0 +1,79 @@
+##################################################
+################## the settings ##################
+##################################################
+
+model:                 42
+Grid_n_jobs:           3
+space:                 {'max_depth': array([ 8,  9, 10]), 'criterion': ['entropy']}
+inner_n_splits:        10
+df_all_features.shape: (1104, 749)
+trainingData.shape:    (883, 46)
+testData.shape:        (221, 46)
+test size:             0.2
+
+
+
+
+##################################################
+###### summarize the estimated performance #######
+####### of the best model on the test set ########
+##################################################
+
+Rank-1: 95.48%
+best parameters are:
+ {'criterion': 'entropy', 'max_depth': 8}
+
+              precision    recall  f1-score   support
+
+           0       0.98      0.97      0.98       216
+           1       0.14      0.20      0.17         5
+
+    accuracy                           0.95       221
+   macro avg       0.56      0.59      0.57       221
+weighted avg       0.96      0.95      0.96       221
+
+
+###########################################################
+###########################################################
+False Positive (FP):			
+ [4. 6.]
+
+False Negative (FN):			
+ [6. 4.]
+
+True Positive (TP):			
+ [210.   1.]
+
+True Negative (TN):			
+ [  1. 210.]
+
+True Positive Rate (TPR)(Recall):		
+ [0.97222222 0.2       ] 
+
+True Negative Rate (TNR)(Specificity):		
+ [0.2        0.97222222] 
+
+Positive Predictive Value (PPV)(Precision):
+ [0.98130841 0.14285714] 
+
+Negative Predictive Value (NPV):
+ [0.14285714 0.98130841] 
+
+False Positive Rate (FPR)(False Match Rate (FMR))(False Acceptance Rate (FAR)):		
+ [0.8        0.02777778] 
+
+False Negative Rate (FNR)(False Non-Match Rate (FNMR))(False Rejection Rate (FRR)):		
+ [0.02777778 0.8       ] 
+
+False Discovery Rate (FDR):		
+ [0.01869159 0.85714286] 
+
+Overall accuracy (ACC):			
+ [0.95475113 0.95475113] 
+
+
+###########################################################
+###########################################################
+Confusion Matrix (CM): 
+[[210   6]
+ [  4   1]]
