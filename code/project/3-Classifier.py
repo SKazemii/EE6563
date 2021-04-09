@@ -27,7 +27,8 @@ from sklearn import preprocessing
 from sklearn import feature_selection
 
 import seaborn as sns
-import tsfel
+
+# import tsfel
 import pickle
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -154,6 +155,19 @@ with open(os.path.join(cfg.pickle_dir, "df_label.pickle"), "rb") as handle:
     df_label = pickle.load(handle)
 
 
+# df_vgg16 ################################################################################
+with open(cfg.pickle_dir + "CNN_features.pickle", "rb") as handle:
+    df_vgg16 = pickle.load(handle)
+
+df_vgg16 = pd.DataFrame(df_vgg16, index=df_label.index)
+
+# df_Mobnet ################################################################################
+with open(cfg.pickle_dir + "CNN_features_MobileNet.pickle", "rb") as handle:
+    df_Mobnet = pickle.load(handle)
+
+df_Mobnet = pd.DataFrame(df_Mobnet, index=df_label.index)
+
+
 df_temporal_features = pd.concat(
     [
         df_sum_temporal_features,
@@ -196,41 +210,42 @@ df_all_features = pd.concat(
 
 
 ## deleting 30 last person as a unknown set
-df_AR_features = pd.concat(
-    [df_label, df_AR_features],
-    axis=1,
-)
+df_Mobnet = pd.concat([df_label, df_Mobnet], axis=1,)
+indexNames = df_AR_features[df_Mobnet["ID"] > 5838].index
+df_Mobnet.drop(indexNames, inplace=True)
+df_Mobnet.drop(["ID"], axis=1, inplace=True)
+
+
+df_vgg16 = pd.concat([df_label, df_vgg16], axis=1,)
+indexNames = df_AR_features[df_vgg16["ID"] > 5838].index
+df_vgg16.drop(indexNames, inplace=True)
+df_vgg16.drop(["ID"], axis=1, inplace=True)
+
+
+df_AR_features = pd.concat([df_label, df_AR_features], axis=1,)
 indexNames = df_AR_features[df_AR_features["ID"] > 5838].index
 df_AR_features.drop(indexNames, inplace=True)
 df_AR_features.drop(["ID"], axis=1, inplace=True)
 
 
-df_temporal_features = pd.concat(
-    [df_label, df_temporal_features],
-    axis=1,
-)
+df_temporal_features = pd.concat([df_label, df_temporal_features], axis=1,)
 indexNames = df_temporal_features[df_temporal_features["ID"] > 5838].index
 df_temporal_features.drop(indexNames, inplace=True)
 df_temporal_features.drop(["ID"], axis=1, inplace=True)
-df_statistical_features = pd.concat(
-    [df_label, df_statistical_features],
-    axis=1,
-)
+
+
+df_statistical_features = pd.concat([df_label, df_statistical_features], axis=1,)
 indexNames = df_statistical_features[df_statistical_features["ID"] > 5838].index
 df_statistical_features.drop(indexNames, inplace=True)
 df_statistical_features.drop(["ID"], axis=1, inplace=True)
-df_spectral_features = pd.concat(
-    [df_label, df_spectral_features],
-    axis=1,
-)
+
+
+df_spectral_features = pd.concat([df_label, df_spectral_features], axis=1,)
 indexNames = df_spectral_features[df_spectral_features["ID"] > 5838].index
 df_spectral_features.drop(indexNames, inplace=True)
 df_spectral_features.drop(["ID"], axis=1, inplace=True)
 
-df_all_features = pd.concat(
-    [df_label, df_all_features],
-    axis=1,
-)
+df_all_features = pd.concat([df_label, df_all_features], axis=1,)
 indexNames = df_all_features[df_all_features["ID"] > 5838].index
 df_all_features.drop(indexNames, inplace=True)
 df_all_features.drop(["ID"], axis=1, inplace=True)
@@ -313,7 +328,30 @@ for modelofperson in range(51):
         test_size=cfg.test_size,
         random_state=cfg.seed,
     )
-
+    (
+        trainData_vgg16,
+        testData_vgg16,
+        trainLabels_vgg16,
+        testLabels_vgg16,
+    ) = train_test_split(
+        df_vgg16,
+        np.array(labels_bi[:, modelofperson]),
+        stratify=np.array(labels_bi[:, modelofperson]),
+        test_size=cfg.test_size,
+        random_state=cfg.seed,
+    )
+    (
+        trainData_Mobnet,
+        testData_Mobnet,
+        trainLabels_Mobnet,
+        testLabels_Mobnet,
+    ) = train_test_split(
+        df_Mobnet,
+        np.array(labels_bi[:, modelofperson]),
+        stratify=np.array(labels_bi[:, modelofperson]),
+        test_size=cfg.test_size,
+        random_state=cfg.seed,
+    )
     print("[INFO] Deleting High-correlated features...")
     if cfg.Highcorrelatedflag:
         corr_features = tsfel.correlated_features(trainData_AR)
@@ -351,6 +389,17 @@ for modelofperson in range(51):
         trainData_all = selector.fit_transform(trainData_all)
         testData_all = selector.transform(testData_all)
 
+        trainData_vgg16 = trainData_vgg16.values
+        testData_vgg16 = testData_vgg16.values
+
+        trainData_Mobnet = trainData_Mobnet.values
+        testData_Mobnet = testData_Mobnet.values
+
+    # print(type(trainData_all))
+    # print(type(trainData_vgg16))
+    # print(trainData_all.shape)
+    # print(trainData_vgg16.shape)
+    # 1 / 0
     print("[INFO] Standardization of features...")
     if cfg.transform == "standardization":
         scaler = preprocessing.StandardScaler()
@@ -413,6 +462,16 @@ for modelofperson in range(51):
         trainLabels = trainLabels_AR
         testData = testData_AR
         testLabels = testLabels_AR
+    elif cfg.features_name == "vgg16":
+        trainData = trainData_vgg16
+        trainLabels = trainLabels_vgg16
+        testData = testData_vgg16
+        testLabels = testLabels_vgg16
+    elif cfg.features_name == "Mobnet":
+        trainData = trainData_Mobnet
+        trainLabels = trainLabels_Mobnet
+        testData = testData_Mobnet
+        testLabels = testLabels_Mobnet
 
     trainingData, evaluationData = trainData, testData
     trainingLabels, evaluationLabels = trainLabels, testLabels
@@ -488,61 +547,6 @@ for modelofperson in range(51):
         )
         # execute search
         result = search.fit(trainingData, trainingLabels)
-
-        best_model = result.best_estimator_
-
-    elif cfg.classifier_name == "esn":
-        print("[INFO] creating model...")
-        model = RC_model(
-            reservoir=None,
-            n_internal_units=config["n_internal_units"],
-            spectral_radius=config["spectral_radius"],
-            leak=config["leak"],
-            connectivity=config["connectivity"],
-            input_scaling=config["input_scaling"],
-            noise_level=config["noise_level"],
-            circle=config["circ"],
-            n_drop=config["n_drop"],
-            bidir=config["bidir"],
-            dimred_method=config["dimred_method"],
-            n_dim=config["n_dim"],
-            mts_rep=config["mts_rep"],
-            w_ridge_embedding=config["w_ridge_embedding"],
-            readout_type=config["readout_type"],
-            w_ridge=config["w_ridge"],
-            mlp_layout=config["mlp_layout"],
-            num_epochs=config["num_epochs"],
-            w_l2=config["w_l2"],
-            nonlinearity=config["nonlinearity"],
-            svm_gamma=config["svm_gamma"],
-            svm_C=config["svm_C"],
-        )
-
-        # sfs = SFS(
-        #     estimator=model,
-        #     forward=True,
-        #     floating=False,
-        #     scoring="accuracy",
-        #     verbose=1,
-        #     cv=cv_inner,
-        #     n_jobs=cfg.Grid_n_jobs,
-        # )
-        # pipe = Pipeline([("sfs", sfs), ("model", model)])
-
-        # # define search space
-        # space = cfg.svmspace
-
-        # # define search
-        # search = GridSearchCV(
-        #     pipe,
-        #     space,
-        #     scoring="accuracy",
-        #     n_jobs=cfg.Grid_n_jobs,
-        #     cv=cv_inner,
-        #     refit=cfg.Grid_refit,
-        # )
-        # execute search
-        result = model.train(trainingData, trainingLabels)
 
         best_model = result.best_estimator_
 
@@ -661,10 +665,11 @@ for modelofperson in range(51):
 
     pred = list()
     rank_1 = 0
-    for (label, feature) in zip(testLabels, testData):
+    for (label, feature1) in zip(testLabels, testData):
         # predict the probability of each class label and
         # take the top-5 class labels
-        predictions = best_model.predict_proba(np.atleast_2d(feature))[0]
+
+        predictions = best_model.predict_proba(np.atleast_2d(feature1))[0]
         predictions = np.argsort(predictions)[::-1][0]
 
         # rank-1 prediction increment
@@ -801,7 +806,10 @@ for modelofperson in range(51):
         + str(modelofperson)
         + ".txt"
     )
+# print(fpr)
+# print(tpr)
 fpr = fpr[1:, :]
+tpr = tpr[1:, :]
 
 
 plt.figure()
@@ -820,6 +828,7 @@ plt.ylabel("True Positive Rate")
 plt.legend()
 # show the plot
 plt.savefig(os.path.join(cfg.fig_dir, "roc_curve " + cfg.result_name_file + ".png"))
+
 
 print(auc(np.average(fpr, axis=0), np.average(tpr, axis=0)))
 
@@ -846,3 +855,5 @@ os.system(
     + "00_fpr_tpr.txt"
 )
 plt.show()
+# tpr = tpr[1:, :]
+# print(auc(np.average(fpr, axis=0), np.average(tpr, axis=0)))
