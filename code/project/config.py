@@ -2,19 +2,28 @@ import os
 import numpy as np
 import datetime
 import matplotlib.pyplot as plt
+from keras.applications.mobilenet import MobileNet, preprocess_input
 
 
 plt.rcParams["figure.figsize"] = (14, 7)
 plt.rcParams["figure.dpi"] = 128
 
 
-classifier_name = "lda"  # {lda, knn, svm, reg, tree}
-features_name = "AR"  # {temporal, statistical, spectral, all, AR}
+classifier_name = "tree"  # {lda, knn, svm, reg, tree}
+features_name = "Mobnet"  # {temporal, statistical, spectral, all, AR, vgg16, Mobnet}
 transform = "standardization"  # {standardization, normalization, none}
+# already done = mobilenet | inceptionresnetv2 | xception | inceptionv3 | resnet50 | vgg16 | vgg19 | spatial
+model_name = "mobilenet"
+
+
+# weights = {none | imagenet}
+weights = "imagenet"
+# include_top = {True | False}
+include_top = False
 
 
 VarianceThresholdflag = True
-Highcorrelatedflag = True
+Highcorrelatedflag = False
 
 test_size = 0.2
 seed = 10
@@ -36,9 +45,9 @@ knnspace1 = {
     "sfs__k_features": [100, 200, 300],
 }
 knnspace = {
-    "n_neighbors": [7, 9, 11],
+    "n_neighbors": [5, 11, 15, 19, 23],
     "metric": ["euclidean", "manhattan"],
-    "weights": ["distance"],
+    "weights": ["distance", "uniform"],
     # "sfs__k_features": [100, 200, 300],
 }
 
@@ -54,8 +63,8 @@ treespace1 = {
     "sfs__k_features": [100, 200, 300],
 }
 treespace = {
-    "max_depth": np.arange(6, 9, 1),
-    "criterion": ["entropy"],
+    "max_depth": np.arange(6, 18, 2),
+    "criterion": ["gini", "entropy"],
 }
 
 
@@ -71,8 +80,8 @@ svmspace1 = {
 svmspace = {
     "probability": [True],
     "kernel": ["linear", "rbf"],
-    "C": [1, 0.1],
-    "gamma": [1, 0.1],
+    # "C": [0.1, 10, 1000],
+    # "gamma": [1, 0.01, 0.0001],
     "random_state": [seed],
 }
 
@@ -107,57 +116,3 @@ result_name_file = (
 )
 
 # ============ RC model configuration and hyperparameter values ============
-esn_config = {}
-esn_config["dataset_name"] = "JpVow"
-
-esn_config["seed"] = seed
-np.random.seed(esn_config["seed"])
-
-# Hyperarameters of the reservoir
-esn_config["n_internal_units"] = 450  # size of the reservoir
-esn_config["spectral_radius"] = 0.59  # largest eigenvalue of the reservoir
-esn_config[
-    "leak"
-] = 0.6  # amount of leakage in the reservoir state update (None or 1.0 --> no leakage)
-esn_config["connectivity"] = 0.25  # percentage of nonzero connections in the reservoir
-esn_config["input_scaling"] = 0.1  # scaling of the input weights
-esn_config["noise_level"] = 0.01  # noise in the reservoir state update
-esn_config["n_drop"] = 5  # transient states to be dropped
-esn_config["bidir"] = True  # if True, use bidirectional reservoir
-esn_config["circ"] = False  # use reservoir with circle topology
-
-# Dimensionality reduction hyperparameters
-esn_config[
-    "dimred_method"
-] = "tenpca"  # options: {None (no dimensionality reduction), 'pca', 'tenpca'}
-esn_config[
-    "n_dim"
-] = 75  # number of resulting dimensions after the dimensionality reduction procedure
-
-# Type of MTS representation
-esn_config[
-    "mts_rep"
-] = "reservoir"  # MTS representation:  {'last', 'mean', 'output', 'reservoir'}
-esn_config[
-    "w_ridge_embedding"
-] = 10.0  # regularization parameter of the ridge regression
-
-# Type of readout
-esn_config[
-    "readout_type"
-] = "lin"  # readout used for classification: {'lin', 'mlp', 'svm'}
-
-# Linear readout hyperparameters
-esn_config["w_ridge"] = 5.0  # regularization of the ridge regression readout
-
-# SVM readout hyperparameters
-esn_config["svm_gamma"] = 0.005  # bandwith of the RBF kernel
-esn_config["svm_C"] = 5.0  # regularization for SVM hyperplane
-
-# MLP readout hyperparameters
-esn_config["mlp_layout"] = (10, 10)  # neurons in each MLP layer
-esn_config["num_epochs"] = 2000  # number of epochs
-esn_config["w_l2"] = 0.001  # weight of the L2 regularization
-esn_config[
-    "nonlinearity"
-] = "relu"  # type of activation function {'relu', 'tanh', 'logistic', 'identity'}

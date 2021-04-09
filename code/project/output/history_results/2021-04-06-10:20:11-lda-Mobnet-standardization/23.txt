@@ -1,0 +1,79 @@
+##################################################
+################## the settings ##################
+##################################################
+
+model:                 23
+Grid_n_jobs:           3
+space:                 {}
+inner_n_splits:        10
+df_all_features.shape: (1104, 749)
+trainingData.shape:    (883, 1024)
+testData.shape:        (221, 1024)
+test size:             0.2
+
+
+
+
+##################################################
+###### summarize the estimated performance #######
+####### of the best model on the test set ########
+##################################################
+
+Rank-1: 96.38%
+best parameters are:
+ {}
+
+              precision    recall  f1-score   support
+
+           0       1.00      0.97      0.98       216
+           1       0.36      0.80      0.50         5
+
+    accuracy                           0.96       221
+   macro avg       0.68      0.88      0.74       221
+weighted avg       0.98      0.96      0.97       221
+
+
+###########################################################
+###########################################################
+False Positive (FP):			
+ [1. 7.]
+
+False Negative (FN):			
+ [7. 1.]
+
+True Positive (TP):			
+ [209.   4.]
+
+True Negative (TN):			
+ [  4. 209.]
+
+True Positive Rate (TPR)(Recall):		
+ [0.96759259 0.8       ] 
+
+True Negative Rate (TNR)(Specificity):		
+ [0.8        0.96759259] 
+
+Positive Predictive Value (PPV)(Precision):
+ [0.9952381  0.36363636] 
+
+Negative Predictive Value (NPV):
+ [0.36363636 0.9952381 ] 
+
+False Positive Rate (FPR)(False Match Rate (FMR))(False Acceptance Rate (FAR)):		
+ [0.2        0.03240741] 
+
+False Negative Rate (FNR)(False Non-Match Rate (FNMR))(False Rejection Rate (FRR)):		
+ [0.03240741 0.2       ] 
+
+False Discovery Rate (FDR):		
+ [0.0047619  0.63636364] 
+
+Overall accuracy (ACC):			
+ [0.9638009 0.9638009] 
+
+
+###########################################################
+###########################################################
+Confusion Matrix (CM): 
+[[209   7]
+ [  1   4]]
