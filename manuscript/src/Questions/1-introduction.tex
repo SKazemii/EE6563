@@ -7,18 +7,24 @@ Although biometric identification appears sophisticated when compared to somethi
 One behavioral biometric that has gained recent success and is worth further consideration given current constraints is gait recognition. Usage of gait recognition has grown in the security industry in recent decades due to advances in deep learning. Singh et al. \cite{Singh2019APerspectives} categorized gait recognition into two main categories, vision-based and sensor-based. In vision-based approaches, cameras capture data of a person walking for the purpose of gait recognition. Sensor-based gait recognition is performed using either wearable sensors which produce kinematic data, or floor sensors which produce kinetic data \cite{Connor2018BiometricFeatures}.
 
 
+********There is a big jump in thought between these two paragraphs.  Try to lead from one to the next smoothly.
+
 %\section{Datasets}
 The dataset that was used for this project is called the Stepscan dataset \cite{Connor2015ComparingBiometrics}. This dataset was obtained from high-resolution floor tiles that have recently been introduced by Stepscan Technologies Inc. Furthermore, this dataset consists of a spatial-temporal tensor, X, with dimensions $S \times T \times H \times W$ where $S$ represents the number of samples. $T$ is the number of temporal observations or video frames; $H$ and $W$ are the dimension of the image in pixels. Figure \ref{fig:Stepscan_dataset} indicates three frames from one of samples in the dataset.  
 
- 
+******There's another jump here. 
 
-In general, there are two modes for footprint recognition or generally in the biometric system: verification or identification mode \cite{Jain2004AnRecognition}. In verification mode, the biometric system is used for accessing buildings or data. In other words, the system compares the claimed person with its dataset to determine whether or not the claim is valid. These systems consume less processing power and time \cite{Jain2004AnRecognition}. This project aims to find some features from the datasets to construct a classifier for verification purposes. 
+In general, there are two modes for footprint recognition or generally in the biometric system: verification or identification mode \cite{Jain2004AnRecognition}. In verification mode, the biometric system is used for accessing buildings or data. In other words, the system compares the claimed person with its dataset to determine whether or not the claim is valid. These systems not only consume less processing power and time but also have better performance regarding identification systems \cite{Jain2004AnRecognition}. This project aims to find some features from the datasets to construct a classifier for verification purposes. 
+
+*******Is this really the main benefit?  What else can you think of?  What about performance/scaling?
+
 
 %Because verification systems only need to compare the presented biometric to a biometric reference stored in the system, they can generate results more quickly and are more accurate than identification systems, even when the size of the database increases.
 
  
 
-The rest of this research is organized as follows: Section 2 provides the relevant works and researches. Then, in Section 3, the time domain features as well as machine learning models are defined. In Section 4, we discuss the results, and we propose future work in Section 5.
+The rest of this paper is organized as follows: Section 2 provides the relevant works and researches. Then,% in Section 3, the time domain features as well as machine learning models are defined. In Section 4, we discuss the results, and we propose future work in Section 5.
+ the classification method based on machine learning and deep learning is presented in Section 3. Also a brief survey on time series classification and Deep learning has been discussed in \ref{appendix:2}. The results and discussion are described in Sections 4 and 5.
 %As the figure \ref{fig:Stepscan_dataset} shows the data is a image not a time series data. Therefore, we need to convert our data to a time series. 
 Furthermore, this research will be implemented in Python, and the source codes are available on the GitHub repository \cite{SKazemii/EE6563}. 
 
@@ -61,7 +67,7 @@ Furthermore, this research will be implemented in Python, and the source codes a
          \caption{The y position in the center of pressure (COP) in each frame}
          \label{fig:extracted_features_yCe}
      \end{subfigure} 
-        \caption{The time series extracted from the Stepscan dataset based on four spatial features. The horizontal axis indicates the frame number.}
+        \caption{The time series extracted from the Stepscan dataset based on four spatial features. The horizontal axis indicates the frame number.*******What is "each frame" in this context?  How does this related to gait/strides?  Be clear. }
         \label{fig:extracted_features}
 \end{figure}
 
