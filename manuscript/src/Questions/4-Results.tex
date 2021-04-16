@@ -31,23 +31,67 @@
 
 \section{Experimental Results}
 
-Results of four different machine learning algorithms in several types of features are shown in table \ref{tab:1_ML}. For comparing algorithms, the accuracy metric was used. 
- 
-The LDA classifier’s best performance was a 69.2\% accuracy, as shown in table \ref{tab:1_ML}. This result comes from classifying the combination of all features. 
-The kNN algorithm had similar performance on all kinds of features except \gls{AR} features. All algorithms had the worst results on this group of features.
+The biometrics industry has been utilizing two performance measurement, False Rejection Rate (FRR) and False Acceptance Rate (FAR), for accuracy. These measures also are called False Negative Rate (FNR) and False Positive Rate (FPR) in many biometric literature. According to these values, a graphical ROC curve was produced by plotting FPR on the x-axis against 1–FNR on the y-axis. Figure \ref{fig:ROC} shows the ROC curves for different models and features.  
 
-The SVM performed best with the mixture of all features, at 56\% accuracy (see table \ref{tab:1_ML}). All other feature subsets achieved lower than this amount. The worst performance for all these classifiers belonged to the random forest classifier with about 30\%.
+The area under the ROC curve (AUC) shows the performance of verification systems. An AUC of 0.5 represents a system with no discriminating ability (The blue line in figure \ref{fig:ROC}), whereas an AUC of 1.0 represents a test with perfect discrimination. Except AUC many researchers often use equal error rate (EER), as additional metric, to describe the accuracy of their biometric systems. EER refers to the point that FRR equals FAR. Results of four different machine learning algorithms in several types of features are shown in table \ref{tab:1_ML}.
+
+
+For training scenario, the first 50 users were used for developing models while other users set aside as an imposter data. Then for each subject, a model was trained based on 80 percent data (about 16 samples from the target subject and 16 $\times$ 49 $\approx$ 780 from impostors). For testing, A set of four genuine samples and 4 $\times$ 49 $\approx$ 190 from impostor samples were used. Due to the fact that we developed a model for each subject, we averaged FPR and FNR for each method.
+
+The SVM classifier’s best AUC was a 91.3\%, as shown in table \ref{tab:1_ML}. This result comes from classifying the combination of all features and the best AUC among all approaches. Other algorithms had similar performance on all features. All features had the worst results on Random Forests Classifiers.
+
+%The SVM performed best with the mixture of all features, at 56\% accuracy (see table \ref{tab:1_ML}). All other feature subsets achieved lower than this amount. The worst performance for all these classifiers belonged to the random forest classifier with about 30\%.
+
+
+
+%The area under the ROC curve (AUC) is a global measure of the ability of a test to discriminate whether a specific condition is present or not present. An AUC of 0.5 represents a test with no discriminating ability (ie, no better than chance), while an AUC of 1.0 represents a test with perfect discrimination. The (unpublished) ROC curve for ACS (figure 1) which was generated from the T-MACS scores calculated for the derivation set has an AUC of 0.94 after correction for in-sample optimism by cross-validation, which would suggest that T-MACS score is a very good discriminator of ACS versus no ACS.
+
+
+ 
+
 
 \begin{center}
-	\begin{table*}[!t]
+	\begin{table}[!t]
+	\centering
 	\caption{Machine learning models along with its best-tuned hyper-parameters.}
 	\label{tab:1_ML}
-	\hspace{-1em}
+	%\hspace{-1em}
 %	\setlength\extrarowheight{-2pt}
-	\input{tables/project/1_ML.tex}
-	\end{table*}
+	\input{manuscript/src/tables/project/auc}
+	\end{table}
 \end{center}
 
+\begin{figure}
+     \centering
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[width=1\textwidth]{manuscript/src/figures/project/roc_curve_all 2021-04-09-11:12:24-tree-Mobnet-standardization.png}
+         \caption{The ROC curve of four Machine learning algorithms on handcrafted features}
+         \label{fig:ROC_all}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{manuscript/src/figures/project/roc_curve_MobileNet 2021-04-09-11:12:24-tree-Mobnet-standardization.png}
+         \caption{The ROC curve of four Machine learning algorithms on MobileNet features}
+         \label{fig:ROC_Mob}
+     \end{subfigure}
+     \vfill
+     \begin{subfigure}[b]{0.45\textwidth}
+         \centering
+         \includegraphics[width=\textwidth]{manuscript/src/figures/project/roc_curve_vgg 2021-04-09-11:12:24-tree-Mobnet-standardization.png}
+         \caption{The ROC curve of four Machine learning algorithms on VGG16 features}
+         \label{fig:ROC_vgg}
+     \end{subfigure}
+     \hfill
+     \begin{subfigure}[b]{.45\textwidth}
+         \centering
+         \includegraphics[width=1\textwidth]{manuscript/src/figures/project/roc_curve_FCN 2021-04-09-11:12:24-tree-Mobnet-standardization.png}
+         \caption{The ROC curve of four Machine learning algorithms on FCN features}
+         \label{fig:ROC_fcn}
+     \end{subfigure} 
+        \caption{The ROC curve of different approaches}
+        \label{fig:ROC}
+\end{figure}
 
-
-Fig. 9 shows the ROC curves using the test set, indicating that all the hybrid methods achieved higher AUC values than a single conventional classifier. Specifically, the CNN-SVM and CNN-RF methods obtained higher AUC values of 0.868 and 0.829 than SVM and RF, respectively. Furthermore, compared to LR, the CNN-LR method achieved the most significant improvement of 0.063 in terms of AUC. In addition, the AUC value obtained by CNN was higher than single machine learning classifiers, but lower than the hybrid methods. 
+%Fig. 9 shows the ROC curves using the test set, indicating that all the hybrid methods achieved higher AUC values than a single conventional classifier. Specifically, the CNN-SVM and CNN-RF methods obtained higher AUC values of 0.868 and 0.829 than SVM and RF, respectively. Furthermore, compared to LR, the CNN-LR method achieved the most significant improvement of 0.063 in terms of AUC. In addition, the AUC value obtained by CNN was higher than single machine learning classifiers, but lower than the hybrid methods. 

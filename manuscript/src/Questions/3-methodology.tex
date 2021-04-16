@@ -9,26 +9,36 @@ Another method could be that the pixel values in each frame are plotted over fra
 
 In the final method, some spatial features are extracted from each frame (e.g. centroid and maximum pressure in each frame). Afterwards, we track these values over time (next frames). As a result, 3D videos with size $T \times H \times W$ are converted to the four 2D time-series data. Costilla-Reyes et al. utilized this method to combine the output of 160 distributed \acrshort{pof} \cite{Costilla-Reyes2018DeepSensors}.
 
-In this research, the last mentioned method was applied to produce time-series data. Figure \ref{fig:extracted_features} indicates the time series extracted from the Stepscan dataset. The spatial features extracted in each frame were maximum pressure (figure \ref{fig:extracted_features_max}), the center of pressure (COP) (figures \ref{fig:extracted_features_yCe} and \ref{fig:extracted_features_xCe}), and the average pressure (figure \ref{fig:extracted_features_sum}). 
+In this research, the last mentioned method was applied to produce time-series data. Figure \ref{fig:extracted_features} depicts the time series extracted from the Stepscan dataset. The spatial features extracted in each frame were maximum pressure (figure \ref{fig:extracted_features_max}), the center of pressure (COP) (figures \ref{fig:extracted_features_yCe} and \ref{fig:extracted_features_xCe}), and the average pressure (figure \ref{fig:extracted_features_sum}). 
 
-\subsection{data }
-To divide our dataset 
 
 
 \subsection{Conventional Classifiers}
 
-In this section, we describe conventional algorithms. These are including Features Extraction and Selection, hyper-parameters of the classifier, and evaluation methodology. 
 
-The flowchart of this study is illustrated in Fig. 3. First, the landslide historical locations and predisposing factors are prepared to construct training and validation sets for landslide modelling. Then, the hybrid modelling is carried out by integrating CNN with the conventional classifiers. Next, a landslide susceptibility map is produced by applying these hybrid models to the study area. Finally, the performance of these models are evaluated using the validation set in terms of statistical measures.
+The method consists of feature extraction, feature selection, and classification, as shown in Figure \ref{fig:flow}. In the following, each step would be described. 
+ 
 
+\begin{center}
+	\begin{figure*}[!t]
+    	\centering
+        \begin{minipage}[b]{\textwidth}
+            \includegraphics[width=\textwidth]{manuscript/src/figures/project/flowchart.png}
+        \end{minipage}
+        \hspace{-1em}
+        \caption{Flowchart of implemented method.}
+        \label{fig:flow}
+	\end{figure*}
+\end{center}
 
 \subsubsection{Features Extraction and Selection}
 
 As mentioned before, our goal is to develop a classification model. For this classification task, we use about $34$ features in four categories. These feature sets are explained briefly here, and more details about them can be found in Appendix A.
 
-After extracting features from each time series, some low variance and high-correlated features were eliminated. Feature selection causes the complexity of the model to reduce. Ten percent of handcrafted features were set aside for testing our classifier, and others were divided into 10-fold cross-validation for evaluation and training. 
+After extracting features from each time series, some low variance and high-correlated features were eliminated. Feature selection causes the complexity of the model to reduce. Ten percent of data were set aside for testing our classifier, and others were divided into 10-fold cross-validation for evaluation and training. 
 
-To have equally balanced classes in the test set and cross-validation set, the methods Stratified and StratifiedKFold were used. As a result, all subjects were included in the test result. %for extracting features from each time series, we need to consider a windows that size with over  Each group of features implemented on a size for extracting features from each time series, we need to consider a windows that  
+To have equally balanced classes in the test set and cross-validation set, the methods Stratified and StratifiedKFold were used. Each set includes approximately the same percentage of samples of each class as the complete set. For example, if there are 10 samples out of 100 for class A, of stratified 3-fold cross-validation on a dataset with 50 samples from two unbalanced classes. We show the number of samples in each class and compare with KFold.%for extracting features from each time series, we need to consider a windows that size with over  Each group of features implemented on a size for extracting features from each time series, we need to consider a windows that  
+
 
 \subsubsubsection{\textit{Temporal Features}.}
 The first set of features extracted was temporal features. In this set, we focused on features that related to the time axis. Features like Entropy, Absolute energy, Centroid, Area under the curve fall into this group. The number of features extracted was 11.
@@ -49,8 +59,7 @@ These time-series features were fed to four different types of machine learning 
 
 \subsection{Deep Learning Approaches}
   
-
-Almost all machine learning approaches, except for those based on deep learning, require feature extracting process. These process can cause some information to be loss by expert mistake. On the contrary, deep learning models already incorporate this kind of feature engineering internally, optimizing it and eliminating the need to do it manually. Therefore they are able to extract information from the time series in a faster, more direct, and more complete way. In this section, two different deep learning approaches for time series classification will be reviewed.
+As Figure \ref{fig:flow} shows two approaches of Deep Neural Network were implemented. In this subsection, these approaches will be reviewed.
 
 
 \subsubsection{Transfer Learning Approaches}
