@@ -30,7 +30,7 @@ from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
 from keras.models import load_model
-
+from keras import metrics
 from keras.wrappers.scikit_learn import KerasClassifier
 import keras
 
@@ -88,8 +88,8 @@ dataset = dataset.astype("float32")
 dataset = np.expand_dims(dataset, axis=1)
 
 
-window = 570  # = 3 * 365
-df_train, df_test = dataset[:window, :], dataset[window:, :]
+window = 50  # = 3 * 365
+df_train, df_test = dataset[:-window, :], dataset[-window:, :]
 
 
 scaler = MinMaxScaler()
@@ -115,9 +115,13 @@ def create_model(LSTM_units=4, learning_rate=0.001, flag=True):
     model.add(Dense(1))
     opt = keras.optimizers.Adam(learning_rate=learning_rate)
     if flag:
-        model.compile(loss="mean_squared_error", optimizer=opt, metrics=["accuracy"])
+        model.compile(
+            loss="mean_squared_error", optimizer=opt, metrics=["accuracy"],
+        )
     else:
-        model.compile(loss="mean_squared_error", optimizer=opt)
+        model.compile(
+            loss="mean_squared_error", optimizer=opt,
+        )
 
     return model
 

@@ -30,7 +30,7 @@ from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
 from keras.models import load_model
-
+from keras import metrics
 from keras.wrappers.scikit_learn import KerasClassifier
 import keras
 
@@ -77,8 +77,8 @@ dataset = dataset.astype("float32")
 dataset = np.expand_dims(dataset, axis=1)
 
 
-window = 570  # = 3 * 365
-df_train, df_test = dataset[:window, :], dataset[window:, :]
+window = 50  # = 3 * 365
+df_train, df_test = dataset[:-window, :], dataset[-window:, :]
 
 
 scaler = MinMaxScaler()
@@ -99,7 +99,9 @@ testY = np.expand_dims(testY, axis=1)
 
 
 # create and fit the LSTM network
-def create_model(input_shape=(look_back, 1), learning_rate=0.001, flag=True):
+def create_model(
+    LSTM_units=10, input_shape=(look_back, 1), learning_rate=0.001, flag=True
+):
     model = Sequential()
     model.add(
         keras.layers.Conv1D(
@@ -114,7 +116,8 @@ def create_model(input_shape=(look_back, 1), learning_rate=0.001, flag=True):
     model.add(keras.layers.Conv1D(filters=64, kernel_size=3, padding="same"))
     model.add(keras.layers.BatchNormalization())
     model.add(keras.layers.ReLU())
-    model.add(keras.layers.GlobalAveragePooling1D())
+    model.add(keras.layers.LSTM(LSTM_units))
+    # model.add(keras.layers.GlobalAveragePooling1D())
     model.add(keras.layers.Dense(1))  # , activation="sigmoid"
 
     opt = keras.optimizers.Adam(learning_rate=learning_rate)
@@ -134,10 +137,15 @@ def create_model(input_shape=(look_back, 1), learning_rate=0.001, flag=True):
 model = KerasClassifier(build_fn=create_model, verbose=0)
 # define the grid search parameters
 batch_size = [16, 32, 64]
+LSTM_units = [5, 15, 10]
 epochs = [10]
-# LSTM_units = [5, 15, 10]
 learning_rate = [0.0001, 0.001, 0.01]
-param_grid = dict(batch_size=batch_size, epochs=epochs, learning_rate=learning_rate,)
+param_grid = dict(
+    batch_size=batch_size,
+    epochs=epochs,
+    learning_rate=learning_rate,
+    LSTM_units=LSTM_units,
+)
 kfold = KFold(n_splits=5, random_state=None, shuffle=True)
 grid = GridSearchCV(estimator=model, param_grid=param_grid, n_jobs=-1, cv=kfold)
 print(trainX.shape)
@@ -163,8 +171,14 @@ for mean, stdev, param in zip(means, stds, params):
 #########                       best model                        ##########
 ############################################################################
 best_model = create_model(
-    learning_rate=grid_result.best_params_["learning_rate"], flag=False
+    learning_rate=grid_result.best_params_["learning_rate"],
+    LSTM_units=grid_result.best_params_["LSTM_units"],
+    flag=False,
 )
+
+# keras.utils.plot_model(best_model, show_shapes=True)
+# plt.savefig(os.path.join(fig_dir, a + "plot_model.png"))
+
 weight_path = "Ass4_Q2c_weights.best.hdf5"
 checkpoint = ModelCheckpoint(
     weight_path,

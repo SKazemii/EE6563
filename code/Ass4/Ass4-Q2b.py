@@ -30,7 +30,7 @@ from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
 from keras.models import load_model
-
+from keras import metrics
 from keras.wrappers.scikit_learn import KerasClassifier
 import keras
 
@@ -61,17 +61,6 @@ series = pd.read_csv(
 
 
 ############################################################################
-#########      Saving and showing the plot of the raw signal      ##########
-############################################################################
-
-print("[INFO] Saving and showing the plot of the dataset")
-plt.figure()
-fig = series["Close"].plot(label="Close price")
-plt.legend()
-plt.savefig(os.path.join(fig_dir, a + "raw_signal.png"))
-
-
-############################################################################
 #########                             LSTM                        ##########
 ############################################################################
 def create_dataset(dataset, look_back=1):
@@ -88,8 +77,8 @@ dataset = dataset.astype("float32")
 dataset = np.expand_dims(dataset, axis=1)
 
 
-window = 570  # = 3 * 365
-df_train, df_test = dataset[:window, :], dataset[window:, :]
+window = 50  # = 3 * 365
+df_train, df_test = dataset[:-window, :], dataset[-window:, :]
 
 
 scaler = MinMaxScaler()
@@ -130,7 +119,7 @@ def create_model(input_shape=(look_back, 1), learning_rate=0.001, flag=True):
     output_layer = keras.layers.Dense(1)(gap)  # , activation="sigmoid"
     opt = keras.optimizers.Adam(learning_rate=learning_rate)
     model = keras.models.Model(inputs=input_layer, outputs=output_layer)
-    # model.compile(optimizer=opt, loss="mse", metrics=["accuracy"])
+
     if flag:
         model.compile(loss="mean_squared_error", optimizer=opt, metrics=["accuracy"])
     else:
@@ -151,8 +140,6 @@ learning_rate = [0.0001, 0.001, 0.01]
 param_grid = dict(batch_size=batch_size, epochs=epochs, learning_rate=learning_rate,)
 kfold = KFold(n_splits=5, random_state=None, shuffle=True)
 grid = GridSearchCV(estimator=model, param_grid=param_grid, n_jobs=-1, cv=kfold)
-print(trainX.shape)
-print(trainY.shape)
 
 grid_result = grid.fit(trainX, trainY)
 # summarize results
@@ -176,11 +163,14 @@ for mean, stdev, param in zip(means, stds, params):
 best_model = create_model(
     learning_rate=grid_result.best_params_["learning_rate"], flag=False
 )
+# keras.utils.plot_model(best_model, show_shapes=True)
+# plt.savefig(os.path.join(fig_dir, a + "plot_model.png"))
+# 1 / 0
 weight_path = "Ass4_Q2b_weights.best.hdf5"
 checkpoint = ModelCheckpoint(
     weight_path,
     monitor="val_loss",
-    verbose=1,
+    verbose=0,
     save_best_only=True,
     mode="min",
     save_weights_only=False,
