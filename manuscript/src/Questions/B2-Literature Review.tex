@@ -20,14 +20,13 @@ In 2015, Cantoral-Ceballos \cite{Cantoral-Ceballos2015IntelligentEnvironments} i
 Costilla-Reyes et al. \cite{Costilla-Reyes2016TemporalSystem} extracted five features directly from raw data of the iMAGiMAT sensor. These features were spatial Average (SA), standard deviation (SD), adjacent mean (AM), cumulative sum (CS), and cumulative product (CP).
 They implemented 14 various machine learning methods for classification. The best result belonged to the Random Forest model with a validation score of $90.84 \pm 2.46\%$. 
 
+ 
+%**Almost all machine learning approaches, except for those based on deep learning, require feature extracting process. These process can cause some information to be loss by expert mistake. On the contrary, deep learning models already incorporate this kind of feature engineering internally, optimizing it and eliminating the need to do it manually. Therefore they are able to extract information from the time series in a faster, more direct, and more complete way.
+Costilla-Reyes et al. in \cite{Costilla-Reyes2018DeepSensors} used an end-to-end convolutional neural network to extract Spatio-temporal features automatically. This technique increased F-score performance to about 97.88\% $\pm$ 1.7\%. They reconstructed pressure images from the time-series data to feed to deep networks. Some papers used other techniques like Continuous Wavelet Transform (CWT) \cite{Wang2021AutomaticNetwork}, Recurrence Plots (RP) \cite{Hatami2017ClassificationNetworks}, and short-time Fourier transform (STFT) \cite{Huang2019ECGNetwork} to produce a 2D representation of time-series. Therefore, time series classification can change to a texture image recognition task.
 
-**Almost all machine learning approaches, except for those based on deep learning, require feature extracting process. These process can cause some information to be loss by expert mistake. On the contrary, deep learning models already incorporate this kind of feature engineering internally, optimizing it and eliminating the need to do it manually. Therefore they are able to extract information from the time series in a faster, more direct, and more complete way.
 
-Costilla-Reyes et al. in \cite{Costilla-Reyes2018DeepSensors} used an end-to-end convolutional neural network to extract Spatio-temporal features automatically. This technique increased their score by about 7 percent.
+ 
 
-*********State the result, because it's not clear if this is relative or absolute improvement.  Is this now the "state of the art"?  Your lit review should build to what the current best comparison is.
-
- Some papers used several techniques like Continuous Wavelet Transform (CWT) \cite{Wang2021AutomaticNetwork}, Recurrence Plots (RP) \cite{Hatami2017ClassificationNetworks}, and short-time Fourier transform (STFT) \cite{Huang2019ECGNetwork} to produce a 2D representation of time-series and therefore time series classification can change to a texture image recognition task. 
 %Barandas et al. in \cite{Barandas2020TSFEL:Library} introduced a Python package entitled Time Series Feature Extraction Library (TSFEL). This Python package could compute more than 60 different features from the time-series data.
 
 
