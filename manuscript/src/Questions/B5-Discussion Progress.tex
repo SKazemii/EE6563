@@ -1,16 +1,16 @@
 \section{Discussion Progress}
 %%%***This is largely a recap of the results, but not much of a discussion about why.  A discussion should careful consider why you got the results you did, and how it relates to what you expected and other works.
 
-The results indicate that spectral features are more powerful features for all machine learning algorithms. The reason behind this might be the number of features and their qualities in this set. Based on table \ref{tab:Features_list}, there are about 300 features for this set, much more than two others.
+The results indicate that spectral features are more powerful features for all machine learning algorithms. The reason behind this might be the number of features and their qualities in this set. Based on table \ref{tab:Features_list}, there are about 300 features for this set, much more than for the other two.
 
-Another feature that has a significant effect on the accuracy is inter stride distance. This feature has been added only to all features and increased the accuracy of LDA from 60\% to 69\%. 
- 
-The results might suggest that using AR features are not significant impact on accuracy. The accuracy of LDA without these features reduced to 68.57\%. 
-
-Unbalance dataset also could have negative effect on the results. For example in the Stepscan dataset, there are about 800 negative class whereas 16 samples associated with the positive class. Consequently, the models were biased towards the negative class. 
+Another feature that has a significant effect on the accuracy is inter-stride distance. This feature has been added only to the all feature set, and it is one of the powerful features. Furthermore, other inter-stride features like the angle used to align the footprint with the template and stride duration should be considered in the feature set to improve the discrimination power of classifiers.  
 
 
-The poor results of the transfer learning framework might be the fact that only machine learning algorithms were trained based on the Stepscan dataset. It could have better result if we train last two layer of CNNs. 
+%The results might suggest that using AR features are not significant impact on accuracy. The accuracy of LDA without these features reduced to 68.57\%. 
+
+Unbalance dataset also could have a negative effect on the results. For example in the Stepscan dataset, there is about 800 negative class whereas 16 samples associated with the positive class. Consequently, the models were biased towards the negative class. 
+
+The poor results of the transfer learning framework might be because only machine learning algorithms were trained based on the Stepscan dataset. It could have a better performance if we train the last two-layer of CNNs. 
 
 
 

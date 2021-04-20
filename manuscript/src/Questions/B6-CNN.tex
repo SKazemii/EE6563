@@ -2,17 +2,17 @@
 \section{Deep learning approaches for time series classification}
 \label{appendix:2}
 
-As already mentioned Step scan dataset, with the nature of video-based, is the data set that we used in this research. It should be noted that this type of dataset is basically suitable for this project and there is no need to convert the image into a time-series signal, however since our goal in this research is developing machine learning models from the time-series dataset, so we turned the video data set into a time-series one in order to implement a variety of classic machine learning algorithms and also deep learning methods, named LDA, KNN, SVM and Random forest which are categorized in machine learning algorithms and CNN, inception time and Echo State as deep learning methods. Therefore, in this appendix, we have tried to give a brief explanation of time series classification and main deep learning methods.
+As already mentioned Stepscan dataset, with the nature of video-based, is the dataset that we used in this research. It should be noted that this type of dataset is basically suitable for this project and there is no need to convert the image into a time-series signal; however since our goal in this research is developing machine learning models from the time-series dataset, so we turned the video dataset into a time-series one in order to implement a variety of classic machine learning algorithms and also deep learning methods, named LDA, KNN, SVM and Random forest which are categorized in machine learning algorithms and CNN, inception time and Echo State as deep learning methods. Therefore, in this appendix, we have tried to give a brief explanation of time series classification and main deep learning methods.
 
 
 \subsection{Introduction}
 
-It has been for two decades that time series classification has been regarded as one of the most challenging problems in data mining \cite{Esling2012Time-seriesMining}. Any classification problem which uses data taking into account some indication of order can be accounted as a Time series classification (TSC) case \cite{Gamboa2017DeepAnalysis}.  The field of computer has been seen as a big bang, once a Deep Convolutional Neural network has been proposed \cite{Krizhevsky2017ImageNetNetworks}. These deep learning algorithms could handle feature engineering automatically and internally. It caused many applications in many different domains to utilize these networks.  
+For the last two decades, time series classification has been regarded as one of the most challenging problems in data mining \cite{Esling2012Time-seriesMining}. Any classification problem which uses data taking into account some indication of order can be accounted as a time series classification (TSC) case \cite{Gamboa2017DeepAnalysis}.  The field of computer has been seen as a big bang, once a Deep Convolutional Neural network has been proposed \cite{Krizhevsky2017ImageNetNetworks}. These deep learning algorithms could handle feature engineering automatically and internally. It caused many applications in many different domains to utilize these networks.  
 
 
 \subsection{Deep learning}
 
-Figure \ref{fig:a1} shows a general Deep Learning framework for time series classification. It is a composition of several layers that implement non-linear functions. The input could be eighter a multivariate time series or univariate data. Every layer takes the output of the previous layer as input, then applies its non-linear transformation to compute its own output.
+Figure \ref{fig:a1} shows a general Deep Learning framework for time series classification. It is a composition of several layers that implement non-linear functions. The input could be either a multivariate time series or univariate data. Every layer takes the output of the previous layer as input, then applies its non-linear transformation to compute its own output.
 In this research, five different Deep Learning architectures for time series classifications are presented. 
 
 
@@ -54,7 +54,7 @@ Recently a deep Convolutional Neural Network called Inception Time was introduce
 
 Echo State Networks \cite{Bianchi2018ReservoirSeries} are a type of Recurrent Neural Network. Hence it can be useful to have a small introduction about them. Recurrent Neural Networks are networks of neuron-like nodes organized into successive layers, with an architecture similar to one of the standard Neural Networks. In fact, like in standard Neural Networks, neurons are divided into the input layer, hidden layers and output layers. Each connection between neurons has a corresponding trainable weight.  
 
-As has shown in figure \ref{fig:a3} , the architecture of an Echo State Network consists of an Input Layer, a hidden Layer called Reservoir, a Dimension Reduction Layer, a Fully Connected Layer called Readout, and an Output Layer.
+As shown in figure \ref{fig:a3} , the architecture of an Echo State Network consists of an Input Layer, a hidden Layer called Reservoir, a Dimension Reduction Layer, a Fully Connected Layer called Readout, and an Output Layer.
 
 In general, the main difficulty in using CNNs is that they are very dependent on the size and quality of the training data. To solve this problem, many new algorithms were recently elaborated, and among these Inception Time and Echo State Networks perform better than the others. 
 
